@@ -1,0 +1,48 @@
+<section class="text-center">
+	<h3>Manuten&ccedil;&atilde;o de Categoria</h3>
+
+	<form id="formAlteraCategoria" name="formAlteraCategoria" class="form-horizontal" ng-submit="alterar()" novalidate>
+        <div class="form-group">
+			<label class="control-label col-xs-3" for="tipoCategoria">Tipo de categoria:*</label>
+			<div class="col-xs-6">
+				<select id="tipoCategoria" class="form-control" ng-model="alteraCategoria.idTipoCategoria.idTipoCategoria"
+						ng-options="tipoCat.codigo as tipoCat.descricao for tipoCat in listaTipoCategoria">
+					<option value="">Selecione um Tipo de Categoria...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="descricao">Descrição:*</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="descricao"
+					maxlength="150"
+					ng-model="alteraCategoria.descricao"
+					ng-required="true"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="status">Status:*</label>
+			<div class="col-xs-6">
+				<select id="status" class="form-control" ng-model="alteraCategoria.status"
+						ng-options="status.codigo as status.descricao for status in listaStatus" ng-required="true">
+					<option value="">Selecione um Status...</option>
+				</select>
+			</div>
+		</div>		
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaCategoria" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

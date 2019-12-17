@@ -1,0 +1,289 @@
+.noPadding {
+    padding: 0 !important;
+}
+.noPaddingLeft {
+    padding-left: 0 !important;
+}
+.noPaddingRight {
+    padding-right: 0 !important;
+}
+
+.overflowScrollx {
+    overflow-x: scroll !important;
+}
+.noMarginTop {
+    margin-top: 0 !important;
+}
+.dBlock {
+    display: block !important;
+}
+
+.no-background {
+    background: transparent !important;
+}
+
+.btn-lg-icon span{
+    display: block;
+    font-size: 23px;
+}
+
+.table-default thead tr {
+    background-color: #323232;
+}
+.table-default thead tr th {
+    color: #FFF;
+    text-align: center;
+}
+
+.table-conc-resum thead tr th {
+    font-size: 0.8em;
+}
+
+.table-compact,
+.table-compact tr td input {
+    padding: 1px;
+    font-size: 0.9em;
+}
+.table-compact td {
+    padding: 0 !important;
+}
+.table-compact td input {
+    width: 60px;
+    padding: 2px;
+}
+td.summary-row{
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.status-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 3px auto;
+}
+
+.status-icon.red {
+    background-color: #c0392b;
+}
+
+.status-icon.yellow {
+    background-color: #f1c40f;
+}
+
+.status-icon.green {
+    background-color: #27ae60;
+}
+
+.moment-picker {
+    z-index: 1060 !important;
+}
+
+.glass-modal {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+}
+
+.modal-default {
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    min-height: 200px;
+    padding: 10px;
+    z-index: 99;
+    position: fixed;
+    border: 1px solid#d0d0d0;
+    background-color: white;
+    transform: translate(-50%, -50%);
+}
+
+.ipt-filtro-th {
+    max-width: 120px;
+    margin: 0 auto 5px;
+    padding: 5px;
+    font-size: 12px;
+    height: 24px;
+    font-weight: normal;
+}
+
+.cabecalho th {
+    vertical-align: middle !important;
+}
+
+
+.btn-venda-conc {
+    font-size: 0.8em;
+}
+
+.modal-gestao-vendas .titulo-tabela {
+    text-align: left;
+}
+.modal-gestao-vendas .modal-dialog {
+    width: 98%;
+    max-width: 1500px;
+}
+.modal-gestao-vendas thead th h4 {
+    font-size: 1.2rem;
+}
+
+.modal-gestao-vendas-conc tr td {
+    width: 100px;
+}
+
+.linhaSelecionada {
+    background-color: #fcd3a1 !important;
+}
+
+.appToastr {
+    /* width: 90%;
+    max-width: 1000px;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    z-index: 9999;
+    transform: translate(-50%); */
+    
+    width: 60%;        
+    position: fixed;
+    top: 50px;
+    left: 30%;        
+    z-index: 9999;
+        
+}
+
+
+
+#detalhes-nsu .modal-dialog {
+    width: 95%;
+    max-width: 1500px;
+}
+#detalhes-nsu .nsu-info ul {
+    text-align: left;
+    list-style: none;
+}
+#detalhes-nsu .modal-header {
+    background-color: #323232;
+    color: #FFF;
+}
+#detalhes-nsu .modal-header .close {
+    color: #FFF;
+    opacity: initial;
+}
+#detalhes-nsu .modal-header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    text-align: left;
+}
+#detalhes-nsu .nsu-info ul {
+    font-size: 1.3rem;
+}
+
+.empresa-info {
+    text-align: left;
+}
+
+
+/* -------- nova-empresa.html -------- */
+.bloco-empresa {
+    background-color: #F5F5F5;
+}
+.empresasErro {
+    color: #a94442;
+    text-align: center;
+    font-weight: bold;
+    background-color: #f2dede;
+}
+.table.empresas-table > tbody > tr > td {
+    vertical-align: middle;
+}
+.empresas-table td p {
+    margin: 0;
+}
+/* -------- FIM - nova-empresa.html -------- */
+
+
+.inputfile {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+
+
+/*
+-------- cadastro de usuario--------
+Telas: lista-usuario.html, cadastro-usuario.html
+*/
+.bpo-bloco {
+    position: relative;
+}
+.bpo-bloco .btn-mais {
+    position: absolute;
+    left: 75%;
+}
+.notificacoesBox {
+    position: relative;
+}
+.notificacoesBox label {
+    padding-top: 0 !important;
+}
+.notificacoesBox input {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    margin-top: 0;
+    margin-left: 10px;
+}
+
+.tipo-notificacao-box .checkbox label input {
+    margin-top: 2px;
+}
+
+.empresa-transportadora-column ul {
+    list-style: none;
+    text-align: left;
+}
+
+.grupo-column ul {
+    list-style: none;
+    text-align: left;
+}
+.phone-col {
+    min-width: 125px;
+    
+}
+/* -------- fim cadastro de usuario -------- */
+
+.editar {
+    width: 150px
+}
+
+.ui-message {
+    width: 100%;
+    top: 0;
+    z-index: 9999;
+    position: fixed;
+}
+
+multiselect ul li a {
+    overflow-x: visible !important;
+}
+
+multiselect[ng-id="listaEmpresa"] ul {
+    max-height: 285px;
+}

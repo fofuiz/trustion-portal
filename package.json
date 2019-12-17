@@ -1,0 +1,82 @@
+{
+  "name": "trustion-portal",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "front-end do portal trustion configurado com kubernetes e ngnix",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": " ",
+    "httpserver": "http-server -c-1 -a localhost -p 4200 -o",
+    "liveserver": "live-server --host=localhost --port=4200"
+  },
+  "author": "Romualdo Junior(romualdo.jrr@gmail.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "file-exists": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-environment": "^1.5.1",
+    "gulp-exec": "^2.1.3",
+    "gulp-npm-files": "^0.1.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-sequence": "^0.4.6",
+    "gulp-shell": "^0.6.3",
+    "http-server": "^0.10.0",
+    "install": "^0.11.0",
+    "live-server": "^1.2.0"
+  },
+  "gulp-environment": {
+    "environments": [
+      {
+        "name": "local",
+        "aliases": [
+          "localhost"
+        ],
+        "envFile": "config.local.js"
+      },
+      {
+        "name": "develop",
+        "aliases": [
+          "desenvolvimento"
+        ],
+        "exposePort": 4200,
+        "registry": "registrydev.accesstage.com.br:5000",
+        "nodePort": 30025,
+        "envFile": "config.develop.js",
+        "contextPath": "portal-trustion"
+      },
+      {
+        "name": "homolog",
+        "aliases": [
+          "homologacao"
+        ],
+        "exposePort": 4200,
+        "registry": "registryhom.accesstage.com.br:5000",
+        "nodePort": 30025,
+        "envFile": "config.homolog.js",
+        "contextPath": "portal-trustion"
+      },
+      {
+        "name": "prod",
+        "aliases": [
+          "producao"
+        ],
+        "exposePort": 4200,
+        "registry": "registryprd.accesstage.com.br:5000",
+        "nodePort": 30025,
+        "envFile": "config.prod.js",
+        "contextPath": "portal-trustion"
+      }
+    ],
+    "default": "develop"
+  },
+  "dependencies": {
+    "angular": "1.6.4",
+    "bootstrap": "3.3.7",
+    "jquery": "3.3.1",
+    "ng-excel": "^1.0.5",
+    "npm": "^6.11.2"
+  }
+}

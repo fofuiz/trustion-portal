@@ -1,0 +1,113 @@
+<section class="text-center">
+	<h3>Pesquisa de Tipo de Servi&ccedil;o</h3>
+
+	<form id="formListaTipoServico" class="form-horizontal" ng-submit="pesquisarPorCriterios()">
+
+		<div class="form-group">
+			<div class="alert alert-danger" role="alert" ng-show="isExibirMensagem" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagem}}</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNomeServico">Id do Servi&ccedil;o:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="number" id="idNomeServico" ng-model="filtroTipoServico.idTipoServico"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNomeServico">Nome do Servi&ccedil;o:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNomeServico" maxlength="70" ng-model="filtroTipoServico.nomeServico"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idGrupoEconomico">Grupo Econ&ocirc;mico Transportadora:</label>
+			
+			<div class="col-xs-6">
+				<select id="idGrupoEconomico" class="form-control" ng-model="filtroTipoServico.idGrupoEconomico"
+					ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico" >
+					<option value="">Selecione um grupo econ&ocirc;mico...</option>
+				</select>
+			</div>
+		</div>	
+	
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input ui-sref="novoTipoServico" class="btn btn-verde btn-lg btn-block" value="Novo"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-1">
+			</div>
+
+			<div class="col-xs-10">
+				<table id="tblTipoServico" class="table table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>ID Servi&ccedil;o</h4></th>
+							<th class="text-center texto-branco"><h4>Servi&ccedil;o</h4></th>
+							<th class="text-center texto-branco"><h4>Grupo Transportadora</h4></th>
+							<th class="text-center texto-branco"><h4>Editar</h4></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr ng-repeat="tipoServico in listaTipoServico">
+							<td class="text-center">{{tipoServico.idTipoServico}}</td>
+							<td class="text-center">{{tipoServico.nomeServico}}</td>
+							<td class="text-center">{{tipoServico.nomeGrupoEconomicoTransportadora}}</td>
+							<td class="text-center">
+								<button ui-sref="alteraTipoServico({idTipoServico : tipoServico.idTipoServico})" 
+									class="btn btn-verde btn-sm" >
+
+								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+								</button>
+					</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-xs-1">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-1 col-xs-10">
+				<ul ng-show="paginacao" uib-pagination
+					class="pagination"
+					rotate="false"
+					boundary-link-numbers="true"
+
+					previous-text="&lsaquo;"
+					next-text="&rsaquo;"
+					first-text="&laquo;"
+					last-text="&raquo;"
+
+					ng-disabled="pag_desabilitado"
+					max-size="pag_tamanho"
+					items-per-page="pag_registrosPorPagina"
+					total-items="pag_totalRegistros"
+					ng-model="pag_paginaSelecionada"
+					ng-change="carregarTipoServicosPorPagina(filtroTipoServicoPage)">
+				</ul>
+				<input type="button" ui-sref="homeNumerario" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+			</div>
+		</div>
+	</form>
+</section>

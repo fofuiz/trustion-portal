@@ -1,0 +1,316 @@
+<section class="container-fluid text-center">
+	<h3>Consulta Anal&iacute;tica de Cr&eacute;ditos D+0</h3>
+
+	<form class="form-horizontal" id="formRelatorioAnaliticoCreditos" name="formRelatorioAnaliticoCreditos" ng-submit="pesquisarRelatorios()"
+		  novalidate>
+
+		<div class="form-group">
+			<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span> <span>{{mensagemErro}}</span>
+			</div>
+		</div>
+		<button type="button" class="btn btn-default pull-left" ng-click="toggleFiltro(isCollapsedFilter)">Filtros vis&iacute;veis</button>
+		<br> <br>
+		<div uib-collapse="isCollapsedFilter" ng-init="isCollapsedFilter=false">
+
+			<div class="form-group">
+
+				<label class="control-label col-xs-2" for="idGrupoEconomico">Transportadora:</label>
+
+				<div class="col-xs-3">
+					<multiselect ng-id="listaGrupoTransp" ng-model="listaGrupoTranspSel" options="listaGrupoTranspOpc" id-prop="idTransportadora"
+								 display-prop="razaoSocial" ng-change="restringirTranspGrupoEconEmpresa()" ng-required="false">
+					</multiselect>
+				</div>
+
+				<label class="control-label col-xs-2" for="idNumeroSerialCofre">N&uacute;mero Serial do Cofre:</label>
+
+				<div class="col-xs-3">
+					<select class="form-control ng-pristine ng-untouched ng-valid ng-not-empty"
+					ng-options="cofre.numSerie for cofre in listaCofreOpc"
+					   id-prop="idCofre" ng-model="listaCofreSel" ng-required="false">
+					   <option value=''>Selecione o n&uacute;mero serial do cofre</option>
+			   	    </select>
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idGrupoEconomico">Grupo:</label>
+
+				<div class="col-xs-3">
+					<multiselect ng-id="listaGrupoEcon" ng-model="listaGrupoEconSel" options="listaGrupoEconOpc" id-prop="idGrupoEconomico" display-prop="nome"
+								 ng-change="restringirTranspGrupoEconEmpresa()" ng-required="false">
+					</multiselect>
+				</div>
+
+				<label class="control-label col-xs-2" for="idstatusOcorrencia">Status da Concilia&ccedil;&atilde;o:</label>
+
+				<div class="col-xs-3">
+					<select id="idstatusOcorrencia" class="form-control" ng-model="statusConciliacao" ng-options="statusConciliacao as statusConciliacao for statusConciliacao in listaStatusConciliacao">
+						<option value="">Selecione um status de concilia&ccedil;&atilde;o</option>
+					</select>
+				</div>
+
+			</div>
+			<!--			-->
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idEmpresa">Empresa:</label>
+				<div class="jp-multiselect">
+					<div class="col-xs-3">
+						<select id="teste" class="form-control" multiple ng-model="listaEmpresaSel2" ng-options="empresa as empresa.razaoSocial for empresa in listaEmpresaOpc" ng-required="false"></select>
+					</div>
+					<div class="control-label col-xs-2 text-center">
+						<button type="button" class="center-block btn btn-default" ng-click="moveItem(listaEmpresaSel2, listaEmpresaOpc,listaEmpresaSel);restaurarCofre()">>></button>
+						<button type="button" class="center-block btn btn-default" ng-click="moveItem(listaEmpresaSel3, listaEmpresaSel,listaEmpresaOpc);restaurarCofre()"><<</button>
+					</div>
+					<div class="col-xs-3">
+						<select id="teste2" class="form-control" multiple ng-model="listaEmpresaSel3" ng-options="empresa as empresa.razaoSocial for empresa in listaEmpresaSel" ng-required="false">
+						</select>
+					</div>
+					<script>
+						$(".jp-multiselect").jQueryMultiSelection();
+					</script>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idOcorrencia">ID Ocorr&ecirc;ncia:</label>
+
+				<div class="col-xs-3">
+					<input class="form-control" type="text" id="idOcorrencia" ng-model="idOcorrencia" somente-numero valida-tamanho="15" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idCnpj">CNPJ:</label>
+
+				<div class="col-xs-3">
+					<input class="form-control" type="text" id="idCnpj" ui-mask="99.999.999/9999-99" ng-model="cnpj" />
+				</div>
+
+				<label class="control-label col-xs-2" for="idstatusOcorrencia">Status da Ocorr&ecirc;ncia:</label>
+
+				<div class="col-xs-3">
+					<select id="idstatusOcorrencia" class="form-control" ng-model="statusOcorrencia" ng-options="statusOcorrencia.descricao as statusOcorrencia.descricao for statusOcorrencia in listaStatusOcorrencia">
+						<option value="">Selecione um status de ocorr&ecirc;ncia</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idCnpj">Sigla da Loja:</label>
+
+				<div class="col-xs-3">
+					<input class="form-control" type="text" id="idSiglaLoja" ng-model="siglaLoja" maxlength="150" />
+				</div>
+
+				<label class="control-label col-xs-2" for="idCnpj">Relat&oacute;rios com diferença:</label>
+
+				<div class="col-xs-1">
+					<input type="checkbox" ng-model="registrosComDiferenca" ng-init="registrosComDiferenca=false" style="margin-top: 25px;margin-left: -14px;" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="idDataInicial">Data Inicial:*</label>
+
+				<div class="col-sm-3">
+					<input id="idDataInicial" class="form-control" moment-picker="dataInicialFormatada" max-date="maxData" min-date="minData"
+						   locale="pt-br" start-view="month" ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"
+					/>
+				</div>
+
+				<label class="col-sm-2 control-label" for="idDataFinal">Data Final:*</label>
+
+				<div class="col-sm-3">
+					<input id="idDataFinal" class="form-control" moment-picker="dataFinalFormatada" max-date="maxData" min-date="minData" locale="pt-br"
+						   start-view="month" ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" />
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-3"></div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar" />
+			</div>
+
+			<div class="col-xs-3">
+				<input type="button" class="btn btn-verde btn-lg btn-block" ui-sref="homeNumerario" value="Voltar" />
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<button type="button" class="btn btn-default pull-left" ng-click="isCollapsed = !isCollapsed">Colunas vis&iacute;veis</button>
+				<br> <br>
+				<div uib-collapse="isCollapsed" ng-init="isCollapsed=true">
+					<div class="well well-sm">
+						<div class="table-responsive">
+							<table class="table borderless text-left margin-bottom-10">
+								<tbody>
+
+								<!--linha1-->
+								<tr>
+									<td><input class="form-check-input" type="checkbox" ng-model="isTransportadoraColumnVisible" ng-init="isTransportadoraColumnVisible=true">Transportadora</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isSiglaLojaColumnVisible" ng-init="isSiglaLojaColumnVisible=true">Sigla
+										da Loja</td>
+
+									<td><input class="form-check-input" type="checkbox" ng-model="isValorRegistradoCofreColumnVisible" ng-init="isValorRegistradoCofreColumnVisible=true">Valor
+										Registrado no Cofre</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isValorCreditadoContaColumnVisible" ng-init="isValorCreditadoContaColumnVisible=true">Valor
+										Creditado em Conta</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isStatusConciliacaoColumnVisible" ng-init="isStatusConciliacaoColumnVisible=true">Status
+										Concilia&ccedil;&atilde;o
+									</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isDataStatusOcorrenciaColumnVisible" ng-init="isDataStatusOcorrenciaColumnVisible=true">Data
+										do Status de Ocorr&ecirc;ncia</td>
+								</tr>
+
+								<!--linha2-->
+								<tr>
+									<td><input class="form-check-input" type="checkbox" ng-model="isEmpresaColumnVisible" ng-init="isEmpresaColumnVisible=true">Empresa</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isDataFechamentoColumnVisible" ng-init="isDataFechamentoColumnVisible=true">Data
+										de Fechamento</td>
+
+									<td><input class="form-check-input" type="checkbox" ng-model="isDataCreditoColumnVisible" ng-init="isDataCreditoColumnVisible=true">Data
+										do Cr&eacute;dito</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isDiferencaColumnVisible" ng-init="isDiferencaColumnVisible=true">Diferen&ccedil;a</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isIDOcorrenciaColumnVisible" ng-init="isIDOcorrenciaColumnVisible=true">ID
+										Ocorr&ecirc;ncia
+									</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isStatusOcorrenciaColumnVisible" ng-init="isStatusOcorrenciaColumnVisible=true">Status
+										da Ocorr&ecirc;ncia</td>
+
+								</tr>
+
+								<!--linha3-->
+								<tr>
+									<td><input class="form-check-input" type="checkbox" ng-model="isCnpjColumnVisible" ng-init="isCnpjColumnVisible=true">CNPJ</td>
+									<td><input class="form-check-input" type="checkbox" ng-model="isResponsavelColumnVisible" ng-init="isResponsavelColumnVisible=true">-Respons&aacute;vel</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row tbody-scroll">
+			<div class="col-xs-12">
+				<table class="table table-bordered table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+					<tr class="cabecalho">
+						<th ng-show="isTransportadoraColumnVisible" class="text-center texto-branco">
+							<h5>Transportadora</h5>
+						</th>
+						<th ng-show="isEmpresaColumnVisible" class="text-center texto-branco">
+							<h5>Empresa</h5>
+						</th>
+						<th ng-show="isCnpjColumnVisible" class="text-center texto-branco">
+							<h5>CNPJ</h5>
+						</th>
+						<th ng-show="isSiglaLojaColumnVisible" class="text-center texto-branco">
+							<h5>Sigla da Loja</h5>
+						</th>
+						<th ng-show="isDataFechamentoColumnVisible" class="text-center texto-branco">
+							<h5>Data de Fechamento</h5>
+						</th>
+						<th ng-show="isValorRegistradoCofreColumnVisible" class="text-center texto-branco">
+							<h5>Valor Registrado no Cofre</h5>
+						</th>
+						<th ng-show="isDataCreditoColumnVisible" class="text-center texto-branco">
+							<h5>Data do Cr&eacute;dito</h5>
+						</th>
+						<th ng-show="isValorCreditadoContaColumnVisible" class="text-center texto-branco">
+							<h5>Valor Creditado em Conta</h5>
+						</th>
+						<th ng-show="isDiferencaColumnVisible" class="text-center texto-branco">
+							<h5>Diferen&ccedil;a</h5>
+						</th>
+						<th ng-show="isStatusConciliacaoColumnVisible" class="text-center texto-branco">
+							<h5>Status Concilia&ccedil;&atilde;o</h5>
+						</th>
+						<th ng-show="isIDOcorrenciaColumnVisible" class="text-center texto-branco">
+							<h5>ID Ocorr&ecirc;ncia</h5>
+						</th>
+						<th ng-show="isDataStatusOcorrenciaColumnVisible" class="text-center texto-branco">
+							<h5>Data do Status de Ocorr&ecirc;ncia</h5>
+						</th>
+						<th ng-show="isStatusOcorrenciaColumnVisible" class="text-center texto-branco">
+							<h5>Status da Ocorr&ecirc;ncia</h5>
+						</th>
+						<th ng-show="isResponsavelColumnVisible" class="text-center texto-branco">
+							<h5>Respons&aacute;vel</h5>
+						</th>
+						<th class="text-center texto-branco col-xs-2" ng-if="verQuestionarValor">
+							<h5>A&ccedil;&atilde;o</h5>
+						</th>
+					</tr>
+					</thead>
+
+					<tbody>
+					<tr ng-repeat="relatorio in listaRelatorio track by $index">
+						<td ng-show="isTransportadoraColumnVisible" class="text-center">{{relatorio.transportadora}}</td>
+						<td ng-show="isEmpresaColumnVisible" class="text-center">{{relatorio.empresa}}</td>
+						<td ng-show="isCnpjColumnVisible" class="text-center">{{relatorio.cnpj | cnpj}}</td>
+						<td ng-show="isSiglaLojaColumnVisible" class="text-center">{{relatorio.siglaLoja}}</td>
+						<td ng-show="isDataFechamentoColumnVisible" class="text-center">{{relatorio.dataCorte | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+						<td ng-show="isValorRegistradoCofreColumnVisible" class="text-center"><a ng-if="relatorio.isValorRegistradoLink" ng-click="modalDetalheRelatorio(relatorio)"
+																								 id="btn-3">{{relatorio.valorTotal | realbrasileiro}}</a> <span ng-if="!relatorio.isValorRegistradoLink">{{relatorio.valorTotal
+									| realbrasileiro}}</span></td>
+						<td ng-show="isDataCreditoColumnVisible" class="text-center">{{relatorio.dataCredito | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+						<td ng-show="isValorCreditadoContaColumnVisible" class="text-center">{{relatorio.valorCredito | realbrasileiro}}</td>
+						<td ng-show="isDiferencaColumnVisible" class="text-center">{{relatorio.valorQuestionado | realbrasileiro}}</td>
+
+						<td ng-show="isStatusConciliacaoColumnVisible" ng-if="relatorio.statusConciliacao == listaStatusConciliacao[0]" class="text-center"><a
+								ng-click="modalDetalheConciliacao(relatorio)">{{relatorio.statusConciliacao}}</a></td>
+						<td ng-show="isStatusConciliacaoColumnVisible" ng-if="relatorio.statusConciliacao == listaStatusConciliacao[1]" class="text-center"><a
+								ng-click="modalConciliacaoManual(relatorio)">{{relatorio.statusConciliacao}}</a></td>
+						<td ng-show="isStatusConciliacaoColumnVisible" ng-if="relatorio.statusConciliacao == listaStatusConciliacao[2]" class="text-center">
+							{{relatorio.statusConciliacao}} </td>
+						<td ng-show="isStatusConciliacaoColumnVisible" ng-if="relatorio.statusConciliacao == listaStatusConciliacao[3]" class="text-center">
+							{{relatorio.statusConciliacao}} </td>
+
+						<td ng-show="isIDOcorrenciaColumnVisible" class="text-center"><a ui-sref="listaOcorrencias({idOcorrencia : relatorio.idOcorrencia})"
+																						 id="btn-3">{{relatorio.idOcorrencia}}</a></td>
+						<td ng-show="isDataStatusOcorrenciaColumnVisible" class="text-center">{{relatorio.dataStatusOcorrencia | date:'dd/MM/yyyy
+							HH:mm:ss'}}
+						</td>
+						<td ng-show="isStatusOcorrenciaColumnVisible" class="text-center">{{relatorio.statusOcorrencia}}</td>
+						<td ng-show="isResponsavelColumnVisible" class="text-center">{{relatorio.responsavel}}</td>
+						<td class="text-center" ng-if="verQuestionarValor"><a ng-if="!relatorio.idOcorrencia" class="btn btn-verde btn-block"
+																			  ng-click="modalQuestionarValor(relatorio)" id="btn-3">Questionar Valor</a> </td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-12">
+				<div class="col-xs-8">
+					<ul uib-pagination class="pagination" ng-show="paginacao" rotate="false" boundary-link-numbers="true" previous-text="&lsaquo;"
+						next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-disabled="pag_desabilitado" max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina" total-items="pag_totalRegistros" ng-model="pag_paginaSelecionada" ng-change="carregarRelatorioPorPagina(filtroRelatorioPage)">
+					</ul>
+				</div>
+				<div style="margin-top: -10px;" class="col-xs-4">
+					</br>
+					<label for="idCnpj" class="control-label col-xs-5">Itens por Pág.</label>
+					<div class="col-xs-5">
+						<select id="registrosComDiferenca" class="form-control ng-pristine ng-valid ng-not-empty ng-touched" ng-model="registrosPorPag"
+								ng-options="qtd as qtd for qtd in lstRegPorPag">
+							<option label="10" value="number:10">10</option>
+							<option label="15" value="number:15" selected="selected">15</option>
+							<option label="25" value="number:25">25</option>
+							<option label="30" value="number:30">30</option></select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</section>

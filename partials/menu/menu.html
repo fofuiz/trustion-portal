@@ -1,0 +1,139 @@
+<ul class="nav nav-pills nav-stacked">
+
+	<li role="presentation" class="active">
+		<a ui-sref="home">Home</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaGrupoEconomico" id="btn-2" ng-if="grupoEconomico">Cadastro de Grupos</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaTransportadora" id="btn-1" ng-if="transportadora">Cadastro Transportadora</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaModeloNegocio" ng-if="modeloNegocio">Modelos de Neg&oacute;cios</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaEmpresa" id="btn-3" ng-if="empresa">Cadastro de Empresa</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaUsuario" id="btn-1" ng-if="usuario">Cadastro de Usu&aacute;rios</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaTipoQuestionamento" id="btn-1" ng-if="tipoQuestionamento">Cadastro de Tipo de
+			Questionamento</a>
+	</li>
+
+	<li role="presentation">
+		<a ui-sref="listaTipoMotivoConclusao" id="btn-1" ng-if="motivoConclusao">Cadastro de Motivo da Conclusão</a>
+	</li>
+
+	<li role="presentation">
+		<a id="btn-9" data-toggle="collapse" data-target="#submenu9"
+			aria-expanded="false">Configura&ccedil;&otilde;es<span class="glyphicon glyphicon-chevron-right"
+				aria-hidden="true"></a>
+	</li>
+
+	<ul class="nav collapse" id="submenu9" role="menu" aria-labelledby="btn-9">
+		<li><a ng-if="stringHistorico" ui-sref="listaStringHistorico">Cadastro de String</a></li>
+		<li><a ui-sref="alterarSenha">Alterar Senha</a></li>
+		<li><a ng-if="cofres" ui-sref="listaCofre">Cadastro de Cofre</a></li>
+	</ul>
+
+	<li role="presentation"><a ui-sref="listaAuditoria" ng-if="trilhaAuditoria">Trilha de Auditoria</a></li>
+
+
+	<li role="presentation"><a ui-sref="listaLogApi" ng-if="logApi">Consulta de APIs</a></li>
+
+	<li role="presentation"><a ui-sref="listaOcorrencia" ng-if="ocorrencia">Consulta de Ocorr&ecirc;ncias</a></li>
+
+	<li role="presentation" class="active">
+		<a ng-if="periodoResumoNumerario" ui-sref="homeNumerario">Numer&aacute;rio</a>
+	</li>
+
+	<!--Menu Relatório Analítico de Créditos -->
+	<li role="presentation">
+		<a ng-if="periodoResumoNumerario && relatorioAnaliticoCreditos" id="btn-5" data-toggle="collapse"
+			data-target="#submenu5" aria-expanded="false">Relat&oacute;rio Anal&iacute;tico de Cr&eacute;ditos<span
+				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+	</li>
+	<ul class="nav collapse" id="submenu5" role="menu" aria-labelledby="btn-5">
+		<li><a id="cofre-inteligente-d0" ui-sref="relatorioAnaliticoCreditos" ng-if="relatoriod0">Cofre Inteligente Cr&eacute;dito D+0</a></li>
+		<li><a id="cofre-dn" ui-sref="relatorioAnaliticoCreditosD1" ng-if="relatoriod1">Cofre D+N</a></li>
+	</ul>
+
+	<!--Menu Relatório Analítico de Vendas -->
+	<li role="presentation">
+			<a ng-if="periodoResumoNumerario && relatorioAnaliticoCreditos && conciliaVendaNumerarioMenu" id="relatorio-analitico-vendas" data-toggle="collapse"
+				data-target="#submenu6" aria-expanded="false">Relat&oacute;rio Anal&iacute;tico de Vendas<span
+					class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+	</li>
+	<ul class="nav collapse submenu" id="submenu6" role="menu" aria-labelledby="btn-6">
+		<li><a id="consulta-conciliacao-vendas" ui-sref="conciliacaoVendasNumerario" ng-if="periodoResumoNumerario && deposito && conciliaVendaNumerarioSubMenu">Consulta Concilia&ccedil;&atilde;o de Vendas D+N</a></li>
+	</ul>
+
+
+	<li role="presentation">
+		<a ui-sref="relatorioAnaliticoExtrato" ng-if="periodoResumoNumerario && relatorioAnaliticoExtrato">Relat&oacute;rio Anal&iacute;tico de Extrato</a>
+	</li>
+
+	<li role="presentation"><a ui-sref="listaDeposito" ng-if="periodoResumoNumerario && deposito">Consulta de
+			Dep&oacute;sitos</a></li>
+
+	<li role="presentation" ng-if="cadastroVideos">
+		<a id="cadastrar-video" ui-sref="cadastrarVideos">Cadastrar Video</a>
+	</li>
+
+	<li role="presentation" class="active">
+		<a ng-if="cartoes" ui-sref="homeCartao">Cart&otilde;es</a>
+	</li>
+
+	<li role="presentation">
+		<a ng-if="cartoes" id="btn-11" data-toggle="collapse" data-target="#submenu10"
+			aria-expanded="false">Consolidação<span class="glyphicon glyphicon-chevron-right"
+				aria-hidden="true"></span></a>
+	</li>
+
+	<ul class="nav collapse submenu" id="submenu10" role="menu" aria-labelledby="btn-11">
+		<li><a ui-sref="vendas">Vendas</a></li>
+		<li><a ui-sref="recebimentos">Pagamentos</a></li>
+		<li><a ui-sref="recebimentosFuturos">Recebimentos Futuros</a></li>
+		<li><a ui-sref="taxasAdministrativas">Taxas Administrativas</a></li>
+		<li><a ui-sref="taxasAntecipacao">Taxas de Antecipação</a></li>
+		<li><a ui-sref="aluguelEquipamentos">Aluguel de Equipamentos</a></li>
+		<li><a ui-sref="ajuste">Ajustes</a></li>
+		<li><a ui-sref="relatorioConsolidado">Relat&oacute;rio Consolidado</a></li>
+	</ul>
+
+	<li role="presentation">
+		<a ng-if="cartoes" id="submenuConciliacaoVendas" data-toggle="collapse" data-target="#submenu12"
+			aria-expanded="false">Concilia&ccedil;&atilde;o de Vendas<span class="glyphicon glyphicon-chevron-right"
+				aria-hidden="true"></span></a>
+	</li>
+
+	<ul class="nav collapse" id="submenu12" role="menu" aria-labelledby="btn-12">
+		<li><a ui-sref="conciliacaoVendasOperadora">Vis&atilde;o Operadora</a></li>
+		<li><a ui-sref="conciliacaoVendasLoja">Vis&atilde;o Loja</a></li>
+		<li><a ui-sref="gestaoVendas">Gestão de Vendas</a></li>
+		<li><a id="linkRelDescritivoCartoes" ui-sref="relatorioDescritivoCartoes">Relatório descritivo de cartões</a></li>
+	</ul>
+
+	<li role="presentation">
+		<a ng-if="cartoes" id="btn-13" data-toggle="collapse" data-target="#submenu13" aria-expanded="false">Conciliação
+			Pagamentos<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+	</li>
+
+	<ul class="nav collapse submenu" id="submenu13" role="menu" aria-labelledby="btn-13">
+		<li><a ui-sref="conciliacaoResumo">Consultar Conciliação Resumo</a></li>
+		<li><a ui-sref="conciliacaoCartaoDetalhe">Consultar Conciliação Detalhada</a></li>
+		<li><a ui-sref="conciliacaoConsultarDomBancario">Consultar Domicílio Bancário</a></li>
+		<li><a ui-sref="conciliacaoConsultarRegraClienteAdquirente">Consulta de Regras por Cliente/Adquirente</a></li>
+		<li><a ui-sref="novaConciliacaoManual">Conciliação Manual</a></li>
+	</ul>
+
+</ul>

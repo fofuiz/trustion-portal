@@ -1,0 +1,635 @@
+<section class="text-center" ng-controller="GestaoVendasController">
+    <h3>Gestão de Vendas</h3>
+    <form id="form-search" ng-submit="pesquisaGestaoVendas()" name="frmGestaoVendas" class="form-horizontal">
+        <div class="row">
+            <div class="col-sm-9">	
+                <div class="row">
+                    <label class="col-sm-2 control-label" for="empresa">Empresa:*</label>
+                    <div class="col-sm-10">
+                      <select id="empresa" class="form-control" ng-model="empresa">
+                        <option value="">Selecione uma empresa</option>
+                        <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+                      </select>  
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <label class="col-sm-2 control-label" for="data-inicial">Visão:</label>
+                    <div class="col-sm-3">
+                        <select id="visao" class="form-control" ng-change="mudarVisao()" ng-model="visao"
+                            ng-options="vis.codigoVisao as vis.descricaoVisao for vis in visoes ">
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label" for="data-inicial">Período:*</label>
+                    <div class="col-sm-2">
+                        <input id="data-inicial" class="form-control" moment-picker="dataInicial" locale="pt-br" start-view="month" ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" ng-model-options="{ updateOn: 'blur' }"/>
+                    </div>
+                    <label class="col-sm-1 control-label" for="data-final">Até:*</label>
+                    <div class="col-sm-2">
+                        <input id="data-final" class="form-control" moment-picker="dataFinal" locale="pt-br" start-view="month" start-date="dataFinal" ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" ng-model-options="{ updateOn: 'blur' }"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <label class="col-sm-2 control-label" for="data-inicial">Loja:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" ng-model="codLoja">
+                            <option value="" selected>Todas</option>
+                            <option ng-repeat="lj in lojas" value="{{ lj.id }}">{{ lj.nome }}</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label" for="data-inicial">Status:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" ng-model="status"
+                            ng-options="statu.id as statu.dscStaConciliacao for statu in statuses">
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <label class="col-sm-2 control-label" for="data-inicial">Sequencial:</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="sequencial" class="form-control"
+                            maxlength="22" ng-maxlength="22" ng-disabled="!visaoLoja"
+                            ng-model="sequencial" ng-keyup="pesquisaArquivosSeqNome($event)" />
+                    </div>
+                    <label class="col-sm-3 control-label" for="data-inicial">Nome do arquivo:</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="nomeArquivo" class="form-control"
+                            maxlength="100" ng-maxlength="100" ng-disabled="!visaoLoja"
+                            ng-model="nomeArquivo" ng-keyup="pesquisaArquivosSeqNome($event)" />
+                        <input type="hidden" id="codArquivo" ng-model="codArquivo"/>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-verde" data-toggle="modal" data-target="#pesquisaArquivos"  ng-disabled="!visaoLoja"  data-whatever="data-inicial" ng-click="pesquisaArquivos()">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 text-center">
+                            <button type="button" class="btn btn-verde btn-lg btn-block noMarginTop"
+                                data-toggle="modal" data-target="#modal-exclur-detalhes"
+                                ng-show="detalhesExcluir.length > 0">
+                                Excluir
+                            </button>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <!-- btn exportar -->
+                         <button type="button" id="btnExportarGestaoVenda" class="btn btn-verde btn-lg btn-block noMarginTop"
+                            ng-click="exportarLoja()"
+                            ng-show="gestaoVendaResultados.length > 0 && visao == 1">
+                            Exportar
+                        </button>
+                        <!-- btn exportar -->
+                        <button type="button" id="btnExportar" class="btn btn-verde btn-lg btn-block noMarginTop"
+                            ng-click="exportarOperadora()"
+                            ng-show="visao == 2 && totalPaginas < 100">
+                            Exportar
+                        </button>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <button type="button" class="btn btn-verde btn-lg btn-block" ng-click="limparGestaoVendas()">Limpar</button>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-5">
+                        <button type="button" id="botaoExportarCsv" class="btn btn-verde btn-lg btn-block btn-venda-conc"
+                            ng-click="exportarCsv()"
+                            ng-show="visao == 2 && gestaoVendaResultados.length > 0 && totalPaginas < 100">
+                            Receber o arquivo de Vendas Conciliadas - CSV
+                        </button>
+                    </div>
+                    <div class="col-sm-5">
+                         <button type="button" id="botaoExportar1" class="btn btn-verde btn-lg btn-block btn-venda-conc noMarginTop"
+                            ng-click="exportar()"
+                            ng-show="empresaUsuLogado.tpoRemessaEmpresa == 0 && gestaoVendaResultados.length > 0 && visao == 2 && totalPaginas < 100">
+                            Receber o arquivo de Vendas Conciliadas - DAT
+                        </button>
+                         <button type="button" id="botaoExportar2" class="btn btn-verde btn-lg btn-block btn-venda-conc noMarginTop"
+                            ng-click="exportar()"
+                            ng-show="empresaUsuLogado.tpoRemessaEmpresa == 1 && gestaoVendaResultados.length > 0 && visao == 2 && totalPaginas < 100">
+                            Receber o arquivo de Vendas Conciliadas - DAT
+                        </button>
+                         <button type="button" id="botaoExportar3" class="btn btn-verde btn-lg btn-block btn-venda-conc noMarginTop"
+                            ng-click="exportarLayout2()"
+                            ng-show="empresaUsuLogado.tpoRemessaEmpresa == 2 && gestaoVendaResultados.length > 0 && visao == 2 && totalPaginas < 100">
+                            Receber o arquivo de Vendas Conciliadas - DAT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- TABELA SEMAFORO -->
+            <div class="col-sm-3">
+                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"><h5>S</h5></th>
+                            <th class="text-center texto-branco"><h5>Quant.</h5></th>
+                            <th class="text-center texto-branco"><h5>Valor</h5></td>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"><div class="status-icon green"></div></td>
+                            <td class="text-center"> {{dadosSemaforo.verde.quantidade || 0}} </td>
+                            <td class="text-center"> {{(dadosSemaforo.verde.valor || 0) | currency:"R$ "}} </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><div class="status-icon yellow"></div></td>
+                            <td class="text-center"> {{dadosSemaforo.amarelo.quantidade || 0}} </td>
+                            <td class="text-center"> {{(dadosSemaforo.amarelo.valor || 0) | currency:"R$ "}} </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><div class="status-icon red"></div></td>
+                            <td class="text-center"> {{dadosSemaforo.vermelho.quantidade || 0}} </td>
+                            <td class="text-center"> {{(dadosSemaforo.vermelho.valor || 0) | currency:"R$ "}} </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"> {{dadosSemaforo.total.quantidade || 0}} </td>
+                            <td class="text-center"> {{(dadosSemaforo.total.valor || 0) | currency:"R$ "}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <br/>
+
+
+
+    <!-- RESULTADO PESQUISA -->
+	<div ng-show="showTable">
+		<div class="form-group">
+			<div class="col-xs-12">
+				<table class="table table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco">
+                                <input type="checkbox" name="all"
+                                    ng-model="todosDetalhesSelecionados"
+                                    ng-change="selecionarTodosDetalhesDivergentes()"/>
+                            </th>
+							<th class="text-center texto-branco"><h4>Status</h4></th>
+							<th class="text-center texto-branco" ng-if="visaoLoja"></td>
+							<th class="text-center texto-branco"><h4>Data Venda</h4></th>
+							<th class="text-center texto-branco">
+                                <h4>Loja</h4>
+                                <input type="text" id="filtroTabelaLoja" class="form-control ipt-filtro-th"
+                                    maxlength="255"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaLoja" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>Operadora</h4>
+                                <input type="text" id="filtroTabelaOperadora" class="form-control ipt-filtro-th"
+                                    maxlength="22"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaOperadora" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>Produto</h4>
+                                <input type="text" id="filtroTabelaProduto" class="form-control ipt-filtro-th"
+                                    maxlength="22"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaProduto" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>Plano</h4>
+                                <input type="text" id="filtroTabelaPlano" class="form-control ipt-filtro-th"
+                                    maxlength="22"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaPlano" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>Valor</h4>
+                                <input type="text" id="filtroTabelaValor" class="form-control ipt-filtro-th"
+                                    maxlength="22"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaValor" ng-disabled="visao == 2" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>NSU</h4>
+                                <input type="text" id="filtroTabelaNSU" class="form-control ipt-filtro-th"
+                                    maxlength="22"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaNSU" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>Autorização</h4>
+                                <input type="text" id="filtroTabelaAutorizacao" class="form-control ipt-filtro-th"
+                                    maxlength="15"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaAutorizacao" />
+                            </th>
+							<th class="text-center texto-branco">
+                                <h4>ID</h4>
+                                <input type="text" id="filtroTabelaAreaCliente" class="form-control ipt-filtro-th"
+                                    maxlength="50"
+                                    ng-keyup="filtrarTabela(1)" ng-model="filtroTabelaAreaCliente" />
+                            </th>
+						</tr>
+                    </thead>
+					<tbody>
+                        <tr ng-repeat="resultado in gestaoVendaResultados">
+                            <td class="text-center">
+                                <input type="checkbox" name="{{resultado.id}}"
+                                    ng-disabled="resultado.statusConciliacao != 2 && resultado.statusConciliacao != 3"
+                                    ng-model="resultado.isChecked"
+                                    ng-change="selecionarDetalhe(resultado.isChecked, resultado.idDetalhe)"
+                                />
+                            </td>
+                            <td class="text-center"><div class="status-icon" ng-class="getStatus({{resultado.statusConciliacao}})"></td>
+                            <td class="text-center" ng-if="visaoLoja">
+                                <button class="btn btn-verde btn-sm btn-block" ng-click="editar(resultado)">Editar</button>
+                            </td>
+                            <td class="text-center">{{resultado.dataVendaFormatada}}</td>
+                            <td class="text-center">{{resultado.loja}}</td>
+                            <td class="text-center">{{resultado.dscOperadora}}</td>
+                            <td class="text-center">{{resultado.produto}}</td>
+                            <td class="text-center">{{resultado.plano}}</td>
+                            <td class="text-center">{{resultado.valor | currency:"R$ "}}</td>
+                            <td class="text-center">
+                                <a ng-if="resultado.statusConciliacao == 1 || resultado.statusConciliacao == 2" ng-click="abrirModalDetalheNsu(resultado)">{{resultado.nsu}}</a>
+                                <p ng-if="resultado.statusConciliacao == 3 || resultado.statusConciliacao == 0">{{resultado.nsu}}</p>
+                            </td>
+                            <td class="text-center">{{resultado.codAutorizacao}}</td>
+                            <td class="text-center">{{resultado.dscAreaCliente}}</td>
+                        </tr>
+					</tbody>
+				</table>
+			</div>
+        </div>
+
+
+        <!-- PAGINACAO -->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <ul class="pagination-sm"
+                    uib-pagination
+                    boundary-links="true"
+                    total-items="totalItems"
+                    ng-model="currentPage"
+                    ng-change="getPage(currentPage)"
+                    items-per-page="itemsPerPage"
+                    max-size="maxSize"
+                    
+                    first-text="In&iacute;cio"
+                    last-text="Fim"
+                    previous-text="Anterior"
+                    next-text="Pr&oacute;ximo">
+                </ul>
+            </div>
+        </div>
+	</div>
+
+
+
+    <!-- #pesquisaArquivos -->
+    <div class="modal" id="pesquisaArquivos" tabindex="-1" role="dialog" aria-labelledby="pesquisaArquivosTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Pesquisa Arquivos</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-arquivo" ng-submit="pesquisaArquivos()" name="frmBuscaArquivo" class="form-horizontal">
+                        <div class="row">
+                            <label class="col-sm-2 control-label" for="data-inicial">Período:*</label>
+                            <div class="col-sm-3">
+                                <input id="data-inicial-arquivo" class="form-control" moment-picker="dataInicialArquivo" locale="pt-br" start-view="month" ng-model="dataInicialArquivo" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" ng-model-options="{ updateOn: 'blur' }"/>
+                            </div>
+                            <label class="col-sm-1 control-label" for="data-final">Até:*</label>
+                            <div class="col-sm-3">
+                                <input id="data-final-arquivo" class="form-control" moment-picker="dataFinalArquivo" locale="pt-br" start-view="month" ng-model="dataFinalArquivo" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" ng-model-options="{ updateOn: 'blur' }"/>
+                            </div>
+                            <div class="col-sm-3 text-center">
+                                <input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                    <div>
+                        <table class="table table-striped table-condensed" cellspacing="0" width="100%" ng-show="showArquivosTable">
+                            <thead>
+                                <tr class="cabecalho">
+                                    <th class="text-center texto-branco"></th>
+                                    <th class="text-center texto-branco"><h4>Data de Envio</h4></th>
+                                    <th class="text-center texto-branco"><h4>Sequencial</h4></th>
+                                    <th class="text-center texto-branco"><h4>Qtd.Registro</h4></th>
+                                    <th class="text-center texto-branco"><h4>Arquivo</h4></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in pesquisaArquivosTable">
+                                    <td class="text-center">
+                                        <button type="button" class="close" ng-click="selecionaArquivo(row.sequencial, row.nomeArquivo, row.id)" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&oplus;</span>
+                                        </button>
+                                    </td>
+                                    <td class="text-center">
+                                        {{row.dataEnvio}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{row.sequencial}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{row.qtdRegistro}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{row.nomeArquivo}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NSU (quando clica no link nsu) -->
+    <div class="modal" id="detalhes-nsu" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- <h3 class="modal-title">Pesquisa Arquivos</h3> -->
+                        <h5 class="col-md-11">
+                            {{ dadosModalNsu.info.produto }}<br/>
+                            Lote: {{ dadosModalNsu.info.cartao }}
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="zeraTotals()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row nsu-info">
+                            <ul class="col-md-4">
+                                <li>Data da Venda: {{ dadosModalNsu.info.dataVenda  | date:'dd/MM/yyyy' }}</li>
+                                <li>Autorização: {{ dadosModalNsu.info.autorizacao }}</li>
+                                <li>NSU: {{ dadosModalNsu.info.nroNsu }}</li>
+                                <li>TID: {{ dadosModalNsu.info.tid }}</li>
+                                <li>Conciliada: {{ dadosModalNsu.info.conciliada }}</li>
+                            </ul>
+                            <ul class="col-md-4">
+                                <li>Plano: {{ dadosModalNsu.info.nroPlano }}</li>
+                                <li>Nome Loja: {{ dadosModalNsu.info.loja }}</li>
+                                <li>Número PV: {{ dadosModalNsu.info.pv }}</li>
+                                <li>Número Lógico: {{ dadosModalNsu.info.numLogico }}</li>
+                                <li>ID Conciliação: {{ dadosModalNsu.info.idConciliacao }}</li>
+                            </ul>
+                            <ul class="col-md-4">
+                                <li>Banco: {{ dadosModalNsu.info.banco }}</li>
+                                <li>Agência: {{ dadosModalNsu.info.agencia }}</li>
+                                <li>Conta: {{ dadosModalNsu.info.conta }}</li>
+                                <li>Operadora: {{ dadosModalNsu.info.operadora }}</li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="cabecalho">
+                                            <th class="text-center texto-branco"><h4>Parcela</h4></th>
+                                            <th class="text-center texto-branco"><h4>Valor Bruto</h4></th>
+                                            <th class="text-center texto-branco"><h4>Tx. Admin</h4></th>
+                                            <th class="text-center texto-branco"><h4>Tx. Antecip</h4></th>
+                                            <th class="text-center texto-branco"><h4>Valor Líquido</h4></th>
+                                            <th class="text-center texto-branco"><h4>Data Crédito Original</h4></th>
+                                            <th class="text-center texto-branco"><h4>Data Crédito Reagendada</h4></th>
+                                            <th class="text-center texto-branco"><h4>Status</h4></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- todo: espando um usuario para conseguir dados -->
+                                        <tr ng-repeat="detalhe in dadosModalNsu.data | filter: detalhe.nro_nsu != null" ng-init="setTotals(detalhe)">
+                                            <td>{{ detalhe.parcela }}</td>
+                                            <td>{{ detalhe.valorBruto.toFixed(2) }}</td>
+                                            <td>{{ detalhe.valorTxAdmin.toFixed(2) }}</td>
+                                            <td>{{ detalhe.taxaAntecipacao.toFixed(2) }}</td>
+                                            <td>{{ detalhe.valorLiquido.toFixed(2) }}</td>
+                                            <td>{{ detalhe.dataCredito  | date:'dd/MM/yyyy' }}</td>
+                                            <td>{{ detalhe.dtaReagendamento  | date:'dd/MM/yyyy' }}</td>
+                                            <td>{{ detalhe.dscStatus }}</td>
+                                        </tr>
+
+                                        <tr style="background-color: darkgrey;">
+                                            <td></td>
+                                            <td>{{ somaValorBruto.toFixed(2)}}</td>
+                                            <td>{{ somaValorTxAdmin.toFixed(2) }}</td>
+                                            <td>{{ somaValorTxAntecip.toFixed(2) }}</td>
+                                            <td>{{ somaValorLiquido.toFixed(2) }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>VENDA</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- detalhes do bilhete -->
+                        <div class="row" ng-hide="this">
+                            <div class="col-sm-12 col-md-12">
+                                <!-- <p>Detalhe Companhia Aérea</p> -->
+                                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="cabecalho">
+                                            <th class="text-center texto-branco"><h4>Bilhete</h4></th>
+                                            <th class="text-center texto-branco"><h4>Bilhete Grupo</h4></th>
+                                            <th class="text-center texto-branco"><h4>Entrada</h4></th>
+                                            <th class="text-center texto-branco"><h4>Tx. Embarque</h4></th>
+                                            <th class="text-center texto-branco"><h4>Agente Code</h4></th>
+                                            <th class="text-center texto-branco"><h4>Nome do Passageiro</h4></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL CONCILIAR -->
+    <div id="modal-conciliar" class="modal modal-gestao-vendas modal-gestao-vendas-conc" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="titulo-tabela">Transação a Ser Conciliada.</h5>
+                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"><h4>Data</h4></th>
+                            <th class="text-center texto-branco"><h4>Loja</h4></th>
+                            <th class="text-center texto-branco"><h4>Produto</h4></th>
+                            <th class="text-center texto-branco"><h4>Plano</h4></th>
+                            <th class="text-center texto-branco"><h4>NSU</h4></th>
+                            <th class="text-center texto-branco"><h4>Autorização</h4></th>
+                            <th class="text-center texto-branco"><h4>Valor Bruto</h4></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ transacaoASerConciliada.dtaVenda | date:'dd/MM/yyyy'}}</td>
+                            <td>{{ transacaoASerConciliada.nmeLoja }}</td>
+                            <td>{{ transacaoASerConciliada.nomeProduto }}</td>
+                            <td>{{ transacaoASerConciliada.nroPlano }}</td>
+                            <td>{{ transacaoASerConciliada.codNsu }}</td>
+                            <td>{{ transacaoASerConciliada.dscAutorizacao }}</td>
+                            <td>{{ transacaoASerConciliada.vlrBruto | currency:"R$ " }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <h5 class="titulo-tabela">Possíveis Transações da Operadora.</h5>
+                <table class="table table-striped table-condensed table-transacoes-disponiveis" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"><h4>Data</h4></th>
+                            <th class="text-center texto-branco"><h4>Loja</h4></th>
+                            <th class="text-center texto-branco"><h4>Produto</h4></th>
+                            <th class="text-center texto-branco"><h4>Plano</h4></th>
+                            <th class="text-center texto-branco"><h4>NSU</h4></th>
+                            <th class="text-center texto-branco"><h4>Autorização</h4></th>
+                            <th class="text-center texto-branco"><h4>Valor Bruto</h4></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="possivelTransacao in listarPossiveisTransacoes" ng-click="selecionarParaConciliar(possivelTransacao, $index)" ng-class="{'linhaSelecionada': selected[$index]}">
+                            <td>{{ possivelTransacao.dtaVenda | date:'dd/MM/yyyy'}}</td>
+                            <td>{{ possivelTransacao.nmeLoja }}</td>
+                            <td>{{ possivelTransacao.nomeProduto }}</td>
+                            <td>{{ possivelTransacao.nroPlano }}</td>
+                            <td>{{ possivelTransacao.codNsu }}</td>
+                            <td>{{ possivelTransacao.dscAutorizacao }}</td>
+                            <td>{{ possivelTransacao.vlrBrutoDesc | currency:"R$ " }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-verde btn-sm" ng-click="conciliar()">Conciliar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="fecharModalConciliar()">Fechar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL DESCONCILIAR -->
+    <div id="modal-desconciliar" class="modal modal-gestao-vendas modal-gestao-vendas-conc" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="titulo-tabela">Transação Remessa Conciliada.</h5>
+                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"><h4>Data</h4></th>
+                            <th class="text-center texto-branco"><h4>Loja</h4></th>
+                            <th class="text-center texto-branco"><h4>Produto</h4></th>
+                            <th class="text-center texto-branco"><h4>Plano</h4></th>
+                            <th class="text-center texto-branco"><h4>NSU</h4></th>
+                            <th class="text-center texto-branco"><h4>Autorização</h4></th>
+                            <th class="text-center texto-branco"><h4>Valor Bruto</h4></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ listaTransacaoRemessa.dtaVenda | date:'dd/MM/yyyy'}}</td>
+                            <td>{{ listaTransacaoRemessa.nmeLoja }}</td>
+                            <td>{{ listaTransacaoRemessa.nomeProduto }}</td>
+                            <td>{{ listaTransacaoRemessa.nroPlano }}</td>
+                            <td>{{ listaTransacaoRemessa.codNsu }}</td>
+                            <td>{{ listaTransacaoRemessa.dscAutorizacao }}</td>
+                            <td>{{ listaTransacaoRemessa.vlrBruto | currency:"R$ " }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <h5 class="titulo-tabela">Transação Operadora Conciliada.</h5>
+                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"><h4>Data</h4></th>
+                            <th class="text-center texto-branco"><h4>Loja</h4></th>
+                            <th class="text-center texto-branco"><h4>Produto</h4></th>
+                            <th class="text-center texto-branco"><h4>Plano</h4></th>
+                            <th class="text-center texto-branco"><h4>NSU</h4></th>
+                            <th class="text-center texto-branco"><h4>Autorização</h4></th>
+                            <th class="text-center texto-branco"><h4>Valor Bruto</h4></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="transacaoFato in listaTransacaoFato">
+                            <td>{{ transacaoFato.dtaVenda | date:'dd/MM/yyyy'}}</td>
+                            <td>{{ transacaoFato.nmeLoja }}</td>
+                            <td>{{ transacaoFato.nomeProduto }}</td>
+                            <td>{{ transacaoFato.nroPlano }}</td>
+                            <td>{{ transacaoFato.codNsu }}</td>
+                            <td>{{ transacaoFato.dscAutorizacao }}</td>
+                            <td>{{ transacaoFato.vlrBrutoDesc | currency:"R$ " }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-verde btn-sm" ng-click="desconciliar(listaTransacaoRemessa.hashValue)" ng-disabled="listaTransacaoFato.length == 0">Desconciliar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="fecharModalDesconciliar()">Fechar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL CONFIRMAR EXCLUIR DETALHE -->
+    <div class="modal" tabindex="-1" role="dialog" id="modal-exclur-detalhes">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Exclusão.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja remover os {{ detalhesExcluir.length }} itens selecionados?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="excluirDetalhes()">Sim</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>

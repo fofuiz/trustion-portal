@@ -1,0 +1,27 @@
+<section class="text-center">
+	<h3 ng-if="ehCriacao">Cadastro de Tipo de Questionamento</h3>
+	<h3 ng-if="!ehCriacao">Editar Tipo de Questionamento</h3>
+
+	<form class="form-horizontal" id="form-tipo-questionamento" name="frmTipoQuestinamento" ng-submit="formTipoQuestionamentoSubmit()" novalidade>
+        <!-- descricao -->
+        <div class="form-group">
+			<label class="control-label col-xs-3" for="descricao">Descrição:*</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="descricao"
+					maxlength="150"
+					ng-minlength="3" ng-maxlength="150" ng-required="true" ng-model="tipoQuestionamento.descricao"/>
+			</div>
+		</div>
+		<!-- botoes -->
+		<div class="form-group">
+			<!-- botao salvar -->
+			<div class="col-xs-offset-3 col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar" ng-disabled="frmTipoQuestinamento.$invalid"/>
+			</div>
+			<!-- botao voltar -->
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaTipoQuestionamento" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

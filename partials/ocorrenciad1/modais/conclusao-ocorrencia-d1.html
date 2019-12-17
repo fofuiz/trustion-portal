@@ -1,0 +1,40 @@
+<div class="modal-header background-verde">
+    <h3 class="modal-title" id="modal-titulo">Aprovar</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            <span>{{mensagemErro}}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="alert alert-success text-center" role="alert" ng-show="isExibirMensagemSucesso">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            <span>{{mensagemSucesso}}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <label class="control-label">Motivo da Conclus&atilde;o:</label>
+            <div class="input-group">
+                <input class="form-control" ng-model="atividade.motivoDescricao" disabled/>
+            </div> 
+            </br>
+            <label class="control-label">Observa&ccedil;&atilde;o:</label>
+            <div class="input-group">
+                <textarea style="width: 564px" type="text" rows="5" maxlength="300" id="mensagem" class="form-control" ng-model="atividade.atividade" disabled></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-verde float-left" style="float:left" type="button" ng-click="cancelar()">Voltar</button>
+    <button id="btnAprovar" class="btn btn-verde" type="button" ng-click="aprovar()">Aprovar</button>
+    <button id="btnRejeitar" class="btn btn-vermelho" type="button" ng-click="rejeitar()">Rejeitar</button>    
+</div>

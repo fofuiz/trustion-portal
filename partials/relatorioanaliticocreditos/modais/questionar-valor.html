@@ -1,0 +1,56 @@
+<div class="modal-header background-verde">
+    <h3 class="modal-title" id="modal-titulo">Questionar Valor</h3>
+</div>
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+    <h4>Cr&eacute;dito a ser questionado:</h4>
+   		<table class="table table-bordered" cellspacing="0">
+				<thead>
+					<tr class="cabecalho">
+						<th class="text-center texto-branco">Data do Fechamento</th>
+						<th class="text-center texto-branco">Valor do Fechamento</th>
+						<th class="text-center texto-branco"><h7>Data de Cr&eacute;dito</h7></th>
+						<th class="text-center texto-branco"><h7>Valor Creditado em Conta</h7></th>
+						<th class="text-center texto-branco"><h7>Status da Concilia&ccedil;&atilde;o</h7></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-center">{{relatorio.dataCorte | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+						<td class="text-center">{{relatorio.valorTotal | realbrasileiro}}</td>
+						<td class="text-center">{{relatorio.dataCredito | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+						<td class="text-center">{{relatorio.valorCredito | realbrasileiro}}</td>
+						<td class="text-center">{{relatorio.statusConciliacao}}</td>
+					</tr>
+				</tbody>
+		</table>
+			<div class="row">
+				<div class="col-xs-6">
+					<label class="control-label">Tipo de Questionamento:*</label>
+					<select class="form-control" id="tipoQuestionamento" ng-model="ocorrencia.idTipoQuestionamento"
+						ng-options="tipoQuestionamento.idTipoQuestionamento as tipoQuestionamento.descricao for tipoQuestionamento in listaTipoQuestionamento" >
+						<option value="">Selecione um tipo de questionamento...</option>
+					</select>
+					</br>
+					<label class="control-label">Diferen&ccedil;a:*</label>
+					<div class="input-group">
+						<span class="input-group-addon">R$</span>
+						<input class="form-control" type="text" id="valor-questionamento-d0" ng-model="valorQuestionado" disabled/>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<label class="control-label">Observa&ccedil;&otilde;es:*</label>
+					<textarea type="text" rows="5" maxlength="300" id="idObservacoes" class="form-control" ng-model="ocorrencia.observacao"></textarea>
+				</div>
+			</div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-verde" type="button" ng-click="salvar()">Salvar</button>
+    <button class="btn btn-vermelho" type="button" ng-click="cancelar()">Cancelar</button>
+</div>

@@ -1,0 +1,123 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="form-group text-center">
+            <div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span>{{mensagemErro}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div>               
+            <ul class="nav nav-tabs">
+                <li ng-repeat="m in modsEnable" class="{{m.mod}}">
+                    <a ng-click="setActiveNav(m.mod)" name="{{m.mod}}" data-toggle="tab" >{{m.label}}</a>
+                </li>                   
+            </ul>
+        </div>
+        <div class="tab-content" id="tabs">                        
+            <div class="tab-pane numerarios"ng-show="activeNav == 'numerarios'">
+                <script  ng-if="tableauTokenNumD0 && isAdminModNumerarios && empFilter"  type='text/javascript' src='https://tableau.accesstage.com.br/javascripts/api/viz_v1.js'></script>
+                <div  ng-if="tableauTokenNumD0 && empFilter" class='col-md-12'>
+                    <object class='tableauViz' width='100%' height='{{ tableauHeight }}'  style='display:none;'>
+                        <param name='host_url' value='https%3A%2F%2Ftableau.accesstage.com.br%2F' />
+                        <param name='embed_code_version' value='3' />
+                        <param name='site_root' value='&#47;t&#47;brinks' />
+                        <param name="ticket" value="{{tableauTokenNumD0}}" />
+                        <param ng-if="maquina == 'dev.accesstage.com.br' || maquina == 'localhost'" name='name' value='Brinks_dev_home_cofre_v2&#47;PainelBrinksHome'/>
+                        <param ng-if="maquina == 'homolog.accesstage.com.br'" name='name' value='HMLBrinksHomeCofrev2&#47;PainelBrinksHome' />
+                        <param ng-if="maquina == 'app.trustion.com.br'" name='name' value='BrinksHomeCofrev2&#47;PainelBrinksHome' />
+                        <param name='tabs' value='yes' />
+                        <param name='tabs' value='no' /><param name='toolbar' value='yes' />
+                        <param name='showAppBanner' value='false' />
+                        <param name='filter' value='iframeSizedToWindow=true' />
+                        <param name='filter' value='{{empFilter}}' />
+                    </object>
+                </div>
+                <div class="row">
+                    <script  ng-if="tableauTokenNumD1 && isAdminModNumerarios && empFilter"  type='text/javascript' src='https://tableau.accesstage.com.br/javascripts/api/viz_v1.js'></script>
+                    <div  ng-if="tableauTokenNumD1 && empFilter" class='col-md-12'>
+                        <object class='tableauViz' width='100%' height='{{ tableauHeight }}'  style='display:none;'>
+                            <param name='host_url' value='https%3A%2F%2Ftableau.accesstage.com.br%2F' />
+                            <param name='embed_code_version' value='3' />
+                            <param name='site_root' value='&#47;t&#47;brinks' />
+                            <param name="ticket" value="{{tableauTokenNumD1}}" />
+                            <param ng-if="maquina == 'dev.accesstage.com.br' || maquina == 'localhost'" name='name' value='Brinks_dev_home_cofre_dn_v2&#47;PainelBrinksHome'/>
+                            <param ng-if="maquina == 'homolog.accesstage.com.br'" name='name' value='HMLBrinksHomeCofreDNv2&#47;PainelBrinksHome' />
+                            <param ng-if="maquina == 'app.trustion.com.br'" name='name' value='BrinksHomeCofreDNv2&#47;PainelBrinksHome' />
+                            <param name='tabs' value='yes' />
+                            <param name='tabs' value='no' /><param name='toolbar' value='yes' />
+                            <param name='showAppBanner' value='false' />
+                            <param name='filter' value='iframeSizedToWindow=true' />
+                            <param name='filter' value='{{empFilter}}' />
+                        </object>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 margin-bottom-10"><input class="btn btn-verde btn-lg btn-block" ui-sref="homeNumerario" value="Numer&aacute;rios"></input></div>
+                        <div class="col-md-4"></div>
+                </div>
+            </div>
+
+            <div class="tab-pane cartoes" ng-show="activeNav == 'cartoes'">
+                <script ng-if="tableauTokenCartoes && empFilter" type='text/javascript' src='https://tableau.accesstage.com.br/javascripts/api/viz_v1.js'></script>
+                <div  ng-if="tableauTokenCartoes && empFilter" class='col-md-12'>
+                    <object class='tableauViz' width='100%' height='{{ tableauHeight }}' style='display:none;'>
+                        <param name='host_url' value='https%3A%2F%2Ftableau.accesstage.com.br%2F' />
+                        <param name='embed_code_version' value='3' /> 
+                        <param name='site_root' value='&#47;t&#47;brinks' />
+                        <param name="ticket" value="{{tableauTokenCartoes}}" />                             
+                        <param ng-if="maquina == 'dev.accesstage.com.br' || maquina == 'localhost'" name='name' value='Brinks_dev_home&#47;HomeCartes'/>
+                        <param ng-if="maquina == 'homolog.accesstage.com.br'" name='name' value='HMLBrinksHome&#47;HomeCartes' />
+                        <param ng-if="maquina == 'app.trustion.com.br'" name='name' value='BrinksHome&#47;HomeCartes' />
+                        <param name='tabs' value='no' />
+                        <param name='toolbar' value='yes' />
+                        <param name='showAppBanner' value='false' />
+                        <param name='filter' value='iframeSizedToWindow=true' />
+                        <param name='filter' value='{{empFilter}}' />
+                    </object>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 margin-bottom-10"><input class="btn btn-verde btn-lg btn-block" ui-sref="homeCartao" value="Cart&otilde;es"></input></div>
+                    <div class="col-md-4"></div>
+                </div>
+                    
+            </div>
+
+            <div class="tab-pane cheques"  ng-show="activeNav == 'cheques'">
+                <div id="div3" class="card">
+                    <h4>Distribui&ccedil;&atilde;o das Vendas<span class="pull-right label label-success">&Uacute;ltimos 7 Dias</span></h4>
+                    <hr/>
+                    <div id="chart_div3"></div>
+                </div>
+                <div class="card padding-bottom-36">
+                    <h4>{{serie}}</h4>
+                    <hr />
+                    <h3>{{valor}}</h3>
+                </div>
+                <div class="card padding-bottom-36">
+                    <h4>{{serie}}</h4>
+                    <hr />
+                    <h3>{{valor}}</h3>
+                </div>
+                <div class="card padding-bottom-36">
+                    <h4>{{serie}}</h4>
+                    <hr />
+                    <h3>{{valor}}</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 margin-bottom-10"><input class="btn btn-verde btn-lg btn-block" value="Cheques"></input></div>
+                    <div class="col-md-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

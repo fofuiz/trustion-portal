@@ -1,0 +1,23 @@
+#!/usr/bin/env groovy
+import groovy.transform.Field
+node {
+    CleanWork()
+    CheckoutWork()
+    K8sApply()
+}
+def CleanWork(){
+     stage ("Clean Workspace") {
+        step([$class: 'WsCleanup'])
+    }
+}
+def CheckoutWork(){
+     stage ("Checkout Git") {
+        checkout scm
+    }
+}
+def K8sApply(){
+    stage ("kubectl apply") {
+        sh 'sed -i s/__TAG__/${IMAGE_NUMBER}/g ${K8S_FILE}'
+        sh "kubectl apply -f ${K8S_FILE} --kubeconfig=${K8S_CONFIG}"
+    }
+}

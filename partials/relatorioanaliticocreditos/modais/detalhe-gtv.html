@@ -1,0 +1,85 @@
+<div class="modal-header background-verde">
+	<h3 class="modal-title" id="modal-titulo">Consulta de Coletas</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+	
+	
+	<div class="row" >
+			<div class="col-xs-7" align="left">
+				<table cellspacing="0" width="100%">
+					<tbody>
+						<tr>
+							<td class="col-xs-3 text-left"><b>Transportadora: </b></td>
+							<td class="text-left">{{listaDetalheGTV[0].nmeTransportadora}}</td>
+						</tr>
+						<tr>
+							<td class="col-xs-3 text-left"><b>Modelo de Neg&oacute;cio: </b></td>
+							<td class="text-left">{{listaDetalheGTV[0].modeloNegocio}}</td>
+						</tr>
+						<tr>
+							<td class=" col-xs-3 text-left"><b>Empresa: </b></td>
+							<td class="text-left">{{listaDetalheGTV[0].empresa}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+	<br/>
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">
+				<th class="text-center texto-branco"><h7>N&uacute;mero Serial do Cofre</h7></th>
+				<th class="text-center texto-branco"><h7>Data Inicial do Movimento</h7></th>
+				<th class="text-center texto-branco col-sm-3"><h7>Data da Coleta</h7></th>
+				<th class="text-center texto-branco"><h7>N&uacute;mero da GTV</h7></th>
+				<th class="text-center texto-branco"><h7>Valor Conferido</h7></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="gtv in listaDetalheGTV">
+				<td class="text-center">{{gtv.numSerie}}</td>
+				<td class="text-center">{{gtv.periodoInicialDt | date:'dd/MM/yyyy'}}</td>
+				<td class="text-center">{{gtv.coletaDt | date:'dd/MM/yyyy'}}</td>
+				<td class="text-center">{{gtv.numeroGVT}}</td>
+				<td class="text-center">{{gtv.valorTotal | realbrasileiro}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="form-group">
+			<div class="col-xs-12" align="center">
+				<div>
+					<ul uib-pagination
+						class="pagination"
+						rotate="false"
+						boundary-link-numbers="true"
+						
+						previous-text="&lsaquo;" 
+						next-text="&rsaquo;" 
+						first-text="&laquo;" 
+						last-text="&raquo;"						
+						
+						ng-disabled="pag_desabilitado"
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina"
+						total-items="pag_totalRegistros"
+						ng-model="pag_paginaSelecionada"
+						ng-change="carregarRelatorioPorPagina(gtv)">
+					</ul>
+				</div>
+			</div>
+		</div>
+
+<div class="modal-footer">
+    <button class="btn btn-verde" type="button" ng-click="voltar()">Voltar</button>
+</div>

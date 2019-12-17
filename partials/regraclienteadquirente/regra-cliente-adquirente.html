@@ -1,0 +1,79 @@
+<section class="text-center">
+    <h3>Conciliador de Pagamentos - Consulta Regra por Cliente/Adquirente</h3>
+    <!-- Simula um toaster -->
+    <div class="alert {{ tipoMensagem }}" ng-class="{'appToastr': appToastr}" role="alert" ng-show="isExibirMensagemErro" >
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        <span>{{mensagemErro}}</span>
+    </div>
+     <form class="form-horizontal">
+      <!-- Empresa -->
+      <div class="form-group">
+          <label class="control-label col-xs-3" for="empresa">Empresa</label>
+          <div class="col-xs-6">
+            <select id="empresa" class="form-control" ng-model="empresa">
+              <option value="">Selecione uma empresa</option>
+              <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+            </select>  
+          </div>
+        </div>
+        <!-- banco -->
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="banco">Banco:</label>
+            <div class="col-xs-6">
+                <select class="form-control" id="cboBancos" ng-model="numeroBanco">
+                    <option value="">Todos</option>
+                    <option ng-repeat="banco in comboBancos" value="{{banco.nroBanco}}">{{banco.nroBanco}}</option>
+                </select>
+            </div>
+        </div>
+        <!-- adquirente -->
+        <div class="form-group">
+            <label for="adquirente" class="control-label col-xs-3">Adquirente:</label>
+            <div class="col-xs-6">
+                <select id="codigoAdquirente" class="form-control" ng-model="codigoOperadora">
+                    <option value="">Todos</option>
+                    <option ng-repeat="operadora in comboOperadoras" value="{{operadora.codOperadora}}">{{operadora.nomeOperadora}}</option>
+                </select>
+            </div>
+        </div>
+        <!-- botao pesquisar -->
+        <div class="form-group">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-3">
+                <input type="submit" value="Pesquisar" class="btn btn-verde btn-lg btn-block" ng-click="pesquisarRegraClienteAdquirente()"/>
+            </div>
+        </div>
+    </form>
+
+    <!-- resultado pesquisa -->
+    <div class="form-group">
+        <div class="col-md-12 col-lg-12">
+            <table class="table table-striped table-condensed table-default tableConciliacaoResumo" border="1">
+                <thead>
+                    <tr>
+                        <th>Banco</th>
+                        <th>Adquirente</th>
+                        <th>Nro Documento</th>
+                        <th>Des Extrato</th>
+                        <th>Ativo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-show="!listaRegraClienteAdquirente.length">
+                        <td colspan="9" class="text-center">Nenhum registro encontrado.</td>
+                    </tr>
+                        
+                    <tr ng-repeat="row in listaRegraClienteAdquirente">                     
+                        <td>{{ row.codBanco }}</td>
+                        <td>{{ row.nmeExibicaoPortal }}</td>
+                        <td>{{ row.dscChavePrincipal }}</td>
+                        <td>{{ row.dscChaveSecundaria }}</td>
+                        <td>{{ row.staAtivo }}</td> 
+                    </tr>                                                                               
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</section>

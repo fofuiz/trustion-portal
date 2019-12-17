@@ -1,0 +1,241 @@
+<style>
+    .btn-lg {
+        padding: 5px 0px;
+        font-size: 16px;
+    }
+
+    h4 {
+        font-size: 16px;
+        margin: unset;
+    }
+
+    select { 
+        text-align-last: center; 
+        text-align: center;
+    }
+
+    input { 
+        text-align: center; 
+    }
+
+    .form-group {
+        margin-bottom: 5px;
+    }
+
+    .search-bar {
+        margin-bottom: 40px;
+    }
+
+    .validation-error {
+        display: flex;
+        position: absolute;    
+        width: 100%;
+        align-items: flex-start;
+        margin-top: 34px;
+        padding-top: 5px;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 12px;
+        color: red;
+    }
+
+    .gvt-header {
+        display: flex; 
+        flex-direction: row; 
+        justify-content: space-between; 
+        flex-wrap: nowrap; 
+        width: 100%;
+    }
+
+    .gvt-label {
+        width:30%; 
+        margin-left: 15px; 
+        margin-right: 10px; 
+        display: flex; 
+        flex-direction: row; 
+        justify-content: flex-end;
+    }
+
+    .gvt-main {
+        display: flex; 
+        flex-direction: row; 
+        justify-content: space-between; 
+        flex-wrap: nowrap; 
+        width: 60%; 
+        margin-right: 5px; 
+        margin-left: 5px;
+    }
+
+    .gvt-footer {
+        width: 10%; 
+        margin-right: 15px; 
+        margin-left: 0px; 
+        padding-right: 5px; 
+        padding-left: 5px;
+    }
+
+    .gtv-list {
+        display: inline-block; 
+        width: 100%;
+    }
+
+    .link-header {
+        position: sticky; 
+        top: 0; 
+        z-index: 1
+    }
+
+    .link-title {
+        position: sticky; 
+        bottom: 0; 
+        z-index: 2
+    }
+
+    .remove-gtv {
+        width: auto;
+        padding: 0px 10px 0px 10px;
+        margin-left: 10px;
+    }
+</style>
+
+<section id="video-container" class="text-center" ng-mouseleave="saveWorkArea()">
+    <h3>Cadastrar / Pesquisar GTV</h3>
+
+    <form class="form-horizontal validation-status" id="formSearchGtv" name="formSearchGtv">
+        <div class="form-group search-bar">
+            <div class="col-xs-11">        
+
+                <div id="gtvHeader" class="gvt-header">
+                    
+                    <div class="gvt-label">
+                        <label class="control-label" for="idTipoCategoria">GTV:</label>
+                    </div>        
+                    <div class="gvt-main">
+                        <input 
+                            type="text" 
+                            id="inputSearchGtv" 
+                            name="inputSearchGtv"
+                            class="form-control"
+                            ng-model="formData.inputGtv"
+                            ng-model-options="{ debounce: 2500 }" 
+                            ng-change="changeInputSearch()"
+                            maxlength="11" 
+                            autocomplete="off"
+                            required>
+
+                        <button 
+                            id="buttonRemoveGtv" 
+                            name="buttonRemoveGtv" 
+                            type="button" 
+                            ng-if="showDeleteGtvButton"
+                            ng-click="clickDeleteGtv()"                            
+                            class="btn btn-vermelho btn-lg btn-block remove-gtv">
+                            Excluir GTV
+                        </button>
+
+                        <span class="validation-error" ng-show="!formData.inputGtv && formSearchGtv.inputSearchGtv.$touched && !formSearchGtv.inputSearchGtv.$valid">
+                            &Eacute; necess&aacute;rio digitar uma GTV v&aacute;lida
+                        </span>
+                            
+                    </div>
+                    <div class="gvt-footer">
+                        &nbsp;
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="col-xs-1">&nbsp;</div>
+        </div>
+    </form>
+
+    <div ng-repeat="gtv in gtvList" class="gtv-list">
+        <div class="form-group">
+            
+            <div class="col-xs-12">
+                <div class="link-header">
+                    <table id="tblLinkHeader" class="table table-striped table-condensed" cellspacing="0" width="100%" style="margin-bottom:0px">
+                        <tbody>
+                            <thead>
+                                <tr class="cabecalho">
+                                    <th class="text-center texto-branco" style="width:30%"><h4>Tipo</h4></th>
+                                    <th class="text-center texto-branco" style="width:60%"><h4>Link</h4></th>
+                                    <th class="text-center texto-branco" style="width:10%"><h4>A&ccedil;&atilde;o</h4></th>
+                                </tr>
+                            </thead>
+                    </table>
+                </div>
+
+                <table id="tblLink" class="table table-striped table-condensed" cellspacing="0" width="100%" style="margin-bottom:0px">
+                    <tbody>
+                        <tr ng-repeat="link in gtv.linkList">
+                            <td class="text-center" style="width:30%">{{link.type}}</td>
+                            <td class="text-center" style="width:60%">{{link.path}}</td>
+                            <td class="text-center" style="width:10%">
+                                <form class="form-horizontal" id="formGtvLink" name="formGtvLink" ng-submit="clickRemoveLink(gtv.locid, link.locid)">
+                                    <button 
+                                        id="buttonRemoveLink_{{link.locid}}" 
+                                        name="buttonRemoveLink_{{link.locid}}" 
+                                        type="submit" 
+                                        class="btn btn-vermelho btn-lg btn-block">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </form>
+                            </td>                            
+                        </tr> 
+                    </tbody>                  
+                </table>
+                
+                <div class="link-title">
+                    <form class="form-horizontal" id="formGtvLink" name="formGtvLink" ng-submit="clickCreateLink($index, gtv.locid)">
+                        <table id="tblCategoria" class="table table-striped table-condensed" cellspacing="0" width="100%">
+
+                            <tr>                            
+                                <td class="text-center" style="width:30%">
+                                    <select 
+                                        class="form-control"
+                                        id="selectType" 
+                                        name="selectType" 
+                                        ng-options="type for type in gtvTypes"
+                                        ng-model="formData.inputType[$index]"
+                                        ng-required="true">
+                                        <option value="">Selecione um tipo...</option>                                    
+                                    </select>
+                                    <span class="validation-error" ng-show="formSearchGtv.selectType.$touched && !formSearchGtv.selectType.$valid">                        
+                                        &Eacute; necess&aacute;rio selecionar um tipo
+                                    </span>
+                                </td>
+                                <td class="text-center" style="width:60%">
+                                    <input 
+                                        type="text"                             
+                                        id="inputPath" 
+                                        name="inputPath" 
+                                        class="form-control"
+                                        maxlength="255" 
+                                        ng-model="formData.inputPath[$index]" 
+                                        required>
+                                    <span class="validation-error" ng-show="formSearchGtv.inputPath.$touched && !formSearchGtv.inputPath.$valid">
+                                        &Eacute; necess&aacute;rio digitar um link v&aacute;lido
+                                    </span>
+                                </td>
+                                <td class="text-center" style="width:10%">
+                                    <input 
+                                        type="submit" 
+                                        id="buttonAddGtvLink" 
+                                        name="buttonAddGtvLink" 
+                                        class="btn btn-verde btn-lg btn-block"                                        
+                                        value="Adicionar"
+                                        ng-disabled="!formGtvLink.$valid"
+                                        required> 
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
+            

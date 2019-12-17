@@ -1,0 +1,61 @@
+<section class="text-center">
+	<h3>Cadastro Tipo de Servi&ccedil;o</h3>
+
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<form id="formTipoServico" name="formTipoServico" class="form-horizontal" ng-submit="cadastraTipoServico()" novalidate>
+
+			<div class="form-group">
+				<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					<span>{{mensagemErro}}</span>
+				</div>
+
+				<div class="alert alert-success" role="alert" ng-show="isExibirMensagemSucesso" >
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					<span>{{mensagemSucesso}}</span>
+				</div>
+			</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="idNomeServico">Nome do Servi&ccedil;o:</label>
+					
+					<div class="col-sm-9">
+						<input type="text" id="idNomeServico" class="form-control" ng-model="novoTipoServico.nomeServico" maxlength="70" ng-required="true"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="idGrupoEconomico">Grupo Econ&ocirc;mico Transportadora:</label>
+
+					<div class="col-sm-9">
+						<select id="idGrupoEconomico" class="form-control" ng-model="novoTipoServico.idGrupoEconomico" ng-required="true"
+								ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico" >
+							<option value="">Selecione um grupo econ&ocirc;mico...</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="idDescServico">Descri&ccedil;&atilde;o do Servi&ccedil;o:</label>
+					
+					<div class="col-sm-9">
+						<textarea id="idDescServico" class="form-control" ng-model="novoTipoServico.descServico" ng-required="true" maxlength="300" class="form-control" rows="8"></textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-4">
+						<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+					</div>
+					
+					<div class="col-sm-5">
+						<input type="button" ui-sref="listaTipoServico" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>

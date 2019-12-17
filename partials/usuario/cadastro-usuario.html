@@ -1,0 +1,168 @@
+<section>
+	<h3 class="text-center" ng-if="!ehEdicao">Cadastro de Usu&aacute;rio</h3>
+	<h3 class="text-center" ng-if="ehEdicao">Altera&ccedil;&atilde;o de Usu&aacute;rio</h3>
+
+	<form class="form-horizontal" id="formNovoUsuario" name="formNovoUsuario" ng-submit="submitFormUsuario()" novalidate>
+		<!-- nome -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNome">Nome:*</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNome"
+					maxlength="100"
+					ng-model="usuario.nome"
+					ng-required="true"/>
+			</div>
+		</div>
+		<!-- email -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmail">E-mail:*</label>
+			<div class="col-xs-6">
+				<input type="text" id="idEmail" class="form-control"
+					maxlength="150"
+					ng-model="usuario.email"
+					ng-required="true"/>
+			</div>
+		</div>
+
+		<!-- status -->
+		<div class="form-group" ng-if="ehEdicao">
+			<label class="control-label col-xs-3" for="status">Status:</label>
+			<div class="col-xs-6">
+				<select id="status" class="form-control"
+					ng-required="true"
+					ng-model="usuario.status"
+					ng-options="status.codigo as status.descricao for status in listaStatus">
+					<option value="">Selecione um status...</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- telefone -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="telefone">Telefone:</label>
+			<div class="col-xs-6">
+				<input type="text" id="telefone" class="form-control" ui-mask="(99) 99999-9999" ng-model="usuario.nroTelefone"/>
+			</div>
+		</div>
+		<!-- login -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idLogin">Login:*</label>
+			<div class="col-xs-6">
+				<input type="text" id="idLogin" class="form-control"
+					maxlength="50"
+					ng-model="usuario.login"
+					ng-required="true"
+					ng-disabled="ehEdicao"/>
+			</div>
+		</div>
+		<!-- perfil -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idPerfil">Perfil:*</label>
+			<div class="col-xs-6">
+				<!-- se for edicao exibe o input text -->
+				<input class="form-control" type="text" id="idPerfil" ng-if="ehEdicao" ng-model="usuario.descricaoPerfil" disabled />
+				<!-- se for usuario novo exibe o combobox -->
+				<select id="idPerfil" class="form-control" ng-required="true"
+					ng-if="!ehEdicao"
+					ng-model="usuario.idPerfil"
+					ng-change="selecionarNotificacaoInfoPerfil()"
+					ng-options="perfil.idPerfil as perfil.descricao for perfil in listaPerfilCadastro">
+					<option value="">Selecione um perfil...</option>
+				</select>
+			</div>
+		</div>
+
+
+		<div class="bpo-bloco">
+			<!-- btn mais -->
+			<button type="button" class="btn btn-verde btn-lg btn-lg-icon btn-mais"
+				ng-disabled="desativarBtnAdicionar()"
+				ng-if="usuario.idPerfil == 6"
+				ng-click="adicionarEmpresaTransportadora()">
+				<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+			</button>
+
+			<!-- bloco com tipo grupo, grupo, empresa, receber notificacoes -->
+			<div ng-init="notificacaoInfoIndex = $index" ng-repeat="notificacaoInfo in usuario.empresasTransportadoras track by $index">
+				<!-- grupo empresa -->
+				<div class="form-group" ng-if="usuario.idPerfil == 3 || usuario.idPerfil == 5 || usuario.idPerfil == 7 || usuario.idPerfil == 8 || usuario.idPerfil == 9 || usuario.idPerfil == 10 || usuario.idPerfil == 6 || usuario.idPerfil == 11 || usuario.idPerfil == 12">
+					<label class="control-label col-xs-3" for="grupoEmpresa">Grupo Empresa:*</label>
+					<div class="col-xs-6">
+						<select id="grupoEmpresa_{{notificacaoInfoIndex}}" class="form-control"
+							ng-model="usuario.empresasTransportadoras[notificacaoInfoIndex].idGrupoEmpresa"
+							ng-change="carregarEmpresas(notificacaoInfoIndex, usuario.empresasTransportadoras[notificacaoInfoIndex].idGrupoEmpresa)"
+							ng-options="grupo.idGrupoEconomico as grupo.nome for grupo in listaGrupoEmpresas[notificacaoInfoIndex]">
+							<option value="">Selecione...</option>
+						</select>
+					</div>
+				</div>
+                <!-- empresa -->
+                <div class="form-group" ng-if="usuario.idPerfil == 5 || usuario.idPerfil == 9 || usuario.idPerfil == 10 || usuario.idPerfil == 12">
+                    <label class="control-label col-xs-3" for="idEmpresaopCliente">Empresa:*</label>
+                    <div class="col-xs-6">
+                        <select id="idEmpresaopCliente_{{notificacaoInfoIndex}}" class="form-control" single
+								ng-model="usuario.empresasTransportadoras[notificacaoInfoIndex].empresas[0]"
+                                ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa[notificacaoInfoIndex]" >
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- empresa -->
+                <div class="form-group" ng-if="usuario.idPerfil == 6 || usuario.idPerfil == 3 || usuario.idPerfil == 7 || usuario.idPerfil == 8 || usuario.idPerfil == 11">
+                    <label class="control-label col-xs-3" for="idEmpresa">Empresa:*</label>
+                    <div class="col-xs-6">
+                        <select id="idEmpresa_{{notificacaoInfoIndex}}" class="form-control"
+                                ng-model="usuario.empresasTransportadoras[notificacaoInfoIndex].empresas" multiple
+                                ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa[notificacaoInfoIndex]" >
+                            <option value="">Selecione uma ou mais empresas...</option>
+                        </select>
+                    </div>
+                </div>
+				<!-- transportadora -->
+				<div class="form-group" ng-if="usuario.idPerfil == 2 || usuario.idPerfil == 4">
+					<label class="control-label col-xs-3" for="transportadora">Transportadora:</label>
+					<div class="col-xs-6">
+						<select id="transportadora" class="form-control"
+							ng-model="usuario.empresasTransportadoras[notificacaoInfoIndex].transportadora"
+							ng-options="transportadora.idTransportadora as transportadora.razaoSocial for transportadora in listaTransportadoras">
+							<option value="">Selecione...</option>
+						</select>
+					</div>
+				</div>
+				<!-- receber notificacao -->
+				<div class="form-group">
+					<div class="col-xs-6 col-xs-offset-3 notificacoesBox">
+						<label class="control-label" for="receberNotificacoes_{{notificacaoInfoIndex}}">Receber Notificações?</label>
+						<input type="checkbox" id="receberNotificacoes_{{notificacaoInfoIndex}}" name="receberNotificacoes_{{notificacaoInfoIndex}}"
+							ng-model="usuario.empresasTransportadoras[notificacaoInfoIndex].receberNotificacoes"
+							ng-change="receberNotificacoesChange(notificacaoInfoIndex)">
+					</div>
+					<!-- notificacoes -->
+					<div class="col-xs-6 col-xs-offset-3 tipo-notificacao-box" ng-if="usuario.empresasTransportadoras[notificacaoInfoIndex].receberNotificacoes">
+						<div class="checkbox" ng-repeat="notificacao in listaNotificacoes track by $index">
+							<label>
+								<input type="checkbox"
+									checklist-value="notificacao.idTipoNotificacao"
+									checklist-model="usuario.empresasTransportadoras[notificacaoInfoIndex].notificacoes">
+								{{ notificacao.descNotificacao }}
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- fim bloco com tipo grupo, grupo, empresa, receber notificacoes -->
+		</div>
+
+		<!-- botoes salvar e voltar -->
+		<div class="form-group">
+			<!-- btn salvar -->
+			<div class="col-xs-3 col-xs-offset-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+			<!-- btn voltar -->
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaUsuario" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

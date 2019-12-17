@@ -1,0 +1,101 @@
+<section class="text-center" ng-controller="RegistrosNaoProcessadosController">
+    <h3>Registros não processados</h3>
+    <div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<form id="form-search" ng-submit="pesquisaRegistrosNaoProcessados()" name="frmRegistrosNaoProcessados" class="form-horizontal">
+			
+				<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					<span>{{mensagemErro}}</span>
+                </div>
+                
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="empresa">Empresa</label>
+					<div class="col-sm-6">
+						<output id="empresa" class="text-left">{{cnpj}} - {{nomeEmpresa}}</output>
+					</div>
+                </div>
+                
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="data-inicial">Data Pagamento De:*</label>
+					<div class="col-sm-3">
+						<input  id="data-inicial" class="form-control" moment-picker="dataInicial" locale="pt-br" start-view="month" ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"/>
+					</div>
+					<label class="col-sm-3 control-label" for="data-final">Até:*</label>
+					<div class="col-sm-3">
+						<input id="data-final" class="form-control" moment-picker="dataFinal" locale="pt-br" start-view="month" ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="data-final">Operadora:*</label>
+					<div class="col-sm-3">
+                        <select class="form-control" ng-disabled="true" ng-model="codOperadora"
+                            ng-options="option.codOperadora as option.nomeOperadora for option in operadoras">
+                        </select>
+                    </div>
+                    <label class="col-sm-3 control-label" for="data-final">Tipo Lançamento:*</label>
+					<div class="col-sm-3">
+						<select class="form-control" ng-model="tipoLancamento">
+                            <option value="" selected>-- Selecione --</option>
+                            <option ng-repeat="tpLancamento in tiposLancamentos" value="{{ tpLancamento.codigoOpcaoExtrato }}">{{ tpLancamento.descricaoOpcaoExtrato }}</option>
+                        </select>
+					</div>
+                </div>
+                
+				<div class="form-group">
+					<div class="col-sm-7"></div>
+					<div class="col-sm-5 text-center">
+						<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div>
+		<div class="form-group" ng-show="showTable">
+			<div class="col-xs-12">
+				<table class="table table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">		
+							<th class="text-center texto-branco"><h4>Data Venda</h4></th>
+							<th class="text-center texto-branco"><h4>Estabelecimento</h4></th>
+                            <th class="text-center texto-branco"><h4>Lote</h4></td>
+                            <th class="text-center texto-branco"><h4>Valor Líquido</h4></td>
+                            <th class="text-center texto-branco"><h4>Data crédito</h4></td>
+                            <th class="text-center texto-branco"><h4>Número único</h4></td>
+                            <th class="text-center texto-branco"><h4>Qtd. Cvs Aceitos</h4></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="regNaoProc in resgitrosNaoProcessados.slice((paginaAtual-1) * (itensPorPagina), (paginaAtual * itensPorPagina))">
+							<td class="text-left">{{ regNaoProc.codDataVenda | date:'dd-MM-yyyy' }}</td>
+							<td class="text-left">{{ regNaoProc.codigoEstabelecimentoSubmissor }}</td>
+                            <td class="text-left">{{ regNaoProc.codigoLote }}</td>
+                            <td class="text-left">{{ regNaoProc.valorLiquido | currency : 'R$ '}}</td>
+                            <td class="text-left">{{ regNaoProc.codDataCredito | date:'dd-MM-yyyy' }}</td>
+                            <td class="text-left">{{ regNaoProc.numeroUnico }}</td>
+                            <td class="text-left">{{ regNaoProc.qtdCvsAceitos }}</td>
+                        </tr>
+					</tbody>
+				</table>
+            </div>
+		</div>
+    </div>
+    <!-- paginacao front-end -->
+    <div class="row text-center" ng-show="showTable">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <ul uib-pagination boundary-links="true" class="pagination-sm"
+                ng-model="paginaAtual"
+                first-text="In&iacute;cio" last-text="Fim"
+                previous-text="Anterior" next-text="Pr&oacute;ximo"
+                items-per-page="itensPorPagina"
+                max-size="numeroMaximoDeBotoes"
+                num-pages="numeroDePaginas" 
+                total-items="qtdeTotalDeItens"
+                force-ellipses="true">
+            </ul>
+        </div>
+    </div>
+</section>

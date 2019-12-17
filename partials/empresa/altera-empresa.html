@@ -1,0 +1,207 @@
+<section class="text-center">
+	<h3>Altera&ccedil;&atilde;o de Empresa</h3>
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-10">
+			<form id="frmAlteraEmpresa" ng-submit="alterarEmpresa()" name="frmAlteraEmpresa" class="form-horizontal" novalidate>
+				<!-- grupo de empresa -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="idGrupoEconomico">Grupo de Empresa:*</label>
+					<div class="col-sm-9">
+						<select id="idGrupoEconomico" class="form-control"
+							ng-model="idGrupoEconomico"
+							ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico"
+							ng-required="true">
+							<option value="">Selecione um grupo de empresa...</option>
+						</select>
+					</div>
+				</div>
+				<!-- modelo de negocio -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="nome-grupo">Modelo de Neg&oacute;cio:*</label>
+					<div class="col-sm-9">
+						<select class="form-control" id="modeloNegocio" multiple="true"
+							ng-model="idModeloNegocio"
+							ng-options="modeloNegocio.idModeloNegocio as modeloNegocio.nome for modeloNegocio in listaModelo"
+							ng-required="true">
+							<option value="">Selecione um ou mais modelos...</option>
+						</select>
+					</div>
+				</div>
+				<!-- razao social -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="razao-social">Raz&atilde;o Social:*</label>
+					<div class="col-sm-9">
+						<input type="text" id="razao-social" class="form-control" ng-model="razaoSocial" placeholder="Digite a Raz&atilde;o Social" maxlength="65" ng-required="true"/>
+					</div>
+				</div>
+				<!-- cnpj -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="cnpj">CNPJ:*</label>
+					<div class="col-sm-9">
+						<input type="text" id="cnpj" ui-mask="99.999.999/9999-99" ng-model="cnpj" class="form-control" ng-required="true" disabled/>
+					</div>
+				</div>
+				<!-- sigla da loja -->
+				<div class="form-group">
+					<label class="control-label col-xs-3" for="endereco">Sigla da Loja:</label>
+					<div class="col-sm-9">
+						<input type="text" id="sigla-loja" class="form-control" ng-model="siglaLoja" maxlength="150" />
+					</div>
+				</div>
+				<!-- segmento mercado -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="segmento-mercado">Segmento de Mercado:</label>
+					<div class="col-sm-9">
+						<select id="segmento-mercado" class="form-control"
+							ng-model="segmentoMercado"
+							ng-options="segmento.idEmpresaSegmento as segmento.descricao for segmento in segmentosMercado">
+							<option value="">Selecione um segmento</option>
+						</select>
+					</div>
+				</div>
+				<!-- endereco -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="endereco">Endere&ccedil;o:</label>
+					<div class="col-sm-9">
+						<input type="text" id="endereco" class="form-control" ng-model="endereco" placeholder="Digite o Endere&ccedil;o" maxlength="60"/>
+					</div>
+				</div>
+				<!-- cidade -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="cidade">Cidade:</label>
+					<div class="col-sm-9">
+						<input type="text" id="cidade" class="form-control" ng-model="cidade" placeholder="Digite a Cidade" maxlength="50"/>
+					</div>
+				</div>
+				<!-- estado -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="estado">Estado:</label>
+					<div class="col-sm-9">
+						<select id="estado" class="form-control" ng-model="estado">
+					    <option value="AC">Acre</option>
+						<option value="AL">Alagoas</option>
+						<option value="AP">Amap&aacute;</option>
+						<option value="AM">Amazonas</option>
+						<option value="BA">Bahia</option>
+						<option value="CE">Cear&aacute;</option>
+						<option value="DF">Distrito Federal</option>
+						<option value="ES">Esp&iacute;rito Santo</option>
+						<option value="GO">Goi&aacute;s</option>
+						<option value="MA">Maranh&atilde;o</option>
+						<option value="MT">Mato Grosso</option>
+						<option value="MS">Mato Grosso do Sul</option>
+						<option value="MG">Minas Gerais</option>
+						<option value="PA">Par&aacute;</option>
+						<option value="PB">Para&iacute;ba</option>
+						<option value="PR">Paran&aacute;</option>
+						<option value="PE">Pernambuco</option>
+						<option value="PI">Piau&iacute;</option>
+						<option value="RJ">Rio de Janeiro</option>
+						<option value="RN">Rio Grande do Norte</option>
+						<option value="RS">Rio Grande do Sul</option>
+						<option value="RO">Rond&ocirc;nia</option>
+						<option value="RR">Roraima</option>
+						<option value="SC">Santa Catarina</option>
+						<option value="SP">S&atilde;o Paulo</option>
+						<option value="SE">Sergipe</option>
+						<option value="TO">Tocantins</option>
+					</select>
+					</div>
+				</div>
+				<!-- cep -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="cep">CEP:</label>
+					<div class="col-sm-9">
+						<input type="text" id="cep" ui-mask="99999-999" class="form-control" ng-model="cep" />
+					</div>
+				</div>
+				<!-- status -->
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="statusID">Status:</label>
+					<div class="col-sm-9">
+						<select class="form-control" id="statusID" ng-model="status"
+								ng-options="status for status in lstStatus" ng-required="true">
+							<option value="">Selecione um Status...</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-xs-3" for="dadosCredito">Dados de Cr&eacute;dito:</label>
+				</div>
+				<!-- dados bancario adicionados -->
+				<div class="form-group" ng-repeat="dadosConta in dadosBancarios">
+					<!-- banco -->
+					<div class="col-xs-4 col-xs-offset-3">
+						<label class="control-label" for="banco">Banco</label>
+						<select id="codigoBanco" class="form-control" ng-model="dadosConta.descricao" ng-options="banco.codigoBanco + '-' + banco.descricao as banco.descricao for banco in ListaBanco">
+							 <option value="" selected>
+								<span>{{dadosConta.descricao}}</span>
+							</option>
+						 </select>
+					</div>
+					<!-- agencia -->
+					<div class="col-xs-2">
+						<label class="control-label" for="agencia">Ag&ecirc;ncia</label>
+						<input type="text" id="agencia" class="form-control" maxlength="5" ng-model="dadosConta.agencia"/>
+					</div>
+					<!-- conta -->
+					<div class="col-xs-2">
+						<label class="control-label" for="conta">Conta</label>
+						<input type="text" id="conta" class="form-control" maxlength="12" ng-model="dadosConta.conta"/>
+					</div>
+					<!-- digito verificador -->
+					<div class="col-xs-1">
+						<label class="control-label" for="dv">Dig.</label>
+						<input type="text" id="dv" class="form-control" ng-model="dadosConta.dv" maxlength="2"/>
+					</div>
+				</div>
+				<!-- fim dados bancario adicionados -->
+
+				<!-- dados bancario -->
+				<div class="form-group">
+					<!-- banco -->
+					<div class="col-xs-4 col-xs-offset-3">
+						<label class="control-label" for="banco">Banco</label>
+						<select id="codigoBanco" class="form-control" ng-model="banco" ng-model="codigoBanco" ng-options="banco as banco.descricao for banco in ListaBanco">
+							<option value="">Selecione um banco..</option>
+						</select>
+					</div>
+					<!-- agencia -->
+					<div class="col-xs-2">
+						<label class="control-label" for="agencia">Ag&ecirc;ncia</label>
+						<input type="text" id="agencia" class="form-control" ng-model="agencia" maxlength="5"/>
+					</div>
+					<!-- conta -->
+					<div class="col-xs-2">
+						<label class="control-label" for="conta">Conta</label>
+						<input type="text" id="conta" class="form-control" ng-model="conta" maxlength="12"/>
+					</div>
+					<!-- digito verificador -->
+					<div class="col-xs-1">
+						<label class="control-label" for="dv">Dig.</label>
+						<input type="text" id="dv" class="form-control" ng-model="dv" maxlength="2"/>
+					</div>
+				</div>
+				<!-- fim dados bancario -->
+
+				<!-- btn adicionar conta bancaria -->
+				<div class="form-group">
+					<div class="col-xs-12" style="text-align: right;">
+						<button type="button" class="btn btn-verde btn-lg" ng-click="addConta()">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-5">
+						<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+					</div>
+					<div class="col-sm-4">
+						<input type="button" ui-sref="listaEmpresa" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+					</div>
+				</div>	
+			</form>
+		</div>
+	</div>
+</section>

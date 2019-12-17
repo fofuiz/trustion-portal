@@ -1,0 +1,89 @@
+<section class="text-center" ng-controller="AluguelEquipamentosController as ctrl">
+    <h3>Aluguel de Equipamentos</h3>
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-8">
+            <form id="form-search" ng-submit="pesquisaAluguelEquipmanento()" name="frmAluguelEquip" class="form-horizontal">
+
+                <!-- Empresa -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="empresa">Empresa:*</label>
+                    <div class="col-sm-6 col-xs-6">
+                        <select id="empresa" class="form-control" ng-model="empresa">
+                            <option value="">Selecione uma empresa</option>
+                            <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+                        </select>  
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="data-inicial">Data Inicial:*</label>
+                    <div class="col-sm-3">
+                        <input id="data-inicial" class="form-control" moment-picker="ctrl.dataInicial" locale="pt-br" start-view="month" ng-model="ctrl.dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" ng-model-options="{ updateOn: 'blur' }"/>
+
+                    </div>
+                    <label class="col-sm-3 control-label" for="data-final">Data Final:*</label>
+                    <div class="col-sm-3">
+                        <input id="data-final" class="form-control" moment-picker="ctrl.dataFinal" locale="pt-br" start-view="month" ng-model="ctrl.dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" ng-model-options="{ updateOn: 'blur' }"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-7"></div>
+                    <div class="col-sm-5 text-center">
+                        <input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <div class="form-group" ng-show="showTable">
+            <div class="pull-right">
+                <img src="img/excel.png" class="img-responsive center-block cursor-pointer"
+                     alt="Salvar dados da tabela no formato Excel"
+                     title="Salvar dados da tabela no formato Excel"
+                     ng-click="exportAluguelEquipmanento()"/>
+            </div>
+            <div class="col-xs-12">
+                <table class="table table-striped table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"><h4>Data</h4></th>
+                            <th ng-repeat="bandeira in bandeiras" class="text-center texto-branco"><h4>{{bandeira}}</h4></th>
+                            <th class="text-center texto-branco"><h4>Loja</h4></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="aluguel in aluguelEquipamentos.slice((paginaAtual - 1) * (itensPorPagina),
+                                                            (paginaAtual * itensPorPagina))">
+                            <td class="text-center">{{aluguel.dataCredito| date:'dd/MM/yyyy'}}</td>
+                            <td ng-repeat="bandeira in bandeiras" class="text-center">
+                                <p ng-if="aluguel.bandeira == bandeira" >{{aluguel.valor| currency}}</p>
+                            </td>
+                            <td class="text-center">{{aluguel.loja}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center summary-row"></td>
+                            <td ng-repeat="bd in bandeiras" class="text-center summary-row">
+                                <p ng-repeat="be in bandeiraEquipamentos| filter : { aluguelEquipamentos : { bandeira : bd}}" >{{be.totalBandeira| currency}}</p> 
+                            </td>
+                            <td class="text-center summary-row"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- paginacao front-end -->
+    <div class="row text-center" ng-show="showTable">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <ul uib-pagination boundary-links="true" class="pagination-sm"
+                ng-model="paginaAtual"
+                first-text="In&iacute;cio" last-text="Fim"
+                previous-text="Anterior" next-text="Pr&oacute;ximo"
+                items-per-page="itensPorPagina"
+                max-size="numeroMaximoDeBotoes"
+                num-pages="numeroDePaginas" 
+                total-items="qtdeTotalDeItens">
+            </ul>
+        </div>
+    </div>
+</section>

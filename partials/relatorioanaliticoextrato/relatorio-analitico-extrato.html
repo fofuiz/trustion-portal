@@ -1,0 +1,319 @@
+<section class="container-fluid text-center">
+    <h3>Consulta Anal&iacute;tica de Extrato</h3>
+
+    <!--FORM-->
+    <form class="form-horizontal" id="formRelatorioAnaliticoExtrato" name="formRelatorioAnaliticoExtrato"
+        ng-submit="pesquisarExtratos(false)" novalidate>
+
+        <!--Mensagem-->
+        <div class="form-group">
+            <div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span
+                    class="sr-only">Error:</span> <span>{{mensagemErro}}</span>
+            </div>
+        </div>
+
+        <!-- Botão Filtros Visiveis-->
+        <button type="button" class="btn btn-default pull-left"
+            ng-click="isCollapsedFilter = !isCollapsedFilter">Filtros vis&iacute;veis</button>
+        <br><br>
+
+        <!-- INICIO Corpo do Filtro-->
+        <div uib-collapse="isCollapsedFilter" ng-init="isCollapsedFilter=false">
+
+            <!--Inputs Transportadora/NumeroSerioCofre-->
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="idGrupoEconomico">Transportadora:</label>
+                <div class="col-xs-3">
+                    <multiselect ng-id="listaGrupoTransp" ng-model="listaGrupoTranspSel" options="listaGrupoTranspOpc"
+                        id-prop="idTransportadora" display-prop="razaoSocial"
+                        ng-change="restringirTranspGrupoEconEmpresa()" ng-required="false">
+                    </multiselect>
+                </div>
+
+                <label class="control-label col-xs-2" for="idNumeroSerialCofre">N&uacute;mero Serial do Cofre:</label>
+                <div class="col-xs-3">
+                    <select class="form-control ng-pristine ng-untouched ng-valid ng-not-empty"
+                        ng-options="cofre.numSerie for cofre in listaCofreOpc"
+                        id-prop="idCofre" ng-model="listaCofreSel" ng-required="false">
+                    </select>
+                </div>
+            </div>
+
+            <!--Inputs Grupo/DadosBancarios-->
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="idGrupoEconomico">Grupo:</label>
+                <div class="col-xs-3">
+                    <multiselect ng-id="listaGrupoEcon" ng-model="listaGrupoEconSel" options="listaGrupoEconOpc"
+                        id-prop="idGrupoEconomico" display-prop="nome" ng-change="restringirTranspGrupoEconEmpresa()"
+                        ng-required="false">
+                    </multiselect>
+                </div>
+
+                <label class="control-label col-xs-2" for="idBanco">Dados Bancários:</label>
+                <div class="col-xs-3">
+                    <select class="form-control ng-pristine ng-untouched ng-valid ng-not-empty"
+                        ng-options="('Banco: '+dadosBanco.descricao+' - Agencia: '+dadosBanco.agencia+' - Conta: '+dadosBanco.conta) for dadosBanco in listaDadosBancariosOpc"
+                        id-prop="idDadosBancarios" ng-model="listaDadosBancariosSel" ng-required="false">
+                    </select>
+                </div>
+            </div>
+
+
+            <!--Inputs Empresa/DtInicio-->
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="idEmpresa">Empresa:</label>
+                <div class="col-xs-3">
+                    <multiselect ng-model="listaEmpresaSel" options="listaEmpresaOpc" id-prop="idEmpresa"
+                        display-prop="razaoSocial" ng-change="restringirTranspGrupoEconEmpresa()" ng-required="false" show-search="true">
+                    </multiselect>
+                </div>
+                <label class="col-sm-2 control-label" for="idDataInicial">Data Inicial:*</label>
+                <div class="col-sm-2">
+                    <input id="idDataInicial" class="form-control" moment-picker="dataInicialFormatada"
+                        max-date="maxData" min-date="minData" locale="pt-br" start-view="month" ng-model="dataInicial"
+                        format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" />
+                </div>
+            </div>
+
+
+            <!--Inputs StatusConciliacao/DtFianl-->
+            <div class="form-group">
+                <label class="control-label col-xs-2" for="idstatusConciliacao">Status da
+                    Concilia&ccedil;&atilde;o:</label>
+                <div class="col-xs-3">
+                    <select id="idstatusConciliacao" class="form-control" ng-model="statusConciliacao"
+                        ng-options="statusConciliacao as statusConciliacao for statusConciliacao in listaStatusConciliacao">
+                        <option value="" selected>Selecione um status de concilia&ccedil;&atilde;o</option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label" for="idDataFinal">Data Final:*</label>
+                <div class="col-sm-2">
+                    <input id="idDataFinal" class="form-control" moment-picker="dataFinalFormatada"
+                        max-date="2019-06-31" min-date="2019-01-01" locale="pt-br" start-view="month"
+                        ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" />
+                </div>
+            </div>
+
+        </div>
+        </div>
+        <!-- FIM Corpo do Filtro-->
+
+
+        <!--Botões Pesquisa/Exportar-->
+        <div class="form-group">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-3">
+                <input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar" />
+            </div>
+            <div class="col-xs-3">
+                <input type="button" class="btn btn-verde btn-lg btn-block" value="Exportar"
+                    ng-click="isCollapsedExpt = !isCollapsedExpt" />
+            </div>
+        </div>
+
+        <!--Exportar XLS/CSV/PDF-->
+        <div class="form-group">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-3"></div>
+            <div class="col-xs-4">
+                <div class="col-sm-3" uib-collapse="isCollapsedExpt" ng-init="isCollapsedExpt=true">
+                    <input type="button" class="btn btn-verde btn-lg" ng-click="exportarXLS()" value="XLS" />
+                </div>
+                <div class="col-sm-3" uib-collapse="isCollapsedExpt" ng-init="isCollapsedExpt=true">
+                    <input type="button" class="btn btn-verde btn-lg" ng-click="exportarCSV()" value="CSV" />
+                </div>
+                <div class="col-sm-3" uib-collapse="isCollapsedExpt" ng-init="isCollapsedExpt=true">
+                    <input type="button" class="btn btn-verde btn-lg" ng-click="exportarPDF()" value="PDF" />
+                </div>
+            </div>
+        </div>
+
+
+        <!--INICIO Linha dos Filtros-->
+        <div class="row">
+            <div class="col-xs-12">
+
+                <!--Botão Colunas-->
+                <div>
+                    <button type="button" class="btn btn-default pull-left"
+                        ng-click="isCollapsed = !isCollapsed">Colunas vis&iacute;veis</button>
+                    <br><br>
+                </div>
+
+                <!--Filtros CheckBox-->
+                <div uib-collapse="isCollapsed" ng-init="isCollapsed=true">
+                    <div class="well well-sm">
+                        <div class="table-responsive">
+                            <table class="table borderless text-left margin-bottom-10">
+                                <tbody>
+
+                                    <!--linha1-->
+                                    <tr>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isDataLancamentoColumnVisible"
+                                                ng-init="isDataLancamentoColumnVisible=true"> Data do Lançamento</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isAgenciaColumnVisible"
+                                                ng-init="isAgenciaColumnVisible=true"> Agencia</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isNumeroDocumentoColumnVisible"
+                                                ng-init="isNumeroDocumentoColumnVisible=true"> Nº Documento</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isNaturezaColumnVisible"
+                                                ng-init="isNaturezaColumnVisible=false"> Natureza</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isValorLancamentoColumnVisible"
+                                                ng-init="isValorLancamentoColumnVisible=true"> Valor do Lançamento</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isValorCofreColumnVisible"
+                                                ng-init="isValorCofreColumnVisible=false"> Valor de Cofre</td>
+                                    </tr>
+
+                                    <!--linha2-->
+                                    <tr>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isLojaColumnVisible" ng-init="isLojaColumnVisible=true"> Loja
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isContaCorrenteColumnVisible"
+                                                ng-init="isContaCorrenteColumnVisible=true"> Conta</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isCategoriaColumnVisible"
+                                                ng-init="isCategoriaColumnVisible=false"> Categoria</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isHistoricoColumnVisible"
+                                                ng-init="isHistoricoColumnVisible=false"> Hist&oacute;rico</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isTipoColumnVisible" ng-init="isTipoColumnVisible=false"> Tipo
+                                            (C/D)</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isCofreColumnVisible" ng-init="isCofreColumnVisible=true">
+                                            Cofre</td>
+
+                                    </tr>
+
+                                    <!--linha3-->
+                                    <tr>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isBancoColumnVisible" ng-init="isBancoColumnVisible=true">
+                                            Banco</td>
+                                        <td><input class="form-check-input" type="checkbox"
+                                                ng-model="isStatusColumnVisible" ng-init="isStatusColumnVisible=true">
+                                            Status</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--FIM Linha dos Filtros-->
+
+
+        <!--INICIO Tabela de pesquisa-->
+        <div class="row tbody-scroll">
+            <div class="col-xs-12">
+                <table class="table table-bordered table-striped table-condensed" cellspacing="0" width="100%">
+                    <!--Cabeçalho da tabela-->
+                    <thead>
+                        <tr class="cabecalho">
+                            <th ng-show="isDataLancamentoColumnVisible" class="text-center texto-branco">
+                                <h5>Data Lançamento</h5>
+                            </th>
+                            <th ng-show="isBancoColumnVisible" class="text-center texto-branco">
+                                <h5>Banco</h5>
+                            </th>
+                            <th ng-show="isAgenciaColumnVisible" class="text-center texto-branco">
+                                <h5>Agencia</h5>
+                            </th>
+                            <th ng-show="isContaCorrenteColumnVisible" class="text-center texto-branco">
+                                <h5>Conta</h5>
+                            </th>
+                            <th ng-show="isNumeroDocumentoColumnVisible" class="text-center texto-branco">
+                                <h5>Nº Documento</h5>
+                            </th>
+                            <th ng-show="isCategoriaColumnVisible" class="text-center texto-branco">
+                                <h5>Categoria</h5>
+                            </th>
+                            <th ng-show="isNaturezaColumnVisible" class="text-center texto-branco">
+                                <h5>Natureza</h5>
+                            </th>
+                            <th ng-show="isHistoricoColumnVisible" class="text-center texto-branco">
+                                <h5>Hist&oacute;rico</h5>
+                            </th>
+                            <th ng-show="isValorLancamentoColumnVisible" class="text-center texto-branco">
+                                <h5>Valor do Lançamento</h5>
+                            </th>
+                            <th ng-show="isTipoColumnVisible" class="text-center texto-branco">
+                                <h5>Tipo (C/D)</h5>
+                            </th>
+                            <th ng-show="isValorCofreColumnVisible" class="text-center texto-branco">
+                                <h5>Valor de Cofre</h5>
+                            </th>
+                            <th ng-show="isCofreColumnVisible" class="text-center texto-branco">
+                                <h5>Cofre</h5>
+                            </th>
+                            <th ng-show="isStatusColumnVisible" class="text-center texto-branco">
+                                <h5>Status</h5>
+                            </th>
+                            <th ng-show="isLojaColumnVisible" class="text-center texto-branco">
+                                <h5>Loja</h5>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <!--Corpo das colunas-->
+                    <tbody>
+                        <tr ng-repeat="extrato in listaRelatorio track by $index">
+                            <td ng-show="isDataLancamentoColumnVisible" class="text-center">{{extrato.dtLancamento | date:'dd/MM/yyyy'}}</td>
+                            <td ng-show="isBancoColumnVisible" class="text-center">{{extrato.banco}}</td>
+                            <td ng-show="isAgenciaColumnVisible" class="text-center">{{extrato.agencia}}</td>
+                            <td ng-show="isContaCorrenteColumnVisible" class="text-center">{{extrato.contaCorrente}}</td>
+                            <td ng-show="isNumeroDocumentoColumnVisible" class="text-center">{{extrato.numDocumento}}</td>
+                            <td ng-show="isCategoriaColumnVisible" class="text-center">{{extrato.categoria}}</td>
+                            <td ng-show="isNaturezaColumnVisible" class="text-center">{{extrato.natureza}}</td>
+                            <td ng-show="isHistoricoColumnVisible" class="text-center">{{extrato.historico}}</td>
+                            <td ng-show="isValorLancamentoColumnVisible" class="text-center">{{extrato.valorLancamento | realbrasileiro}}</a></td>
+                            <td ng-show="isTipoColumnVisible" class="text-center">{{extrato.tipo}}</td>
+                            <td ng-show="isValorCofreColumnVisible" class="text-center">{{extrato.valorCofre | realbrasileiro}}</a></td>
+                            <td ng-show="isCofreColumnVisible" class="text-center">{{extrato.cofre}}</td>
+                            <td ng-show="isStatusColumnVisible" class="text-center">{{extrato.status}}</td>
+                            <td ng-show="isLojaColumnVisible" class="text-center">{{extrato.loja}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--FIM Tabela de pesquisa-->
+
+        <!--Rodapé-->
+        <div class="form-group">
+            <div class="col-xs-12">
+                <div class="col-xs-8">
+                    <ul uib-pagination class="pagination" ng-show="paginacao" rotate="false"
+                        boundary-link-numbers="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                        last-text="&raquo;" ng-disabled="pag_desabilitado" max-size="pag_tamanho"
+                        items-per-page="pag_registrosPorPagina" total-items="pag_totalRegistros"
+                        ng-model="pag_paginaSelecionada" ng-change="carregarRelatorioPorPagina(filtroRelatorioPage)">
+                    </ul>
+                </div>
+                <div style="margin-top: -10px;" class="col-xs-4">
+                    </br>
+                    <label for="idCnpj" class="control-label col-xs-5">Itens por Pág.</label>
+                    <div class="col-xs-5">
+                        <select id="registrosComDiferenca"
+                            class="form-control ng-pristine ng-valid ng-not-empty ng-touched" ng-model="registrosPorPag"
+                            ng-options="qtd as qtd for qtd in lstRegPorPag">
+                            <option label="10" value="number:10">10</option>
+                            <option label="15" value="number:15" selected="selected">15</option>
+                            <option label="25" value="number:25">25</option>
+                            <option label="30" value="number:30">30</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

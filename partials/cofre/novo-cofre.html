@@ -1,0 +1,94 @@
+<section class="text-center">
+	<h3>Cadastro de Cofre</h3>
+	
+	<form class="form-horizontal" id="form-search" name="frmCadastroCofre" ng-submit="cadastraCofre()" novalidate>
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEquipamento">ID do Equipamento:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idEquipamento" maxlength="10" ng-model="novoCofre.idEquipamento" 
+				 onkeypress="return event.charCode >= 48 && event.charCode <= 57" ng-required="true"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNumSerie">N&uacute;mero de S&eacute;rie:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNumSerie" maxlength="10" ng-model="novoCofre.numSerie" ng-required="true"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="codigoNaTransportadora">C&oacute;digo na Transportadora:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="codigoNaTransportadora" maxlength="10" ng-model="novoCofre.codigoNaTransportadora"
+				onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idGrupo">Grupo:</label>
+	
+			<div class="col-xs-6">
+				<select id="idGrupo" class="form-control" ng-model="novoCofre.idGrupoEconomico"
+					ng-change="carregarEmpresas(novoCofre.idGrupoEconomico)"
+					ng-options="grupo.idGrupoEconomico as grupo.nome for grupo in listaGrupo" ng-required="true" >
+		
+					<option value="">Selecione um grupo...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmpresa">Empresa:</label>
+	
+			<div class="col-xs-6">
+				<select id="idEmpresa" class="form-control" ng-model="novoCofre.idEmpresa"
+					ng-change="carregarModelosNegocio(novoCofre.idEmpresa)"
+					ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa" ng-required="true">
+		
+					<option value="">Selecione uma empresa...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idModeloNegocio">Modelo de Neg&oacute;cio:</label>
+	
+			<div class="col-xs-6">
+				<select id="idModeloNegocio" class="form-control" ng-model="novoCofre.idModeloNegocio"
+						ng-options="modeloNegocio.idModeloNegocio as modeloNegocio.nome for modeloNegocio in listaModelosNegocio" ng-required="true">
+		
+					<option value="">Selecione um modelo de neg&oacute;cio...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="statusID">Status:</label>
+
+			<div class="col-xs-6">
+				<select class="form-control" id="statusID" ng-model="novoCofre.status"
+						ng-options="status for status in lstStatus" ng-required="true" >
+
+					<option value="">Selecione um status...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaCofre" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

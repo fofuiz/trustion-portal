@@ -1,0 +1,63 @@
+<div class="modal-header background-verde">
+	<h3 class="modal-title" id="modal-titulo">Concilia&ccedil;&atilde;o Manual</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">
+				<th class="text-center texto-branco"><h7>CNPJ</h7></th>
+				<th class="text-center texto-branco"><h7>Data de Corte</h7></th>
+				<th class="text-center texto-branco"><h7>Valor de Fechamento</h7></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td class="text-center">{{relatorio.cnpj | cnpj}}</td>
+				<td class="text-center">{{relatorio.dataCorte | date:'dd/MM/yyyy'}}</td>
+				<td class="text-center">{{relatorio.valorTotal | realbrasileiro}}</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<br/>
+
+	<h4><span class="label label-default">Registros de cr&eacute;dito em conta para concilia&ccedil;&atilde;o:</span></h4>
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">
+				<td class="text-center"> <input type="checkbox" ng-model="selecionarTodos" ng-model-options="{getterSetter: true}"/></td>
+				<th class="text-center texto-branco"><h7>Banco</h7></th>
+				<th class="text-center texto-branco"><h7>Ag&ecirc;ncia</h7></th>
+				<th class="text-center texto-branco"><h7>Conta</h7></th>
+				<th class="text-center texto-branco"><h7>Data do Lan&ccedil;amento</h7></th>
+				<th class="text-center texto-branco"><h7>Valor</h7></th>
+				<th class="text-center texto-branco"><h7>Descri&ccedil;&atilde;o</h7></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="extrato in listaExtratoElegivel">
+				<td class="text-center"><input type="checkbox" ng-model="extrato.selecionado"></td>
+				<td class="text-center">{{extrato.banco}}</td>
+				<td class="text-center">{{("0000"+extrato.agencia).slice(-4)}}</td>
+				<td class="text-center">{{("00000"+extrato.conta).slice(-5)}}</td>
+				<td class="text-center">{{extrato.dataLancamento | date:'dd/MM/yyyy'}}</td>
+				<td class="text-center">{{extrato.valorLancamento | realbrasileiro}}</td>
+				<td class="text-center">{{extrato.historicoLancamento}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="modal-footer">
+		<button class="btn btn-verde" type="button" ng-click="conciliar()">Conciliar</button>
+    <button class="btn btn-secundario" type="button" ng-click="voltar()">Voltar</button>
+</div>

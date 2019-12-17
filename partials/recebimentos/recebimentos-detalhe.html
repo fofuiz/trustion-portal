@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Detalhe dos Recebimentos</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro" >
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    <span>{{mensagemErro}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-md-4"></div>
+        <div id="div_rec_chart" class="col-md-4 card">
+            <div id="recebimentos_chart"></div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-md-3"></div>
+        <div class="col-md-3 col-sm-6">
+            <input type="button" class="btn btn-verde btn-lg btn-block" ng-click="voltar()" value="Voltar"/>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <input type="button" class="btn btn-verde btn-lg btn-block" ng-click="exportar()" value="Exportar" />
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 card">
+            <h4>{{operadora}} > {{produto}}</h4>
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-3"><h4>Data Inicial:</h4></div>
+                <div class="col-md-3 col-sm-3 col-xs-3"><h4 class="text-center">{{dataInicial | date:'dd/MM/yyyy'}}</h4></div>
+                <div class="col-md-3 col-sm-3 col-xs-3"><h4>Data Final:</h4></div>
+                <div class="col-md-3 col-sm-3 col-xs-3"><h4 class="text-center">{{dataFinal | date:'dd/MM/yyyy'}}</h4></div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row tbody-scroll margin-top-10">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-stripped table-hover" cellspacing="0" width="100%">
+                <thead>
+                <tr class="cabecalho">
+                    <th class="text-center texto-branco"><h4>Empresa</h4></th>
+                    <th class="text-center texto-branco"><h4>Ponto de Venda</h4></th>
+                    <th class="text-center texto-branco"><h4>Data Venda</h4></th>
+                    <th class="text-center texto-branco"><h4>Parcela</h4></th>
+                    <th class="text-center texto-branco"><h4>Plano</h4></th>
+                    <th class="text-center texto-branco"><h4>Status</h4></th>
+                    <th class="text-center texto-branco"><h4>Lote</h4></th>
+                    <th class="text-center texto-branco"><h4>NSU</h4></th>
+                    <th class="text-center texto-branco"><h4>Autoriza&ccedil;&atilde;o</h4></th>
+                    <th class="text-center texto-branco"><h4>Valor da Venda</h4></th>
+                    <th class="text-center texto-branco"><h4>Taxa Administrativa</h4></th>
+                    <th class="text-center texto-branco"><h4>Taxa de Antecipa&ccedil;&atilde;o</h4></th>
+                    <th class="text-center texto-branco"><h4>Valor L&iacute;quido</h4></th>
+                    <th class="text-center texto-branco"><h4>Data de Cr&eacute;dito</h4></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="recebimento in recebimentosGrid.slice(((pag_paginaSelecionada-1)*pag_registrosPorPagina), (pag_paginaSelecionada*pag_registrosPorPagina))">
+                    <td class="text-center">{{recebimento.emp}}</td>
+                    <td class="text-center">{{recebimento.cod_ponto_venda}}</td>
+                    <td class="text-center">{{recebimento.cod_data_venda}}</td>
+                    <td class="text-center">{{recebimento.nro_parcela}}</td>
+                    <td class="text-center">{{recebimento.nro_plano}}</td>
+                    <td class="text-center">{{recebimento.cod_status}}</td>
+                    <td class="text-center">{{recebimento.cod_lote_bandeira}}</td>
+                    <td class="text-center">{{recebimento.nro_nsu}}</td>
+                    <td class="text-center">{{recebimento.cod_autorizacao}}</td>
+                    <td class="text-center">{{recebimento.vlr_bruto | realbrasileiro}}</td>
+                    <td class="text-center">{{recebimento.vlr_comissao | realbrasileiro}}</td>
+                    <td class="text-center">{{recebimento.vlr_taxa_antecipacao | realbrasileiro}}</td>
+                    <td class="text-center">{{recebimento.vlr_liquido | realbrasileiro}}</td>
+                    <td class="text-center">{{recebimento.cod_data_credito}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-md-1 col-sm-1 col-xs-1"></div>
+        <div class="col-md-10 col-sm-10 col-xs-10 text-center">
+            <ul ng-show="paginacao" uib-pagination
+                class="pagination"
+                rotate="false"
+                boundary-link-numbers="true"
+
+                previous-text="&lsaquo;"
+                next-text="&rsaquo;"
+                first-text="&laquo;"
+                last-text="&raquo;"
+
+                ng-disabled="pag_desabilitado"
+                max-size="pag_tamanho"
+                items-per-page="pag_registrosPorPagina"
+                total-items="pag_totalRegistros"
+                ng-model="pag_paginaSelecionada"
+                ng-change="mudaPagina()">
+            </ul>
+        </div>
+        <div class="col-md-1 col-sm-1 col-xs-1"></div>
+    </div>
+</div>

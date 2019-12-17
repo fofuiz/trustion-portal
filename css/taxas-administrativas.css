@@ -1,0 +1,20 @@
+.btns-block .btn{
+    font-size: 0.9em;
+}
+
+.taxa-prat-cad-titulo p,
+.taxa-prat-cad p {
+    margin: 0;
+}
+.taxa-prat-cad-titulo p{
+    text-align: left;
+}
+.taxa-prat-cad p {
+    text-align: center;
+}
+.taxas-iguais {
+    background-color: #2ecc71;
+}
+.taxas-diferentes {
+    background-color: #f1c40f;
+}

@@ -1,0 +1,79 @@
+#!/usr/bin/env groovy
+
+import groovy.transform.Field
+
+node {
+  //  CheckoutProject()
+    //OWASPDependencyCheck()
+    //OWASPReportCheck()
+    CleanWork()
+    CheckoutWork()
+    Build()
+    DockerSetup()
+}
+
+def OWASPDependencyCheck() {
+    stage("OWASP Dependency Check") {
+        dependencyCheckAnalyzer datadir: '/var/lib/jenkins/OWASP-dependency-check',
+                hintsFile: '', includeCsvReports: false, includeHtmlReports: false, includeJsonReports: false,
+        includeVulnReports: false, isAutoupdateDisabled: true, outdir: '/var/lib/jenkins/workspace/trustion/DEV-trustion-portal_BUILD',
+        scanpath: '/var/lib/jenkins/workspace/trustion/DEV-trustion-portal_BUILD', skipOnScmChange: false, skipOnUpstreamChange: false,
+        suppressionFile: '', zipExtensions: ''
+    }
+}
+
+def OWASPReportCheck() {
+    stage ("OWASP Report Check") {
+        dependencyCheckPublisher canComputeNew: false, defaultEncoding: '', shouldDetectModules: true,
+        failedTotalAll: '1', failedTotalHigh: '1', failedTotalLow: '1', failedTotalNormal: '1', healthy: '',
+        pattern: '**/dependency-check-report.xml', unHealthy: ''
+    }
+}
+
+
+def CleanWork(){
+     stage ("Clean Workspace") {
+        step([$class: 'WsCleanup'])
+    }
+}
+def CheckoutWork(){
+     stage ("Checkout Git") {
+        checkout scm
+    }
+}
+
+//def CheckoutProject() {
+//    stage ("Checkout Project") {
+//        checkout([$class: 'GitSCM', branches: [[name: '*/develop']],
+//        doGenerateSubmoduleConfigurations: false,  
+//        userRemoteConfigs: [[credentialsId: '38a55a99-1704-4c13-b637-16ec64887274', 
+//            url: 'http://jenkins@gitlab.accesstage.com.br/desenvolvimento-projetos/demanda-projetos/trustion/trustion-portal.git']]])
+//    }
+//}
+
+def Build() {
+    stage ("Build") {
+        sh """
+           export HTTP_PROXY=192.168.130.240:3128; export HTTPS_PROXY=192.168.130.240:3128; npm config set proxy http://192.168.130.240:3128; npm config set https-proxy http://192.168.130.240:3128; npm install
+        """
+    }
+}
+
+def DockerSetup(){
+    def env = "dev"
+    def image_name = "trustion-portal"
+    def proxy = "http://192.168.41.243:3128"
+
+    stage ("Docker Setup") {
+
+        //Altera parametro na chamada do javascript no index.html para evitar o cache no proximo build
+        sh 'sed -i s/__BUILD_NUMBER__/$BUILD_NUMBER/g ./index.html'
+
+       //Cria o container utilizando o Dockerfile;
+       sh 'docker build -t registry-prd1.accesstage.com.br/'+ image_name +':'+ env +'-$BUILD_NUMBER --build-arg HTTP_PROXY='+ proxy +' --build-arg HTTPS_PROXY='+ proxy +' .'
+
+       //Faz push da imagem buildada para o Registry da Accesstage
+       sh 'docker push registry-prd1.accesstage.com.br/'+ image_name +':'+ env +'-$BUILD_NUMBER'
+
+    }
+}

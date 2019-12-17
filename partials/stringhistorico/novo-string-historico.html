@@ -1,0 +1,49 @@
+<section class="container-fluid text-center">
+	<h3>Cadastro de String de Hist&oacute;rico</h3>
+
+	<div class="row">
+		<div>
+			<form id="formNovoStringHistorico" name="formStringHistorico" class="form-horizontal" ng-submit="cadastraStringHistorico()" novalidate>
+				<div class="form-group">
+					<label class="control-label col-xs-3" for="idListaBanco">Banco:*</label>
+					
+					<div class="col-xs-6">
+						<select id="idListaBanco" class="form-control" ng-model="novoStringHistorico.idListaBanco"
+							ng-options="banco.idListaBanco as banco.descricao for banco in listaBanco" ng-required="true">
+							<option value="">Selecione um banco...</option>
+						</select>
+					</div>
+				</div>
+		
+				<div class="form-group">
+					<label class="control-label col-xs-3" for="stringHistorico">String de Hist&oacute;rico:*</label>
+		
+					<div class="col-xs-6">
+						<input class="form-control" type="text" id="stringHistorico" maxlength="25" ng-model="novoStringHistorico.texto" ng-required="true" valida-string/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-xs-3" for="status">Status:*</label>
+					
+					<div class="col-xs-6">
+						<select id="status" class="form-control" ng-model="novoStringHistorico.status"
+							ng-options="status for status in listaStatus" ng-required="true">
+							<option value="">Selecione um status...</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-3">
+						<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+					</div>
+					
+					<div class="col-sm-3">
+						<input type="button" ui-sref="listaStringHistorico" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>

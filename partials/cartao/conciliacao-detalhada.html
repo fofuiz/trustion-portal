@@ -1,0 +1,325 @@
+<section class="text-center">
+    <h3>Conciliador de Pagamentos - Consultar Concilia&ccedil;&atilde;o Detalhada </h3>
+    <div class="row" ng-controller="ConciliacaoCartaoDetalheController">
+            <!-- Simula um toaster -->
+            <div class="alert {{ tipoMensagem }}" ng-class="{'appToastr': appToastr}" role="alert" ng-show="isExibirMensagemErro" >
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                <span>{{mensagemErro}}</span>
+            </div>
+            <form class="form-horizontal">
+                <!-- formularios pesquisa -->
+                <div class="form-group" ng-show="!loading">
+                    <!-- Formulario Movimento Banco -->
+                    <ng-form name="formMovimentoFiltro">
+                        <!-- Formul�rio Movimento Banco - IN�CIO -->
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div>
+                              <!-- Empresa -->
+                              <div class="form-group">
+                                <label class="control-label col-sm-3" for="empresa">Empresa</label>
+                                <div class="col-sm-6">
+                                  <select id="empresa" class="form-control" ng-model="empresa">
+                                    <option value="">Selecione uma empresa</option>
+                                    <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+                                  </select>  
+                                </div>
+                              </div>
+                                <!-- nome arquivo -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Nome Arquivo:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" ng-model="nomeArquivo" />
+                                    </div>
+                                </div>
+                                <!-- agencia -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Ag&ecirc;ncia:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control"ng-model="numeroAgencia" somente-numero />
+                                    </div>
+                                </div>
+                                <!-- valor inicial -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">R$ Valor Inicial:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" format-moeda ng-model="valorInicial" />
+                                    </div>
+                                </div>
+                                <!-- data inicial -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Data Inicial *:</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control"
+                                            moment-picker="dataInicialFormatada" locale="pt-br" start-view="month"
+                                            ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10"
+                                            ng-required="true" autocomplete="off"
+                                            ng-class="{'has-error':formMovimentoBanco.dataInicialTela.$invalid, 'has-success':formMovimentoBanco.dataInicialTela.$valid}"/>
+                                    </div>
+                                </div>
+                                <!-- status -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Status:</label>
+                                    <div class="col-sm-6">
+                                        <select id="statusConciliacao" class="form-control" ng-model="statusConciliacao">
+                                            <option ng-repeat="status in comboStatus" value="{{status.statusConciliacao}}">{{status.descricaoStatus}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- botao pesquisar -->
+                            <div class="row">
+                                <div class="col-md-3 col-lg-3"></div>
+                                <div class="col-md-6 col-lg-6">
+                                    <input type="submit" value="Pesquisar" class="btn btn-verde btn-lg btn-block" ng-click="pesquisarRegistros()">
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-form>
+                    <!-- Formulario Movimento Contabil -->
+                    <ng-form name="formMovimentoContabil">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div>
+                                <!-- banco -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Banco:</label>
+                                    <div class="col-sm-6">
+                                        <select id="codigoBanco" class="form-control" ng-model="numeroBanco">
+                                            <option value="">Todos</option>
+                                            <option ng-repeat="banco in comboBancos" value="{{banco.nroBanco}}">{{banco.nroBanco}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- adquirente -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Adquirente:</label>
+                                    <div class="col-sm-6">
+                                        <select id="codigoOperadora" class="form-control" ng-model="codigoOperadora">
+                                            <option value="">Todos</option>
+                                            <option ng-repeat="operadora in comboOperadoras" value="{{operadora.codOperadora}}">{{operadora.nomeOperadora}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- conta -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Conta:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" ng-model="numeroConta" />
+                                    </div>
+                                </div>
+                                <!-- valor final -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">R$ Valor Final:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" format-moeda ng-model="valorFinal"/>
+                                    </div>
+                                </div>
+                                <!-- data final -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Data Final *:</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" id="dataFinal" ng-model="dataFinal" maxlength="10"
+                                                moment-picker="dataFinalFormatada" locale="pt-br" start-view="month"
+                                                format="DD/MM/YYYY" autocomplete="off"
+                                                class="form-control" ng-required="true"
+                                                ng-class="{'has-error':formMovimentoBanco.dataFinalTela.$invalid, 'has-success':formMovimentoBanco.dataFinalTela.$valid}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- movimento -->
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 control-label">Movimento:</label>
+                                    <div class="col-sm-6">
+                                        <select id="codigoMovimento" class="form-control" ng-model="codigoMovimento">
+                                            <option ng-repeat="movimento in comboMovimentos" value="{{movimento.codigoMovimento}}">{{movimento.descricaoMovimento}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-form>
+                </div>
+                <!-- fim formularios pesquisa -->
+
+                <!-- tabela resgistros -->
+                <div class="col-md-12 col-lg-12">
+                    <br />
+                    <!-- exportar excel -->
+                    <div ng-if="resumoBancos.length != 0" class="pull-right">
+                        <img src="img/excel.png" class="img-responsive center-block cursor-pointer"
+                        alt="Salvar dados da tabela no formato Excel" title="Salvar dados da tabela no formato Excel"
+                        ng-click="exportConciliacaoDetalhada()"/>
+                    </div>
+                    <br />
+                    <table class="table table-hover table-condensed table-striped tableConciliacaoResumo cursor-pointer" border="1">
+                        <thead>
+                            <tr>
+                                <th>Movimento</th>
+                                <th>Grupo Concilia&ccedil;&atilde;o</th>
+                                <th>Banco</th>
+                                <th>Ag&ecirc;ncia</th>
+                                <th>Conta</th>
+                                <th>Data de Lan&ccedilamento</th>
+                                <th>Valor</th>
+                                <th>Adquirente</th>
+                                <th>Produto</th>
+                                <th>Tipo Concilia&ccedil;&atilde;o</th>
+                                <th>status</th>
+                                <th>Descri&ccedil;&atilde;o Hist&oacuterico</th>
+                                <th>Descri&ccedil;&atilde;o Documento</th>
+                                <th>Arquivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>					    
+                            <tr ng-show="!registros.length">
+                                <td colspan="15" class="text-center">Nenhum registro encontrado.</td>
+                            </tr>
+    
+                            <tr ng-repeat="row in registros">
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.descricaoMovimento }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.nroGrupoConciliado }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.numeroBanco }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.numeroAgencia }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.numeroConta }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.dataExtrPagamento | date:'dd/MM/yyyy' }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="right">{{ row.valor | currency }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.nomeOperadora }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.nomeProduto }}</td>									
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.tipo }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.status }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.dscExtrHistorico }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.dscExtrDocumento }}</td>
+                                <td ng-click="obterDetalhe(row.id, row.nroGrupoConciliado, row.codigoMovimento)" align="center">{{ row.nomeArquivoOrigem }}</td>									
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- fim tabela resgistros -->
+            </form>
+
+        <!-- INICIO MODAL DETALHE MOVIMENTO -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4 class="modal-title">Detalhe do Movimento</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="text-left">Movimento Cart&otilde;es</h5>
+                                <table class="table table-striped tableConciliacaoResumo" id="tblGrid1" style="" >
+                                    <thead id="tblHead1">
+                                    <tr>
+                                        <th>Banco</th>
+                                        <th>Ag&ecirc;ncia</th>
+                                        <th>Conta</th>
+                                        <th>Data</th>
+                                        <th>Valor</th>
+                                        <th>Adquirente</th>
+                                        <th>Produto</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <!-- Dados da tabela -->
+                                    <tr ng-repeat="row in registrosDetalhesCartao">
+                                        <td>{{ row.numeroBanco }}</td>
+                                        <td>{{ row.numeroAgencia }}</td>
+                                        <td>{{ row.numeroConta }}</td>
+                                        <td>{{ row.dataExtrPagamento | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ row.valor | currency }}</td>
+                                        <td>{{ row.nomeOperadora }}</td>
+                                        <td>{{ row.nomeProduto}}</td>
+                                        <td>{{ row.status }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12">
+                                <h5 class="text-left">Movimento Extrato</h5>
+                                <table class="table table-striped tableConciliacaoResumo" id="tblGrid" style="" >
+                                    <thead id="tblHead">
+                                    <tr>
+                                        <th>Banco</th>
+                                        <th>Ag&ecirc;ncia</th>
+                                        <th>Conta</th>
+                                        <th>Data</th>
+                                        <th>Valor</th>
+                                        <th>Adquirente</th>
+                                        <th>Produto</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <!-- Dados da tabela -->
+                                    <tr ng-repeat="row in registrosDetalhesExtrato">
+                                        <td>{{ row.numeroBanco }}</td>
+                                        <td>{{ row.numeroAgencia }}</td>
+                                        <td>{{ row.numeroConta }}</td>
+                                        <td>{{ row.dataExtrPagamento | date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ row.valor | currency }}</td>
+                                        <td>{{ row.nomeOperadora }}</td>
+                                        <td>{{ row.nomeProduto }}</td>
+                                        <td>{{ row.status }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- FIM MODAL -->
+
+    </div>
+
+    <!-- <div class="form-group">
+        <div class="col-xs-12 overflowScrollx">
+            <table class="table table-striped table-condensed table-default">
+                <thead>
+                    <tr>
+                        <th>Banco</th>
+                        <th>Operadora</th>
+                        <th>Companhia</th>
+                        <th>Data Pagto</th>
+                        <th>Valor Pago</th>
+                        <th>Valor Tarifa</th>
+                        <th>Tarifa Esperada</th>
+                        <th>Qtd Mov</th>
+                        <th>Tarifa Padr&atilde;o</th>
+                        <th>Tipo Arrecada&ccedil;&atilde;o</th>
+                        <th>Código Convênio</th>
+                        <th>Modalidade</th>
+                        <th>Data Arquivo</th>
+                        <th>Banco Anterior</th>									
+                    </tr>
+                </thead>
+                
+                <tr ng-repeat="row in movBancoConciliados.slice( ( (data.currentPageBanco-1)*data.itemsPerPageBanco ), ( (data.currentPageBanco)*data.itemsPerPageBanco ) )">
+                    <td>{{ row.codigoBancoStr }}</td>
+                    <td>{{ row.codigoOperadoraStr }}</td>
+                    <td>{{ row.codigoCiaStr }}</td>
+                    <td>{{ row.dataPagamento | date:'MM/dd/yyyy' }}</td>								 
+                    <td>{{ row.valorPago | currency }}</td>								 
+                    <td>{{ row.valorTarifa | currency }}</td>
+                    <td>{{ row.valorTarifaEsperada | currency }}</td>								 
+                    <td>{{ row.qtdMovimento  }}</td>
+                    <td>{{ row.valorTarifaPadrao | currency }}</td>
+                    <td>{{ row.tipoArrecadacapStr }}</td>
+                    <td>{{ row.codigoConvenioStr }}</td>
+                    <td>{{ row.codigoModalidadeStr }}</td>
+                    <td>{{ row.dataArquivo | date:'MM/dd/yyyy' }}</td>	
+                    <td>{{ row.codigoBancoAnteriorStr }}</td>						 
+                </tr>
+            </table>
+        </div>
+    </div> -->
+</section>

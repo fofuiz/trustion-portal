@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      expose: "true"
+      provider: accesstage
+      project: trustion-portal
+      version: 1.0.0-SNAPSHOT
+      group: com.accesstage
+    name: trustion-portal
+    namespace: projetos
+  spec:
+    ports:
+    - nodePort: 30987
+      port: 4200
+      protocol: TCP
+      targetPort: 4200
+    selector:
+      project: trustion-portal
+      provider: accesstage
+      group: com.accesstage
+    type: NodePort
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    labels:
+      provider: accesstage
+      project: trustion-portal
+      version: 1.0.0-SNAPSHOT
+      group: com.accesstage
+    name: trustion-portal
+    namespace: projetos
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        project: trustion-portal
+        provider: accesstage
+        version: 1.0.0-SNAPSHOT
+        group: com.accesstage
+    template:
+      metadata:
+        labels:
+          provider: accesstage
+          project: trustion-portal
+          version: 1.0.0-SNAPSHOT
+          group: com.accesstage
+      spec:
+        containers:
+        - name: trustion-portal
+          image: registry-prd1.accesstage.com.br/trustion-portal:__TAG__
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4200
+          env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          resources:
+            limits:
+              memory: 30Mi
+          securityContext:
+            privileged: false
+        imagePullSecrets:
+        - name: regcred

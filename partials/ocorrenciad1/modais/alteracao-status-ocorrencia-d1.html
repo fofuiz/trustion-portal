@@ -1,0 +1,38 @@
+<div class="modal-header background-verde">
+	<h3 class="modal-title" id="modal-titulo">Altera&ccedil;&atilde;o de Status da Ocorr&ecirc;ncia</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-6">
+			<label class="control-label" >Status:*</label>
+
+			<select style="width: 564px" class="form-control" id="tipoStatus" ng-model="ocorrencia.idTipoStatusOcorrencia"
+					ng-options="tipoStatusOcorrencia.idTipoStatusOcorrencia as tipoStatusOcorrencia.descricao for tipoStatusOcorrencia in listaTipoStatusOcorrencia" >
+
+				<option value="">Selecione um tipo de status...</option>
+			</select>
+
+			</br>
+
+			<label class="control-label">Observa&ccedil;&atilde;o:*</label>
+
+			<div class="input-group">
+				<textarea style="width: 564px" type="text" rows="5" maxlength="300" id="idObservacoes" class="form-control" ng-model="ocorrencia.observacao"></textarea>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-verde" type="button" ng-click="salvar()">Salvar</button>
+    <button class="btn btn-vermelho" type="button" ng-click="cancelar()">Cancelar</button>
+</div>

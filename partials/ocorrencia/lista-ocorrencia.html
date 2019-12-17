@@ -1,0 +1,324 @@
+<section class="container-fluid text-center">
+    <h3>Consulta de Ocorr&ecirc;ncias</h3>
+
+    <form class="form-horizontal" id="formConsultaOcorrencia" name="formConsultaOcorrencia" ng-submit="pesquisarOcorrencia()" novalidate>
+
+        <button type="button" class="btn btn-default pull-left" ng-click="toggleFiltro(isCollapsedFilter)">Filtros vis&iacute;veis</button>
+        </br></br>
+
+        <div class="col-xs-12">
+
+            <div uib-collapse="isCollapsedFilter" ng-init="isCollapsedFilter=false">
+                
+                <!-- filtro 1 -->
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="idModeloNegocio">Transportadora</label>
+                    <div class="col-xs-2">
+                        <select id="idTransportadora" class="form-control" ng-model="idTransportadora" ng-options="transportadora.idTransportadora as transportadora.razaoSocial for transportadora in listaTransportadora">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                
+                    <label class="control-label col-xs-2" for="idGtv">GTV:</label>
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" id="idGtv" ng-model="gtv" />
+                    </div>
+
+                    <label class="control-label col-xs-2" for="responsavel">Respons&aacute;vel:</label>
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" id="responsavel" ng-model="responsavel" />
+                    </div>
+                </div>
+
+                <!-- filtro 2 -->
+                <div class="form-group">
+                    <label class="control-label col-xs-2" for="idOcorrencia">ID Ocorr&ecirc;ncia:</label>
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" id="idOcorrencia" ng-model="idOcorrencia" somente-numero valida-tamanho="15" />
+                    </div>
+
+                    <label class="control-label col-xs-2" for="idGrupoEconomico">Status Ocorr&ecirc;ncia:</label>
+                    <div class="col-xs-2">
+                        <select id="idstatusOcorrencia" class="form-control" ng-model="statusOcorrencia" ng-options="statusOcorrencia.descricao as statusOcorrencia.descricao for statusOcorrencia in listaStatusOcorrencia">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" for="idGrupoEconomico">Empresa:</label>
+                    <div class="jp-multiselect">
+                        <div class="col-xs-2">
+                            <select class="form-control" multiple ng-model="listaEmpresaSel" ng-options="empresa as empresa.razaoSocial for empresa in listaEmpresa" ng-required="false"></select>
+                        </div>
+                        <div class="control-label col-xs-2 text-center">
+                            <button type="button" class="center-block btn btn-default" ng-click="moveItem(listaEmpresaSel, listaEmpresa,idsEmpresa)">>></button>
+                            <button type="button" class="center-block btn btn-default" ng-click="moveItem(listaEmpresaSel2, idsEmpresa,listaEmpresa)"><<</button>
+                        </div>
+                        <div class="col-xs-2">
+                            <select class="form-control" multiple ng-model="listaEmpresaSel2" ng-options="empresa as empresa.razaoSocial for empresa in idsEmpresa"
+                                    ng-required="false">
+                            </select>
+                        </div>
+                        <script>
+                            $(".jp-multiselect").jQueryMultiSelection();
+                        </script>
+                    </div>
+                </div>
+
+                <!-- filtro 3 -->
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="idDataInicial">Data Inicial:*</label>
+                    <div class="col-xs-2">
+                        <input id="idDataInicial" class="form-control" moment-picker="dataInicialFormatada" max-date="maxData" min-date="minData"
+                            locale="pt-br" start-view="month" ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" />
+                    </div>
+
+                    <label class="col-xs-2 control-label" for="idDataFinal">Data Final:*</label>
+                    <div class="col-xs-2">
+                        <input id="idDataFinal" class="form-control" moment-picker="dataFinalFormatada" max-date="maxData" min-date="minData" 
+                        locale="pt-br" start-view="month" ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"/>
+                    </div>
+
+                    <label class="control-label col-xs-2" for="idCnpj">CNPJ:</label>
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" id="idCnpj" ui-mask="99.999.999/9999-99" ng-model="cnpj" style="width: 170px;" />
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <!-- modelo de negocio -->
+                    <label class="col-xs-2 control-label" for="modeloNegocio">Modelo de Neg&oacute;cio:*</label>
+                    <div class="col-xs-2">
+                        <select class="form-control" id="modeloNegocio"
+                            ng-model="idModeloNegocio" required="true"
+                            ng-options="modeloNegocio.idModeloNegocio as modeloNegocio.nome for modeloNegocio in listaModeloDeNegocio">
+                            <option value="">Selecione um modelo...</option>
+                        </select>
+                    </div>
+                    <!-- todas as ocorrencias -->
+                    <label class="control-label col-xs-2">Todas as ocorr&ecirc;ncias:</label>
+                    <div class="col-xs-2">
+                        <multiselect ng-id="farol" ng-model="farol" options="farois"
+                            id-prop="farol" display-prop="farol" ng-required="false">
+                        </multiselect>
+                    </div>
+                </div>
+            
+            </div>
+        
+        </div>
+        </br>
+
+        <!-- botoes -->
+        <div class="form-group" style="margin-left: 300px;">
+            <div class="col-xs-3">
+                <input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar" />
+            </div>
+            <div class="col-xs-3" ng-click="exportar()">
+                <input type="button" class="btn btn-verde btn-lg btn-block" value="Exportar" />
+            </div>
+        </div>
+
+        <!-- colunas visiveis -->
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-default pull-left" ng-click="isCollapsed = !isCollapsed">Colunas vis&iacute;veis</button>
+
+                <br> <br>
+                <div uib-collapse="isCollapsed" ng-init="isCollapsed=true">
+                    <div class="well well-sm">
+                        <div class="table-responsive">
+                            <table class="table borderless text-left margin-bottom-10">
+                                <tbody>
+                                    <!--linha1-->
+                                    <tr>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isTransportadoraColumnVisible"
+                                                ng-init="isTransportadoraColumnVisible=true"> Transportadora
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isEmpresaColumnVisible"
+                                                ng-init="isEmpresaColumnVisible=true"> Empresa
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isCNPJColumnVisible"
+                                                ng-init="isCNPJColumnVisible=true"> CNPJ
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isGTVColumnVisible"
+                                                ng-init="isGTVColumnVisible=true"> GTV
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isIdOcorrenciaColumnVisible"
+                                                ng-init="isIdOcorrenciaColumnVisible=true"> ID Ocorr&ecirc;ncia
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isDtOcorrenciaColumnVisible"
+                                                ng-init="isDtOcorrenciaColumnVisible=true"> Data da Ocorr&ecirc;ncia
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isStatusOcorrenciaColumnVisible"
+                                                ng-init="isStatusOcorrenciaColumnVisible=true"> Status da Ocorr&ecirc;cia
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isResponsavelColumnVisible"
+                                                ng-init="isResponsavelColumnVisible=true"> Respons&aacute;vel
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isSLAColumnVisible"
+                                                ng-init="isSLAColumnVisible=true"> SLA Atendimento
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isDiasColumnVisible"
+                                                ng-init="isDiasColumnVisible=true"> Dias em aberto
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox" ng-model="isDiasPColumnVisible"
+                                                ng-init="isDiasPColumnVisible=true"> Qtd. dias Pendentes 
+                                        </td>
+                                        <td>
+                                            <input class="form-check-input" type="checkbox"
+                                                ng-model="isModeloNegocioColumnVisible"
+                                                ng-init="isModeloNegocioColumnVisible=true"> Modelo de Negócio
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- table -->
+        <div class="row tbody-scroll">
+            <div class="col-xs-12">
+                <table class="table table-bordered table-striped table-condensed" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cabecalho">
+                            <th class="text-center texto-branco"></th>
+                            <th class="text-center texto-branco" ng-show="isTransportadoraColumnVisible" ng-click="orderByMe('razaoSocialTransportadora')">
+                                <a style="color: #fff;"><h5>Transportadora</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isEmpresaColumnVisible" ng-click="orderByMe('razaoSocial')">
+                                <a style="color: #fff;"><h5>Empresa</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isCNPJColumnVisible" ng-click="orderByMe('cnpjCliente')">                            
+                                <a style="color: #fff;"><h5>CNPJ</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isGTVColumnVisible" ng-click="orderByMe('gtv')">
+                                <a style="color: #fff;"><h5>GTV</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isIdOcorrenciaColumnVisible" ng-click="orderByMe('idOcorrencia')">
+                                <a style="color: #fff;"><h5>ID Ocorr&ecirc;ncia</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isDtOcorrenciaColumnVisible" ng-click="orderByMe('dataStatusOcorrencia')">
+                                <a style="color: #fff;"><h5>Data da Ocorr&ecirc;ncia</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isStatusOcorrenciaColumnVisible" ng-click="orderByMe('statusOcorrencia')">
+                                <a style="color: #fff;"><h5>Status da Ocorr&ecirc;ncia</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isResponsavelColumnVisible" ng-click="orderByMe('responsavel')">
+                                <a style="color: #fff;"><h5>Respons&aacute;vel</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isSLAColumnVisible" ng-click="orderByMe('quantidadeDiasSla')">                                
+                                <a style="color: #fff;"><h5>SLA Atendimento</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isDiasColumnVisible" ng-click="orderByMe('diasEmAberto')">
+                                <a style="color: #fff;"><h5>Dias em aberto</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isDiasPColumnVisible" ng-click="orderByMe('diasPendentes')">
+                                <a style="color: #fff;">  <h5> Qtd. dias Pendentes </h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco" ng-show="isModeloNegocioColumnVisible" ng-click="orderByMe('descricaoModeloNegocio')">
+                                <a style="color: #fff;"> <h5>Modelo de Neg&oacute;cio</h5><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                            </th>
+                            <th class="text-center texto-branco"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="ocorrencia in listaRelatorio | orderBy:myOrderBy">                           
+                            <td class="text-center texto-branco">
+                                <!-- {{ocorrencia.farol}} -->
+                                <div ng-if="ocorrencia.farol == 'Atrasado'">
+                                    <span class="glyphicon glyphicon-minus-sign" style="color: red" aria-hidden="true"></span>
+                                </div>
+                                <div ng-if="ocorrencia.farol == 'Atenção'">
+                                    <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(253, 236, 0)" aria-hidden="true"></span>
+                                </div>
+                                <div ng-if="ocorrencia.farol == 'Dentro do prazo'">
+                                    <span class="glyphicon glyphicon-ok-sign" style="color: green" aria-hidden="true"></span>
+                                </div>
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isTransportadoraColumnVisible">
+                                {{ocorrencia.razaoSocialTransportadora}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isEmpresaColumnVisible">
+                                {{ocorrencia.razaoSocial}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isCNPJColumnVisible">
+                                {{ocorrencia.cnpjEmpresa}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isGTVColumnVisible">
+                                 {{ocorrencia.gtv}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isIdOcorrenciaColumnVisible">
+                                <a ui-sref="listaOcorrencias({idOcorrencia : ocorrencia.idOcorrencia})" id="btn-3">{{ocorrencia.idOcorrencia}}</a>
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isDtOcorrenciaColumnVisible">
+                                {{ocorrencia.dataStatusOcorrencia | date:'dd/MM/yyyy HH:mm:ss' }}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isStatusOcorrenciaColumnVisible">
+                                {{ocorrencia.statusOcorrencia}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isResponsavelColumnVisible">
+                                {{ocorrencia.responsavel}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isSLAColumnVisible">
+                                <div ng-if="ocorrencia.quantidadeDiasSla">
+                                    {{ocorrencia.quantidadeDiasSla}} dia(s)
+                                </div>
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isDiasColumnVisible">
+                                {{ocorrencia.diasEmAberto}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isDiasPColumnVisible">
+                                {{ocorrencia.diasPendentes}}
+                            </td>
+                            <td class="text-center texto-branco" ng-show="isModeloNegocioColumnVisible">
+                                {{ocorrencia.nomeModeloNegocio}}
+                            </td>
+                            <td class="text-center texto-branco">
+                                <button ui-sref="listaOcorrencias({idOcorrencia : ocorrencia.idOcorrencia})" class="btn btn-verde btn-sm">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- paginacao -->
+        <div class="form-group">
+            <div class="col-xs-12">
+                <div class="col-xs-8">
+                    <ul uib-pagination class="pagination" ng-show="paginacao" rotate="false" boundary-link-numbers="true" previous-text="&lsaquo;"
+                        next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-disabled="pag_desabilitado" max-size="pag_tamanho"
+                        items-per-page="pag_registrosPorPagina" total-items="pag_totalRegistros" ng-model="pag_paginaSelecionada"
+                        ng-change="carregarRelatorioPorPagina(filtroConsulta)">
+                    </ul>
+                </div>
+                <div style="margin-top: -10px;" class="col-xs-4">
+                    </br>
+                    <label for="items" class="control-label col-xs-5">Itens por Pág.</label>
+                    <div class="col-xs-5">
+                        <select id="items" class="form-control ng-pristine ng-valid ng-not-empty ng-touched" ng-model="registrosPorPag" ng-options="qtd as qtd for qtd in lstRegPorPag">
+                            <option label="10" value="number:10">10</option>
+                            <option label="15" value="number:15" selected="selected">15</option>
+                            <option label="25" value="number:25">25</option>
+                            <option label="30" value="number:30">30</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-offset-11 col-xs-1">
+            <input type="button" class="btn btn-verde btn-lg btn-block" ui-sref="home" value="Voltar" style="width: 100px;"/>
+        </div>
+    </form>

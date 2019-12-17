@@ -1,0 +1,93 @@
+<div class="modal-header background-verde">
+	<h3 class="modal-title" id="modal-titulo">Detalhes da GTV</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<input type="button" class="btn btn-verde btn-lg" ng-click="exportarXLS()" value="Exportar" />
+		</div>
+	</div>
+
+	<br/>
+
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">
+				<th class="text-center texto-branco"><h7>Pack's Declarados</h7></th>
+				<th class="text-center texto-branco"><h7>Pack's Processados</h7></th>
+				<th class="text-center texto-branco"><h7>Total Declarado</h7></th>
+				<th class="text-center texto-branco"><h7>Total Conferido</h7></th>
+				<th class="text-center texto-branco"><h7>Diferença</h7></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td class="text-center">{{listaDetalheRelatorio[0].packDeclarada}}</td>
+				<td class="text-center">{{listaDetalheRelatorio[0].packProcessada}}</td>
+				<td class="text-center">{{listaDetalheRelatorio[0].vlrDeclaradoSoma | realbrasileiro}}</td>
+				<td class="text-center">{{listaDetalheRelatorio[0].vlrConferidoSoma | realbrasileiro}}</td>
+				<td class="text-center">{{listaDetalheRelatorio[0].diferencaSoma | realbrasileiro}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">
+				<th class="text-center texto-branco"><h7>N&uacute;mero Pack</h7></th>
+				<th class="text-center texto-branco"><h7>Valor Declarado</h7></th>
+				<th class="text-center texto-branco"><h7>Valor Conferido</h7></th>
+				<th class="text-center texto-branco"><h7>Diferença</h7></th>
+				<th class="text-center texto-branco col-sm-3"><h7>Cédula Falsa</h7></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="pack in listaDetalheRelatorio">
+				<td class="text-center">{{pack.numeroPack}}</td>
+				<td class="text-center">{{pack.vlrDeclarado | realbrasileiro}}</td>
+				<td class="text-center">{{pack.vlrConferido | realbrasileiro}}</td>
+				<td class="text-center">{{pack.diferencaPorPack | realbrasileiro}}</td>
+				<td class="text-center">{{pack.cedulaFalsa | realbrasileiro}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="form-group">
+			<div class="col-xs-12" align="center">
+				<div>
+					<ul uib-pagination
+						class="pagination"
+						rotate="false"
+						boundary-link-numbers="true"
+						
+						previous-text="&lsaquo;" 
+						next-text="&rsaquo;" 
+						first-text="&laquo;" 
+						last-text="&raquo;"						
+						
+						ng-disabled="pag_desabilitado"
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina"
+						total-items="pag_totalRegistros"
+						ng-model="pag_paginaSelecionada"
+						ng-change="carregarRelatorioPorPagina({{relatorio}})">
+					</ul>
+				</div>
+			</div>
+		</div>
+
+<div class="modal-footer">
+    <button class="btn btn-verde" type="button" ng-click="voltar()">Voltar</button>
+</div>

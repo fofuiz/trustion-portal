@@ -1,0 +1,436 @@
+<style type="text/css">
+
+	.draggable-column {
+		cursor: move;
+	}
+	
+	#thCols td {
+		cursor: move;
+	}
+
+	.table-pointer {
+		position:relative; 
+		top: 0; 
+		left: 0; 
+		width: 25px; 
+		transform: rotate(-45deg); 
+		font-size: 18px; 
+		visibility: hidden
+	}
+
+	.button-show-grid {
+		width: fit-content;
+	}
+
+	.button-reset-order {
+		width: fit-content; 
+		margin-top: 10px;
+	}
+
+	.option-button-box {
+		display: flex; 
+		flex-direction: column
+	}	
+					
+	.button-to-remove {                
+		display:flex; 
+		flex-direction: row; 
+		align-items: center; 
+		background-color: #008241;
+		color: white;
+		border: solid 1px white; 
+		border-radius: 12px; 
+		padding: 2px 7px 2px 7px;
+		margin: 5px 2px;
+		-webkit-background-clip: padding-box; 
+		-moz-background-clip:    padding; 
+		background-clip:padding-box;   
+	}
+		
+	.button-to-add {
+		display:flex; 
+		flex-direction: row; 
+		align-items: center; 
+		background-color: #444;
+		color: white;
+		border: solid 1px #444; 
+		border-radius: 12px; 
+		padding: 2px 7px 2px 7px;
+		margin: 5px 2px;
+		-webkit-background-clip: padding-box; 
+		-moz-background-clip:    padding; 
+		background-clip:padding-box;   
+	}
+
+	.save-button {
+		display:flex; 
+		flex-direction: row; 
+		flex-wrap: wrap; 
+		justify-content: flex-end;         
+	}
+
+
+	#bottomSheet {                
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		width: 80%;
+		left: 10%;
+	}
+
+	.list-container {
+		width:100%
+	}
+
+	.list-wrapper {
+		display:flex; 
+		flex-direction: column;
+	}
+
+	.list-title {
+		width:100%; 
+		display: flex; 
+		justify-content: flex-start; 
+		font-size: 18px; 
+		padding: 5px 0px;
+	}
+
+	.list-item {
+		display:flex; 
+		flex-direction: row; 
+		flex-wrap: wrap; 
+		justify-content: center; 
+		width:100%
+	}
+
+	.bottom-sheet {
+		position: fixed;
+		bottom: 0px;
+		background-color: white;
+		border: solid 1px #CCC;
+		padding: 20px;
+		z-index: 5;
+	}
+
+</style>
+
+<section class="container-fluid text-center">
+	<h3>Consulta Concilia&ccedil;&atilde;o de Vendas D+N</h3>
+
+	<form class="form-horizontal" 
+		id="formRelatorioGtvVideo" 
+		name="formRelatorioGtvVideo" 
+		ng-submit="pesquisarRelatorioGtvVideo()"
+	 	novalidate>
+
+	 	<!--Mensagem-->
+	 	<div class="form-group">
+            <div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span
+                    class="sr-only">Error:</span> <span>{{mensagemErro}}</span>
+            </div>
+        </div>
+
+		<button type="button" class="btn btn-default pull-left" ng-click="toggleFiltro(isCollapsedFilter)">Filtros vis&iacute;veis</button>
+		<br> <br>
+
+		<div uib-collapse="isCollapsedFilter" ng-init="isCollapsedFilter=false">
+
+			<!--Transportadora + GTV-->
+			<div class="form-group">
+
+					<!--Transportadora COMENTADA 
+					<label class="control-label col-xs-2" for="idGrupoEconomico">Transportadora:</label>
+					<div class="col-xs-3">
+						<multiselect 
+							ng-id="listaGrupoTransp" 
+							ng-model="listaGrupoTranspSel" 
+							options="listaGrupoTranspOpc" 
+							id-prop="idTransportadora"		 
+							display-prop="razaoSocial" 
+							ng-change="restringirTranspGrupoEconEmpresa()" 
+							ng-required="false">
+						</multiselect>
+					</div>
+					-->
+
+				<label class="control-label col-xs-2" for="idGtv">GTV:</label>
+				<div class="col-xs-8">
+					<input class="form-control" type="text" id="idGtv" ng-model="gtv" maxlength="15" somente-numero valida-tamanho="15" />
+				</div>
+			</div>
+
+			<!-- Grupo COMENTADA 
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idGrupoEconomico">Grupo:</label>
+				<div class="col-xs-3">
+					<multiselect ng-id="listaGrupoEcon" 
+						ng-model="listaGrupoEconSel" 
+						options="listaGrupoEconOpc"
+						id-prop="idGrupoEconomico"
+						display-prop="nome"
+						ng-change="restringirTranspGrupoEconEmpresa()"
+						ng-required="false">
+					</multiselect>
+				</div>
+			</div>
+			-->
+
+
+			<!-- Empresa COMENTADA 
+			<div class="form-group">
+				<label class="control-label col-xs-2" for="idEmpresa">Empresa:</label>
+				<div class="jp-multiselect">
+					<div class="col-xs-3">
+						<select class="form-control" 
+						multiple ng-model="listaEmpresaSel2" 
+						ng-options="empresa as empresa.razaoSocial for empresa in listaEmpresaOpc" 
+						ng-required="false"></select>
+					</div>
+					<div class="control-label col-xs-2 text-center">
+						<button type="button" class="center-block btn btn-default" ng-click="moveItem(listaEmpresaSel2, listaEmpresaOpc,listaEmpresaSel)">>></button>
+						<button type="button" class="center-block btn btn-default" ng-click="moveItem(listaEmpresaSel3, listaEmpresaSel,listaEmpresaOpc)"><<</button>
+					</div>
+					<div class="col-xs-3">
+						<select class="form-control" 
+							multiple ng-model="listaEmpresaSel3" 
+							ng-options="empresa as empresa.razaoSocial for empresa in listaEmpresaSel"
+							ng-required="false">
+						</select>
+					</div>
+					<script>
+						$(".jp-multiselect").jQueryMultiSelection();
+					</script>
+				</div>
+			</div>
+			-->
+
+			<!--Data Inicial e Final-->
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="idDataInicial">Data Inicial:*</label>
+
+				<div class="col-sm-3">
+					<input id="idDataInicial" class="form-control" moment-picker="dataInicialFormatada" max-date="maxData" min-date="minData"
+					 locale="pt-br" start-view="month" ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"
+					/>
+				</div>
+
+				<label class="col-sm-2 control-label" for="idDataFinal">Data Final:*</label>
+
+				<div class="col-sm-3">
+					<input id="idDataFinal" class="form-control" moment-picker="dataFinalFormatada" max-date="maxData" min-date="minData" locale="pt-br"
+					 start-view="month" ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off" />
+				</div>
+			</div>
+		</div>
+
+		<!--Botão PESQUISAR - VOLTAR-->
+		<div class="form-group">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+			<div class="col-xs-3">
+				<input type="button" class="btn btn-verde btn-lg btn-block" ui-sref="homeNumerario" value="Voltar"/>
+			</div>			
+		</div>
+
+		<!--Colunas Visiveis-->
+		<div class="row">
+			<div class="col-xs-12" id="columnsVisibleOptions" style="margin-bottom: 20px">
+				<!--<md-button flex="50" class="btn btn-default pull-left" ng-click="showGridBottomSheet()">Colunas vis&iacute;veis</md-button>-->
+				<div class="option-button-box">
+					<button type="button" id="buttonColumnsToggleBox" class="button-show-grid" class="btn btn-default pull-left" ng-click="showGridBottomSheet()" ng-if="listaRelatorio.length>0">Colunas vis&iacute;veis</button>
+					<div id="disableReset" style="display: flex; justify-content: flex-start;">
+						<button type="button" id="buttonColumnsResetDefault" class="button-reset-order" class="btn btn-default pull-left" ng-click="resetToDefault()" ng-if="listaRelatorio.length>0">Voltar ordem das colunas para padrão</button>
+					</div>
+				</div>
+				<!-- <button type="button" class="btn btn-default pull-left" ng-click="isCollapsed = !isCollapsed">Colunas vis&iacute;veis</button>
+				<br> <br>
+				<div uib-collapse="isCollapsed" ng-init="isCollapsed=true">
+					<div class="well well-sm">
+						<div class="table-responsive">
+							<table class="table borderless text-left margin-bottom-10">
+								<tbody>
+									<tr>
+										<td ng-repeat="col in visibleCols">
+											<input
+												class="form-check-input" 
+												type="checkbox" 
+												ng-model="col.visible"> {{col.title}}
+										</td>
+									</tr> -->
+									<!-- <tr>
+										<td>
+											<input class="form-check-input" type="checkbox" 
+											ng-model="isDataVideoColumnVisible" 
+											ng-init="isDataVideoColumnVisible=true"> Data
+										</td>
+										<td>
+											<input class="form-check-input" type="checkbox" 
+											ng-model="isLojaColumnVisible" 
+											ng-init="isLojaColumnVisible=true"> Loja
+										</td>
+										<td>
+											<input class="form-check-input" type="checkbox" 
+											ng-model="isGtvColumnVisible" 
+											ng-init="isGtvColumnVisible=true"> GTV
+										</td>
+										<td>
+											<input class="form-check-input" type="checkbox" 
+											ng-model="isLinkVideoColumnVisible" 
+											ng-init="isLinkVideoColumnVisible=true"> Link V&iacute;deo
+										</td>
+									</tr> -->
+								<!-- </tbody>
+							</table>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+
+<div>
+
+</div>
+
+		<!--Tabela-->
+		<div class="row tbody-scroll" style="width:100%">
+			<div class="col-xs-12">
+				<div id="seta" class="table-pointer">
+					<i class="fas fa-hand-point-left"></i>
+				</div>				
+
+				<table class="table table-bordered table-striped table-condensed" id="table" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho" id='thCols' ng-show="listaRelatorio.length>0">
+							
+							<th draggable="true" ng-show="visibleCols[0].visible" id="{{visibleCols[0].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[0].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[1].visible" id="{{visibleCols[1].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[1].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[2].visible" id="{{visibleCols[2].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[2].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[3].visible" id="{{visibleCols[3].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[3].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[4].visible" id="{{visibleCols[4].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[4].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[5].visible" id="{{visibleCols[5].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[5].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[6].visible" id="{{visibleCols[6].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[6].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[7].visible" id="{{visibleCols[7].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[7].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[8].visible" id="{{visibleCols[8].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[8].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[9].visible" id="{{visibleCols[9].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[9].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[10].visible" id="{{visibleCols[10].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[10].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[11].visible" id="{{visibleCols[11].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[11].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[12].visible" id="{{visibleCols[12].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[12].title}}</h5></th>
+							<th draggable="true" ng-show="visibleCols[13].visible" id="{{visibleCols[13].id}}" class="draggable-column text-center texto-branco"><h5>{{visibleCols[13].title}}</h5></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="relatorio in listaRelatorio track by $index" id='tdCols_{{$index}}'>
+							<td id="col_A_{{$index}}" ng-show="visibleCols[0].visible" class="text-center">{{relatorio.razaoSocial}}</td>
+							<td id="col_B_{{$index}}" ng-show="visibleCols[1].visible" class="text-center">{{relatorio.cnpj}}</td>
+							<td id="col_C_{{$index}}" ng-show="visibleCols[2].visible" class="text-center">
+								<a ng-click="modalDetalhesGtvBananinhas(relatorio)" id="btn-gtv-bananinhas">{{relatorio.numeroGtv}}</a>								
+							</td>
+							<td id="col_D_{{$index}}" ng-show="visibleCols[3].visible" class="text-center">{{relatorio.siglaLoja}}</td>
+							<td id="col_E_{{$index}}" ng-show="visibleCols[4].visible" class="text-center">{{relatorio.datagtv.dayOfMonth + '/' + relatorio.datagtv.monthValue + '/' + relatorio.datagtv.year}}</td>
+							<td id="col_F_{{$index}}" ng-show="visibleCols[5].visible" class="text-center">{{relatorio.pacVlrDeclarado | realbrasileiro}}</td>
+							<td id="col_G_{{$index}}" ng-show="visibleCols[6].visible" class="text-center">{{relatorio.pacVlrConferido | realbrasileiro}}</td>
+							<td id="col_H_{{$index}}" ng-show="visibleCols[7].visible" class="text-center">{{relatorio.dataConciliacao.dayOfMonth + '/' + relatorio.dataConciliacao.monthValue + '/' + relatorio.dataConciliacao.year}}</td>
+							<td id="col_I_{{$index}}" ng-show="visibleCols[8].visible" class="text-center">{{relatorio.somatoriaVendas | realbrasileiro}}</td>
+							<td id="col_J_{{$index}}" ng-show="visibleCols[9].visible" class="text-center">{{relatorio.diferenca | realbrasileiro}}</td>
+							<td id="col_K_{{$index}}" ng-show="visibleCols[10].visible" class="text-center">{{relatorio.dataInicioConciliacao.dayOfMonth + '/' + relatorio.dataInicioConciliacao.monthValue + '/' + relatorio.dataInicioConciliacao.year}} - {{relatorio.dataFimConciliacao.dayOfMonth + '/' + relatorio.dataFimConciliacao.monthValue + '/' + relatorio.dataFimConciliacao.year}}</td>
+							<td id="col_L_{{$index}}" ng-show="visibleCols[11].visible" class="text-center">{{relatorio.qtdColSemana}}</td>
+							<td id="col_M_{{$index}}" ng-show="visibleCols[12].visible" class="text-center">{{(relatorio.conciliadoComSucesso) ? 'Conciliado' : 'Não Conciliado'}}</td>
+							<td id="col_N_{{$index}}" ng-show="visibleCols[13].visible" class="text-center">								
+								<a ng-click="modalLinkVideo(relatorio)" id="btn-gtv-links">Clique aqui</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!--Paginação-->
+		<div class="form-group" ng-if="listaRelatorio.length>0 && (!!dataInicial && !!dataFinal) || !!idGtv">
+			<div class="col-xs-12">
+
+				<div class="col-xs-6">
+					<ul  class="pagination" rotate="false" boundary-link-numbers="true" previous-text="&lsaquo;"
+						uib-pagination ng-show="paginacao"
+						next-text="&rsaquo;" 
+						first-text="&laquo;" 
+						last-text="&raquo;" 
+						ng-disabled="pag_desabilitado" 
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina" 
+						total-items="pag_totalRegistros" 
+						ng-model="pag_paginaSelecionada" 
+						ng-change="carregarRelatorioPorPagina(filtroRelatorioPage)">
+					</ul>
+				</div>
+				<div style="margin-top: -10px;" class="col-xs-6">
+					</br>
+					<label for="idCnpj" class="control-label col-xs-5">Itens por Pág.</label>
+					<div class="col-xs-5">
+						<select class="form-control ng-pristine ng-valid ng-not-empty ng-touched"
+							id="registrosComDiferenca" 
+							ng-model="registrosPorPag"
+						 	ng-options="qtd as qtd for qtd in lstRegPorPag">
+						 	<option label="10" value="number:10">10</option>
+							<option label="15" value="number:15" selected="selected">15</option>
+							<option label="25" value="number:25">25</option>
+							<option label="30" value="number:30">30</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Selecionar colunas visiveis -->
+		<div id="bottomSheet" ng-show="isVisibleBottomSheet" class="bottom-sheet"> 
+		
+			<div class="list-container">
+				<div class="list-wrapper">                        
+					<div class="list-title">
+						Exibir:
+					</div>
+					<div class="list-item">
+						<button 
+							class="btn btn-verde button-to-remove" 
+							ng-repeat="item in itemList | filter:{visible:'true'}" 
+							ng-click="removeItem(item.title)">
+		
+							<div>
+								<span>{{item.title}}</span>
+								<i class="far fa-times-circle"></i>
+							</div>
+						</button>
+					</div>                    
+					<div ng-if="showHeaderAvaliableCols()" class="list-title">
+						Não exibir:
+					</div>
+					<div class="list-item">
+						<button 
+							class="btn btn-cinza button-to-add" 
+							ng-repeat="item in itemList | filter:{visible:'false'}" 
+							id="button_{{item.title}}" 
+							ng-click="addItem(item.title)">
+		
+							<div>
+								<span>{{item.title}}</span>
+								<i class="fas fa-plus-circle"></i>
+							</div>
+						</button>
+					</div>                
+					<div class="save-button">
+						<button 
+							type="button" 
+							class="btn btn-verde" 
+							ng-click="bottomSheetClose()">
+							
+							Aplicar
+						</button>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+
+	</form>
+</section>

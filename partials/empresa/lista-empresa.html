@@ -1,0 +1,125 @@
+<section class="text-center">
+	<h3>Pesquisa Empresa</h3>
+
+	<form class="form-horizontal" id="form-search" name="frmPesquisaEmpresa" ng-submit="pesquisarPorCriterios()" novalidade>
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="razao-social">Raz&atilde;o Social:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="razao-social" ng-model="razaoSocial" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="cnpj">CNPJ:</label>
+			
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="cnpj" ui-mask="99.999.999/9999-99" ng-model="cnpj" />
+			</div>
+		</div>
+		<!-- grupo empresa -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idGrupoEconomico">Grupo de Empresa</label>
+			<div class="col-xs-6">
+				<select class="form-control" id="idGrupoEconomico"
+					ng-model="idGrupoEconomico"
+					ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico"
+					ng-change="carregarModelosNegocios()">
+					<option value="">Selecione um grupo de empresa...</option>
+				</select>
+			</div>
+		</div>
+		<!-- modelo de negocio -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="modeloNegocio">Modelo de Neg&oacute;cio:</label>
+			<div class="col-xs-6">
+				<select class="form-control" id="modeloNegocio" ng-model="idModeloNegocio"
+						ng-options="modeloNegocio.idModeloNegocio as modeloNegocio.nome for modeloNegocio in listaModelo" >
+					<option value="">Selecione um modelo...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="statusID">Status:</label>
+
+			<div class="col-xs-6">
+				<select class="form-control" id="statusID" ng-model="status"
+						ng-options="status for status in lstStatus" >
+					<option value="">Selecione um status...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+					
+			<div class="col-xs-3">
+				<input type="button" ui-sref="novoEmpresa" class="btn btn-verde btn-lg btn-block" value="Novo"/>
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-xs-1">
+			</div>
+
+			<div class="col-xs-9">
+				<table class="table table-striped table-condensed empresas-table" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>Raz&atilde;o Social</h4></th>
+							<th class="text-center texto-branco"><h4>CNPJ</h4></th>
+							<th class="text-center texto-branco"><h4>Modelo de Neg&oacute;cio</h4></td>
+							<th class="text-center texto-branco"><h4>Grupo de Empresa</h4></th>
+							<th class="text-center texto-branco"><h4>Status</h4></th>
+							<th class="text-center texto-branco"><h4>Detalhes</h4></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="empresa in listaEmpresa">
+							<td class="text-center">{{empresa.razaoSocial}}</td>
+							<td class="text-center">{{empresa.cnpj | cnpj}}</td>
+							<td class="text-center">
+								<p ng-repeat="modNegocio in empresa.empresaModeloNegocios" >{{modNegocio.modeloNegocio}}</p>
+							</td>
+							<td class="text-center">{{empresa.nomeGrupoEconomico}}</td>
+							<td class="text-center">{{empresa.status}}</td>
+							<td class="text-center"><button ui-sref="alteraEmpresa({empresaId : empresa.idEmpresa})" class="btn btn-verde btn-sm"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="col-xs-1">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-2 col-xs-8">
+				<ul ng-show="paginacao" uib-pagination
+					class="pagination"
+					rotate="false"
+					boundary-link-numbers="true"
+
+					previous-text="&lsaquo;"
+					next-text="&rsaquo;"
+					first-text="&laquo;"
+					last-text="&raquo;"
+
+					ng-disabled="pag_desabilitado"
+					max-size="pag_tamanho"
+					items-per-page="pag_registrosPorPagina"
+					total-items="pag_totalRegistros"
+					ng-model="pag_paginaSelecionada"
+					ng-change="carregarEmpresasPorPagina(filtroEmpresaPage)">
+				</ul>
+				<input type="button" ui-sref="home" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+			</div>
+		</div>
+	</form>
+</section>

@@ -1,0 +1,26 @@
+<div class="modal-header background-verde">
+	<h3 class="modal-title" id="modal-titulo">Upload de Evid&ecirc;ncia</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-6">
+			<div class="input-group">
+				<input type="file" accept="application/pdf" name="file" file-model="selectedUploadFile" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button class="btn btn-verde" type="button" ng-click="uploadFile()">Fazer Upload</button>
+    <button class="btn btn-vermelho" type="button" ng-click="cancelar()">Cancelar</button>
+</div>

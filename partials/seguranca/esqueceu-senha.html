@@ -1,0 +1,43 @@
+
+<section class="text-center">
+	<h3>Recupera&ccedil;&atilde;o de Senha</h3>
+
+	<form id="formEsqueceuSenha" name="formEsqueceuSenha" class="form-horizontal" ng-submit="esqueceuSenha()" novalidate>
+
+		<div class="form-group">
+			<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemErro}}</span>
+			</div>
+
+			<div class="alert alert-success" role="alert" ng-show="isExibirMensagemSucesso" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemSucesso}}</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="login">Login:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control"  type="text" id="login" ng-model="esqueceuSenhaDTO.login" maxlength="50" ng-required="true" />
+			</div>
+		</div>
+		
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="button" ui-sref="menu" class="btn btn-verde btn-lg btn-block" value="Voltar" />
+			</div>
+			
+				<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Redefinir Senha"  ng-disabled="formEsqueceuSenha.$invalid"/>
+			</div>
+		</div>
+	</form>
+</section>

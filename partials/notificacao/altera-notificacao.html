@@ -1,0 +1,107 @@
+<section class="text-center">
+	<h3>Altera&ccedil;&atilde;o de Notifica&ccedil;&atilde;o</h3>
+	
+	<form class="form-horizontal" id="form-search" name="frmAlteraNotificacao" ng-submit="alterarNotificacao()" novalidate>
+
+		<div class="form-group">
+			<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemErro}}</span>
+			</div>
+
+			<div class="alert alert-success" role="alert" ng-show="isExibirMensagemSucesso" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemSucesso}}</span>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idGrupoEconomico">Grupo Econ&ocirc;mico:</label>
+	
+			<div class="col-xs-6">
+				<select id="idGrupoEconomico" class="form-control" ng-model="alteraNotificacao.idGrupoEconomico"
+						ng-change="carregarEmpresasTelaAltera()"
+						ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico" ng-required="true" disabled>
+		
+					<option value="">Selecione um grupo econ&ocirc;mico...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmpresa">Empresa:</label>
+	
+			<div class="col-xs-6">
+				<select id="idEmpresa" class="form-control" ng-model="alteraNotificacao.idEmpresa"
+						ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa" ng-required="true" disabled>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idTipoNotificacao">Tipo de Notifica&ccedil;&atilde;o:</label>
+			
+			<div class="col-xs-6">
+				<select id="idTipoNotificacao" class="form-control" ng-model="alteraNotificacao.idTipoNotificacao" 
+						ng-options="tipoNotificacao.idTipoNotificacao as tipoNotificacao.descNotificacao for tipoNotificacao in listaTipoNotificacao" ng-required="true">
+					<option value="">Selecione uma notifica&ccedil;&atilde;o...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idLogin">Login:</label>
+			
+			<div class="col-xs-6">
+				<select id="idLogin" class="form-control" ng-model="alteraNotificacao.usuarioDTO.idUsuario" 
+						ng-change="preencherCamposLoginAndEmail(alteraNotificacao.usuarioDTO.idUsuario)"
+						ng-options="usuario.idUsuario as usuario.login for usuario in listaUsuario" ng-required="true">
+					<option value="">Selecione um Login...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNome">Nome de Usu&aacute;rio:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNome" ng-model="alteraNotificacao.nome" maxlength="100" disabled/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmail">E-mail:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idEmail" ng-model="alteraNotificacao.email"  maxlength="100" disabled/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="lbStatus">Status:</label>
+			
+			<div class="col-xs-6">
+				<select id="lbStatus" class="form-control" ng-model="alteraNotificacao.status" 
+						ng-options="status as status for status in statusListaNotificacao" ng-required="true">
+					<option value="">Selecione um Status...</option>
+				</select>
+			</div>
+		</div>
+		
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaNotificacao" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

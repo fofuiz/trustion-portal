@@ -1,0 +1,85 @@
+{
+  "apiVersion" : "v1",
+  "kind" : "List",
+  "items" : [ {
+    "apiVersion" : "v1",
+    "kind" : "Service",
+    "metadata" : {
+      "labels" : {
+        "expose" : "true",
+        "provider" : "gulp",
+        "project" : "@nomeSource@",
+        "version" : "@versionGulp@",
+        "group" : "br.com.accesstage"
+      },
+      "name" : "@nomeSource@"
+    },
+    "spec" : {
+      "ports" : [ {
+        "port" : @exposePort@,
+        "protocol" : "TCP",
+        "targetPort" : @exposePort@,
+        "nodePort" : @nodePort@
+      } ],
+      "selector" : {
+        "project" : "@nomeSource@",
+        "provider" : "gulp",
+        "group" : "br.com.accesstage"
+      },
+      "type" : "NodePort"
+    }
+  }, {
+    "apiVersion" : "extensions/v1beta1",
+    "kind" : "Deployment",
+    "metadata" : {
+      "labels" : {
+        "provider" : "gulp",
+        "project" : "@nomeSource@",
+        "version" : "@versionGulp@",
+        "group" : "br.com.accesstage"
+      },
+      "name" : "@nomeSource@"
+    },
+    "spec" : {
+      "replicas" : 1,
+      "selector" : {
+        "matchLabels" : {
+          "project" : "@nomeSource@",
+          "provider" : "gulp",
+          "version" : "@versionGulp@",
+          "group" : "br.com.accesstage"
+        }
+      },
+      "template" : {
+        "metadata" : {
+          "labels" : {
+            "provider" : "gulp",
+            "project" : "@nomeSource@",
+            "version" : "@versionGulp@",
+            "group" : "br.com.accesstage"
+          }
+        },
+        "spec" : {
+          "containers" : [ {
+            "env" : [ {
+              "name" : "KUBERNETES_NAMESPACE",
+              "valueFrom" : {
+                "fieldRef" : {
+                  "fieldPath" : "metadata.namespace"
+                }
+              }
+            }, {
+              "name" : "SPRING_PROFILES_ACTIVE"
+            } ],
+            "image" : "@registry@/@nomeSource@:@versionGulp@",
+            "imagePullPolicy" : "Always",
+            "name" : "spring-boot-starter-parent",
+            "securityContext" : {
+              "privileged" : false
+            }
+          } ]
+        }
+      }
+    }
+  } ]
+}

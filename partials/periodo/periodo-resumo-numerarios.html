@@ -1,0 +1,75 @@
+<section class="container-fluid text-center">
+    <h3>Per&iacute;odo de Resumo</h3>
+
+    <div class="row">
+        <div>
+            <form id="formPeriodoResumoNumerario" name="formPeriodoResumoNumerario" class="form-horizontal" ng-submit="alterarPeriodoResumo(formPeriodoResumoNumerario.$valid)" novalidate>
+
+                <div class="form-group">
+                    <div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        <span>{{mensagemErro}}</span>
+                    </div>
+
+                    <div class="alert alert-success" role="alert" ng-show="isExibirMensagemSucesso" >
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        <span>{{mensagemSucesso}}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="control-label col-xs-2 col-xs-offset-5 " style="text-align: left!important;">Coletas:</div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-xs-3 col-xs-offset-2 text-right">Exibir os &uacute;ltimos</label>
+
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" maxlength="2" ng-maxlength="2"  ng-model="entidade.periodoColeta" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                    </div>
+                    <label class="control-label col-xs-3" style="text-align: left!important;">dias.</label>
+                </div>
+
+                <div class="row">
+                    <div class="control-label col-xs-2 col-xs-offset-5 " style="text-align: left!important;">Confer&ecirc;ncias:</div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-xs-3 col-xs-offset-2 text-right">Exibir os &uacute;ltimos</label>
+
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" maxlength="2" ng-maxlength="2" ng-model="entidade.periodoConferencia" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                    </div>
+                    <label class="control-label col-xs-3" style="text-align: left!important;">dias.</label>
+                </div>
+
+                <div class="row">
+                    <div class="control-label col-xs-2 col-xs-offset-5" style="text-align: left!important;">Cr&eacute;dito de conta:</div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-xs-3 col-xs-offset-2 text-right">Exibir os &uacute;ltimos</label>
+
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" maxlength="2" ng-maxlength="2" ng-model="entidade.periodoCredito" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                    </div>
+                    <label class="control-label col-xs-3" style="text-align: left!important;">dias.</label>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-3">
+                        <input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <input type="button" ui-sref="home" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

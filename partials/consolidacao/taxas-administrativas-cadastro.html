@@ -1,0 +1,174 @@
+<section class="text-center">
+    <h3>Cadastrar Taxas Administrativas</h3>
+    <form class="form-horizontal">
+
+        <!-- Empresa -->
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="empresa">Empresa:*</label>
+          <div class="col-sm-6 col-xs-6">
+            <select id="empresa" class="form-control" ng-model="empresa">
+              <option value="">Selecione uma empresa</option>
+              <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+            </select>  
+          </div>
+        </div>
+
+        <!-- Loja -->
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="loja">Loja:*</label>
+          <div class="col-sm-6 col-xs-6">   
+              <select class="form-control" ng-model="filtro.codLoja">
+                  <option value="" selected>Todas</option>
+                  <option ng-repeat="lj in lojas" value="{{ lj.id }}">{{ lj.nome }}</option>
+              </select>
+          </div>
+        </div>
+        <!-- Ponto de Venda -->
+        <div class="form-group">
+            <label class="control-label col-sm-3 col-xs-3">Ponto de Venda:*</label>
+            <div class="col-sm-6 col-xs-6">
+                <select class="form-control" ng-model="filtro.codPontoVenda" ng-disabled="disabilitarFormPesquisa">
+                    <option value="" selected>Todas</option>
+                    <option ng-repeat="pv in pontoVendas" value="{{ pv.codigo }}">{{ pv.nome }}</option>
+                </select>
+            </div>
+        </div>
+        <!-- operadora -->
+        <div class="form-group">
+            <label class="control-label col-sm-3 col-xs-3">Operadora:</label>
+            <div class="col-sm-6 col-xs-6">
+                <select class="form-control" ng-model="filtro.codOperadora" ng-disabled="disabilitarFormPesquisa" ng-change="operadoraOnChange()">
+                    <option value="" selected>Todas</option>
+                    <option ng-repeat="operadora in operadoras" value="{{ operadora.id }}">{{ operadora.nmeOperadora }}</option>
+                </select>
+            </div>
+        </div>
+        <!-- produto -->
+        <div class="form-group">
+            <label class="control-label col-sm-3 col-xs-3">Produto:</label>
+            <div class="col-sm-6 col-xs-6">
+                <select class="form-control" ng-model="filtro.codProduto" ng-disabled="disabilitarFormPesquisa">
+                    <option value="" selected>Todos</option>
+                    <option ng-repeat="prodOperadora in prodsOperadoras" value="{{ prodOperadora.produto.id }}">{{ prodOperadora.produto.nome }}</option>
+                </select>
+            </div>
+        </div>
+        <!-- botoes -->
+        <div class="form-group">
+            <div class="noPaddingLeft btns-block col-sm-offset-3 col-xs-offset-3 col-sm-9 col-xs-9">
+                <!-- btn pesquisar -->
+                <div class="col-xs-2">
+                    <input type="submit" value="Pesquisar" class="btn btn-verde btn-lg btn-block"
+                        ng-click="pesquisar()">
+                </div>
+                <!-- btn voltar -->
+                <div class="col-xs-2">
+                    <input type="button" value="Voltar" class="btn btn-verde btn-lg btn-block"
+                        ng-click="voltar()">
+                </div>
+                <!-- btn editar -->
+                <div class="col-xs-2" ng-if="taxasAdministrativas.length >= 1">
+                    <input type="button" value="Editar" class="btn btn-verde btn-lg btn-block"
+                        ng-click="marcarParaEditar()">
+                </div>
+                <!-- btn exportar -->
+                <div class="col-xs-2" ng-if="taxasAdministrativas.length >= 1">
+                    <input type="button" value="Exportar" class="btn btn-verde btn-lg btn-block"
+                        ng-click="exportarTaxasAdministrativas()">
+                </div>
+                <!-- btn salvar -->
+                <div class="col-xs-2">
+                    <input type="button" value="Salvar" class="btn btn-verde btn-lg btn-block"
+                        data-toggle="modal" data-target="#modalConfirmar"
+                        ng-if="editarTaxas">
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- tabela resultado pesquisa -->
+    <table class="table table-striped table-condensed table-condensed table-compact" cellspacing="0" width="100%">
+        <thead>
+            <tr class="cabecalho">
+                <th class="text-center texto-branco"><h4>Loja</h4></th>
+                <th class="text-center texto-branco"><h4>Ponto de Venda</h4></th>
+                <th class="text-center texto-branco"><h4>Operadora</h4></th>
+                <th class="text-center texto-branco"><h4>Produto</h4></th>
+                <th class="text-center texto-branco"><h4>1</h4></th>
+                <th class="text-center texto-branco"><h4>2</h4></th>
+                <th class="text-center texto-branco"><h4>3</h4></th>
+                <th class="text-center texto-branco"><h4>4</h4></th>
+                <th class="text-center texto-branco"><h4>5</h4></th>
+                <th class="text-center texto-branco"><h4>6</h4></th>
+                <th class="text-center texto-branco"><h4>7</h4></th>
+                <th class="text-center texto-branco"><h4>8</h4></th>
+                <th class="text-center texto-branco"><h4>9</h4></th>
+                <th class="text-center texto-branco"><h4>10</h4></th>
+                <th class="text-center texto-branco"><h4>11</h4></th>
+                <th class="text-center texto-branco"><h4>12</h4></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--
+                todo: mudar para nao usar a variavel do ng-init;
+                todo: ver possibilidade de mudar para ng-model="taxaAdm" (testar ng-keyup, ng-blur e etc se implementar essa alteracao), talvez nao seja possivel por causa da paginacao no front.
+                obs: qualquer alteracao feita aqui, teste a paginacao e a edicao das celulas da tabela (planos).
+            -->
+            <tr ng-repeat="taxaAdm in taxasAdministrativas.slice((currentPage-1)*(itemsPerPage), (currentPage*itemsPerPage))"
+                ng-init="indexAux = (itemsPerPage * (currentPage - 1)) + $index">
+                <td>{{ taxaAdm.nmeLoja }}</td>
+                <td>{{ taxaAdm.nmePontoVenda }}</td>
+                <td>{{ taxaAdm.nmeOperadora }}</td>
+                <td>{{ taxaAdm.nmeProduto }}</td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano1')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_1')" ng-model="taxasAdministrativas[indexAux].nroPlano1" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano2')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_2')" ng-model="taxasAdministrativas[indexAux].nroPlano2" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano3')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_3')" ng-model="taxasAdministrativas[indexAux].nroPlano3" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano4')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_4')" ng-model="taxasAdministrativas[indexAux].nroPlano4" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano5')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_5')" ng-model="taxasAdministrativas[indexAux].nroPlano5" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano6')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_6')" ng-model="taxasAdministrativas[indexAux].nroPlano6" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano7')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_7')" ng-model="taxasAdministrativas[indexAux].nroPlano7" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano8')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_8')" ng-model="taxasAdministrativas[indexAux].nroPlano8" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano9')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_9')" ng-model="taxasAdministrativas[indexAux].nroPlano9" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano10')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_10')" ng-model="taxasAdministrativas[indexAux].nroPlano10" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano11')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_11')" ng-model="taxasAdministrativas[indexAux].nroPlano11" ng-disabled="!editarTaxas"></input></td>
+                <td><input type="text" class="form-control" ng-keyup="taxaKeyup(indexAux, 'nroPlano12')" ng-blur="pushPlanosParaAtualizar(indexAux, 'PLANO_12')" ng-model="taxasAdministrativas[indexAux].nroPlano12" ng-disabled="!editarTaxas"></input></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- PAGINACAO FRONT-END -->
+    <div class="col-md-12 col-lg-12">
+        <ul class="pagination-sm"
+            uib-pagination
+            boundary-links="true"
+            total-items="totalItems"
+            ng-model="currentPage"
+            items-per-page="itemsPerPage"
+            max-size="maxSize"
+            
+            first-text="In&iacute;cio"
+            last-text="Fim"
+            previous-text="Anterior"
+            next-text="Pr&oacute;ximo">
+        </ul>
+    </div>
+
+
+    <!-- popup confirmacao -->
+    <div id="modalConfirmar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmação</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja salvar as alterações?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-verde" ng-click="salvar(taxasAdministrativasSalvar)">Sim</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

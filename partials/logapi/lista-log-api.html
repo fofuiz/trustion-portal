@@ -1,0 +1,128 @@
+<section class="container-fluid text-center">
+	<h3>Consulta de APIs</h3>
+
+	<form class="form-horizontal" id="formListaLogApi" name="formListaLogApi" ng-submit="pesquisarPorCriterios()" novalidate>
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idGrupoEconomico">Grupo:</label>
+	
+			<div class="col-xs-6">
+				<select id="idGrupoEconomico" class="form-control" ng-model="filtroLogApi.idGrupoEconomico" ng-change="carregarEmpresas()"
+						ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico" >
+		
+					<option value="">Selecione um grupo...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmpresa">Empresa:</label>
+	
+			<div class="col-xs-6">
+				<select id="idEmpresa" class="form-control" ng-model="filtroLogApi.idEmpresa" ng-change="carregarCofres()"
+						ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa" >
+					<option value="">Selecione uma empresa...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idCofre">Cofre:</label>
+	
+			<div class="col-xs-6">
+				<select id="idCofre" class="form-control" ng-model="filtroLogApi.idCofre"
+						ng-options="cofre.idCofre as cofre.numSerie for cofre in listaCofre" >
+					<option value="">Selecione um cofre...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="statusConsulta">Status da Consulta:</label>
+	
+			<div class="col-xs-6">
+				<select id="statusConsulta" class="form-control" ng-model="filtroLogApi.statusConsulta"
+						ng-options="statusConsulta as statusConsulta for statusConsulta in listaStatusConsulta" >
+					<option value="">Selecione um status da consulta...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-offset-sm-3 col-sm-3 control-label" for="data-inicial">Data Inicial:*</label>
+			<div class="col-sm-2">
+				<input id="data-inicial" class="form-control" moment-picker="dataInicialFormatada" locale="pt-br" max-date="maxData" min-date="minData" max-view="month" min-view="month" start-view="month" ng-model="dataInicial" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"/>
+			</div>
+			<label class="col-sm-2 control-label" for="data-final">Data Final:*</label>
+			<div class="col-sm-2">
+				<input id="data-final" class="form-control" moment-picker="dataFinalFormatada" locale="pt-br" max-date="maxData" min-date="minData" max-view="month" min-view="month" start-view="month" ng-model="dataFinal" format="DD/MM/YYYY" maxlength="10" ng-required="true" autocomplete="off"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-12">
+				<table class="table table-stripped table-hover">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>Grupo</h4></th>
+							<th class="text-center texto-branco"><h4>Empresa</h4></th>
+							<th class="text-center texto-branco"><h4>Cofre</h4></th>
+							<th class="text-center texto-branco"><h4>API</h4></th>
+							<th class="text-center texto-branco"><h4>Data Consulta</h4></th>
+							<th class="text-center texto-branco"><h4>Status Consulta</h4></th>
+							<th class="text-center texto-branco"><h4>Mensagem</h4></th>
+						</tr>
+					</thead>
+	
+					<tbody>
+						<tr ng-repeat="logApi in listaLogApi">
+							<td class="text-center">{{logApi.grupoEconomico}}</td>
+							<td class="text-center">{{logApi.empresa}}</td>
+							<td class="text-center">{{logApi.numSerialCofre}}</td>
+							<td class="text-center">{{logApi.api}}</td>
+							<td class="text-center">{{logApi.dataLog | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+							<td class="text-center">{{logApi.statusConsulta}}</td>
+							<td class="text-center">{{logApi.mensagem}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-1 col-xs-11">
+				<div>
+					<ul ng-show="paginacao" uib-pagination
+						class="pagination"
+						rotate="false"
+						boundary-link-numbers="true"
+						
+						previous-text="&lsaquo;" 
+						next-text="&rsaquo;" 
+						first-text="&laquo;" 
+						last-text="&raquo;"						
+						
+						ng-disabled="pag_desabilitado"
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina"
+						total-items="pag_totalRegistros"
+						ng-model="pag_paginaSelecionada"
+						ng-change="carregarLogsPorPagina()">
+					</ul>
+					<input type="button" ui-sref="home" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+				</div>
+			</div>
+		</div>
+	</form>
+</section>

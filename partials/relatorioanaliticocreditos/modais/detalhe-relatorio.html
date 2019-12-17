@@ -1,0 +1,93 @@
+<div class="modal-header background-verde">
+	<h3 class="modal-title" id="modal-titulo">Detalhes do Fechamento do Cr&eacute;dito Di&aacute;rio</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+	<div class="row">
+		<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span>{{mensagemErro}}</span>
+		</div>
+	</div>
+	
+	
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">								
+				<th class="text-center texto-branco" colspan="4"><h7>Dep&oacute;sitos Compusafe</h7></th>
+			</tr>
+
+			<tr class="cabecalho">
+				<th class="text-center texto-branco" rowspan="2"><h7>Nr. Serial Cofre</h7></th>
+				<th class="text-center texto-branco" colspan="3"><h7>Dados do Fechamento</h7></th>
+			</tr>
+
+			<tr class="cabecalho">
+				<th class="text-center texto-branco"><h7>C&oacute;digo do Fechamento</h7></th> 
+				<th class="text-center texto-branco"><h7>Total Declarado</h7></th>				
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td class="text-center">
+					<a ng-click="modalDetalheGTV()" id="btn-3">{{numSerie}}</a>
+				</td>
+				<td class="text-center">{{codigoFechamento}}</td>
+				<td class="text-center">{{valorTotalExibicao | realbrasileiro }}</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	
+	<table class="table table-bordered" class="table table-striped table-condensed" cellspacing="0" width="100%">
+		<thead>
+			<tr class="cabecalho">
+				<th class="text-center texto-branco"><h7>Data Dep&oacute;sito</h7></th>
+				<th class="text-center texto-branco"><h7>C&oacute;digo do Dep&oacute;sito</h7></th>
+				<th class="text-center texto-branco col-sm-3"><h7>Depositante</h7></th>
+				<th class="text-center texto-branco"><h7>Sequencia Dep&oacute;sito</h7></th>
+				<th class="text-center texto-branco"><h7>Valor Depositado</h7></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="detalheRelatorio in listaDetalheRelatorio">
+				<td class="text-center">{{detalheRelatorio.depositoDT | date:'dd/MM/yyyy'}}</td>
+				<td class="text-center">{{detalheRelatorio.codigoMovimento}}</td>
+				<td class="text-center">{{detalheRelatorio.depositante}}</td>
+				<td class="text-center">{{detalheRelatorio.sequencia}}</td>
+				<td class="text-center">{{detalheRelatorio.valorTotal | realbrasileiro}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="form-group">
+			<div class="col-xs-12" align="center">
+				<div>
+					<ul uib-pagination
+						class="pagination"
+						rotate="false"
+						boundary-link-numbers="true"
+						
+						previous-text="&lsaquo;" 
+						next-text="&rsaquo;" 
+						first-text="&laquo;" 
+						last-text="&raquo;"						
+						
+						ng-disabled="pag_desabilitado"
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina"
+						total-items="pag_totalRegistros"
+						ng-model="pag_paginaSelecionada"
+						ng-change="carregarRelatorioPorPagina(relatorio.codigoFechamento, relatorio.numSerie)">
+					</ul>
+				</div>
+			</div>
+		</div>
+
+<div class="modal-footer">
+    <button class="btn btn-verde" type="button" ng-click="voltar()">Voltar</button>
+</div>

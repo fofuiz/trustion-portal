@@ -1,0 +1,30 @@
+<section>
+	<h3 class="text-center" ng-if="!ehEdicao">Cadastro Motivo da Conclusão</h3>
+	<h3 class="text-center" ng-if="ehEdicao">Alteração de Motivo da Conclusão</h3>
+
+	<form class="form-horizontal" id="formMotivoConclusao" name="formMotivoConclusao" ng-submit="submitMotivoConclusao()" novalidate>
+		<!-- descricao -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idDescricao">Descrição:*</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idDescricao"
+					maxlength="150"
+					ng-minlength="3" ng-maxlength="150" ng-required="true"
+					ng-model="motivoConclusao.descricao"
+					ng-required="true"/>
+			</div>
+		</div>
+
+		<!-- botoes salvar e voltar -->
+		<div class="form-group">
+			<!-- btn salvar -->
+			<div class="col-xs-3 col-xs-offset-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar" ng-disabled="formMotivoConclusao.$invalid"/>
+			</div>
+			<!-- btn voltar -->
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaTipoMotivoConclusao" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

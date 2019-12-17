@@ -1,0 +1,42 @@
+<section class="text-center">
+	<h3>Cadastro de Grupos</h3>
+	
+	<form class="form-horizontal" id="form-search" name="frmCadastroGrupoEconomico" ng-submit="cadastraGrupoEconomico()" novalidate>
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="id-grupo">ID do Grupo:*</label>
+			
+			<div class="col-xs-6">
+				<input class="form-control" type="number" id="id-grupo" ng-model="id" placeholder="Digite id do grupo" disabled/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="cnpj">CNPJ:*</label>
+			
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="cnpj" ui-mask="99.999.999/9999-99" ng-model="cnpj" ng-required="true"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="nome-grupo">Nome do Grupo:*</label>
+			
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="nome-grupo" ng-model="nome" placeholder="Digite o nome do grupo" maxlength="150"  ng-required="true"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaGrupoEconomico" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>

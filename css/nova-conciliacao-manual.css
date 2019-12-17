@@ -1,0 +1,145 @@
+
+.form02 ul, .form03 ul {
+    list-style: none;
+    margin: 0px;
+    padding: 10px;
+}
+
+.form02 ul li label {
+  font-weight: bold;
+  min-width: 140px;
+  text-align: right;
+}
+
+.form03 ul li {
+  font-size: 1.3em;
+  text-align: center;
+}
+.form03 ul li label {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.6em;
+    color: #E22118;
+}
+
+
+.group-by {
+  padding: 4px 10px;
+}
+
+/* ................. END FORM .................*/
+table.nova-conc-man-table {
+    border: 1px solid #CCCCCC !important;
+    margin-bottom: 60px;
+    -moz-border-radius: 10px !important;
+    -webkit-border-radius: 10px !important;
+border-radius: 10px !important;
+}
+table.nova-conc-man-table thead tr th {
+    color: #FFF;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+th.subtabela {
+    background-color: #CCC;
+    color: #666;
+}
+
+table.nova-conc-man-table tbody tr.impar {
+background: #999;
+}
+
+table.nova-conc-man-table tbody tr:hover {
+    cursor: pointer;
+    background-color: #FFFFCC;
+}
+
+/*................. TIPOGRAFIA ................. */
+.title02,
+.title04 {
+  background: #747476;
+  color: #FFF;
+  display: block;
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 6px 0px 6px 8px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.title02,
+.title03,
+.title-legenda {
+  font-size: 25px !important; }
+
+.title02 {
+  text-transform: capitalize !important; }
+
+.title03 {
+  font-weight: bold; }
+
+.title04 {
+  background-color: #FFF;
+  border-bottom: 1px solid #CCC;
+  color: #747476;
+  margin: 0px 0px 10px 0px; }
+
+.label-paginacao {
+  padding: 6px 0px; }
+
+/* ................. END TIPOGRAFIA .................*/
+/* ................. UTILITÃRIAS ................. */
+.background-cinza {
+  background-color: #D5D5D7;
+}
+
+.center {
+  text-align: center;
+}
+
+.disabled {
+  background-color: #eee !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+.primeiro-elemento-margin {
+  margin-top: -20px;
+}
+
+.pesquisa01,
+.pesquisa02 {
+  margin-bottom: 10px;
+  text-align: left;
+  padding: 10px;
+}
+
+.pesquisa01 {
+  background-color: #CCC;
+}
+
+.pesquisa02 {
+  background-color: #DCDCDC;
+}
+
+
+.selecionado {
+  background-color: #FFFFCC !important;
+  border: 0px;
+}
+
+
+.nov-conc-modal {
+    top: 50%;
+    left: 50%;
+    width: 430px;
+    height: 200px;
+    padding: 10px;
+    z-index: 99;
+    position: fixed;
+    border: 1px solid#d0d0d0;
+    background-color: white;
+    transform: translate(-50%, -50%);
+}

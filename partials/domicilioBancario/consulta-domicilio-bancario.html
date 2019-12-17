@@ -1,0 +1,82 @@
+<section class="text-center">
+    <h3>Conciliador de Pagamentos - Consulta de Domicílio Bancário</h3>
+    <div class="row" ng-controller="DomicilioBancarioCtrl">
+        <!-- Simula um toaster -->
+        <div class="alert {{ tipoMensagem }}" ng-class="{'appToastr': appToastr}" role="alert" ng-show="isExibirMensagemErro" >
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            <span>{{mensagemErro}}</span>
+        </div>
+        <form class="form-horizontal">
+            <div class="form-group" ng-show="!loading">
+                <!-- Formulario Consulta domicilio -->
+                <ng-form name="formPesquisa">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <!-- Empresa -->
+                      <div class="row">
+                        <div class="col-mds-12 col-lg-12">
+                          <div class="form-group">
+                            <label class="control-label col-sm-3" for="empresa">Empresa</label>
+                              <div class="col-sm-6">
+                                <select id="empresa" class="form-control" ng-model="empresa">
+                                  <option value="">Selecione uma empresa</option>
+                                  <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+                                </select>  
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      <!-- Banco -->
+                      <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">Banco:</label>
+                            <div class="col-sm-6">
+                              <select id="codigoBanco" class="form-control" ng-model="codigoBancoStr">
+                                <option value="">Todos</option>
+                                <option ng-repeat="banco in listaBancos" value="{{banco.nroBanco}}">{{banco.nroBanco}}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- botao pesquisar -->
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3"></div>
+                            <div class="col-md-6 col-lg-6">
+                                <input type="submit" value="Pesquisar" class="btn btn-verde btn-lg btn-block" ng-click="perquisarDetalheDomicilioBancario()">
+                                </input>
+                            </div>
+                        </div>
+                    </div>
+                </ng-form>
+            </div>
+
+            <div class="col-md-12 col-lg-12">
+                <table class="table table-striped table-condensed table-default tableConciliacaoResumo" border="1">
+                    <thead>
+                        <tr>
+                            <th>Banco</th>
+                            <th>Ag&ecirc;ncia</th>
+                            <th>Conta</th>
+                            <th>Ativo</th>
+                        </tr>
+                    </thead>
+                    <tbody>					    
+                        <tr ng-show="!detalheDomicilioBancario.length">
+                            <td colspan="15" class="text-center">Nenhum registro encontrado.</td>
+                        </tr>
+
+                        <tr ng-repeat="row in detalheDomicilioBancario">
+                            <td>{{ row.nroBanco }}</td>
+                            <td>{{ row.nroAgencia }}</td>
+                            <td>{{ row.nroContaCorrente }}</td>
+                            <td>{{ row.staAtivo }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </form>
+    </div>
+</section>

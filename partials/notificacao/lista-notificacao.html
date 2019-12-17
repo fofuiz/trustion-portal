@@ -1,0 +1,167 @@
+<section class="text-center">
+	<h3>Pesquisa de Notifica&ccedil;&otilde;es</h3>
+
+	<form class="form-horizontal" id="formListaNotificacao" ng-submit="pesquisarPorCriterios()">
+
+		<div class="form-group">
+			<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemErro}}</span>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idGrupoEconomico">Grupo Econ&ocirc;mico:</label>
+	
+			<div class="col-xs-6">
+				<select id="idGrupoEconomico" class="form-control" ng-model="filtroNotificacao.idGrupoEconomico"
+						ng-change="carregarEmpresas()"
+						ng-options="grupoEconomico.idGrupoEconomico as grupoEconomico.nome for grupoEconomico in listaGrupoEconomico" >
+		
+					<option value="">Selecione um grupo econ&ocirc;mico...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmpresa">Empresa:</label>
+	
+			<div class="col-xs-6">
+				<select id="idEmpresa" class="form-control" ng-model="filtroNotificacao.idEmpresa"
+						ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa" >
+		
+					<option value="">Selecione uma empresa...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="tipo-grupo">Tipo de Notifica&ccedil;&atilde;o:</label>
+			
+			<div class="col-xs-6">
+				<select id="idTipoNotificacao" class="form-control" ng-model="filtroNotificacao.idTipoNotificacao" 
+						ng-options="tipoNotificacao.idTipoNotificacao as tipoNotificacao.descNotificacao for tipoNotificacao in listaTipoNotificacao">
+					<option value="">Selecione uma notifica&ccedil;&atilde;o...</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idLogin">Login:</label>
+			
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idLogin" ng-model="filtroNotificacao.login" maxlength="50"/>
+			</div>
+		</div>		
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNome">Nome de Usu&aacute;rio:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNome" ng-model="filtroNotificacao.nome" maxlength="100"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmail">E-mail:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idEmail" ng-model="filtroNotificacao.email"  maxlength="100" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="lbStatus">Status:</label>
+			
+			<div class="col-xs-6">
+				<select id="lbStatus" class="form-control" ng-model="filtroNotificacao.status" 
+						ng-options="status as status for status in statusListaNotificacao">
+					<option value="">Selecione um Status...</option>
+				</select>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input ui-sref="novoNotificacao" class="btn btn-verde btn-lg btn-block" value="Novo"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-1">
+			</div>
+
+			<div class="col-xs-9">
+				<table class="table table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>Grupo Econ&ocirc;mico</h4></th>
+							<th class="text-center texto-branco"><h4>Empresa</h4></th>
+							<th class="text-center texto-branco"><h4>Nome do Usu&aacute;rio</h4></th>
+							<th class="text-center texto-branco"><h4>Login</h4></th>
+							<th class="text-center texto-branco"><h4>E-mail</h4></th>
+							<th class="text-center texto-branco"><h4>Tipo de Notifica&ccedil;&atilde;o</h4></th>
+							<th class="text-center texto-branco"><h4>Status</h4></th>
+							<th class="text-center texto-branco"><h4>Editar</h4></th>
+						</tr>
+					</thead>
+	
+					<tbody>
+						<tr ng-repeat="notificacao in listaNotificacao">
+							<td class="text-center">{{notificacao.nomeGrupoEconomico}}</td>
+							<td class="text-center">{{notificacao.razaoSocial}}</td>
+							<td class="text-center">{{notificacao.usuarioDTO.nome}}</td>
+							<td class="text-center">{{notificacao.usuarioDTO.login}}</td>
+							<td class="text-center">{{notificacao.usuarioDTO.email}}</td>
+							<td class="text-center">{{notificacao.descTipoNotificacao}}</td>
+							<td class="text-center">{{notificacao.status}}</td>
+							<td class="text-center">
+								<button ui-sref="alteraNotificacao({idNotificacao : notificacao.idNotificacao})" 
+										class="btn btn-verde btn-sm" >
+		
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-xs-1">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-2 col-xs-8">
+				<div>
+					<ul ng-show="paginacao" uib-pagination
+						class="pagination"
+						rotate="false"
+						boundary-link-numbers="true"
+
+						previous-text="&lsaquo;"
+						next-text="&rsaquo;"
+						first-text="&laquo;"
+						last-text="&raquo;"
+
+						ng-disabled="pag_desabilitado"
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina"
+						total-items="pag_totalRegistros"
+						ng-model="pag_paginaSelecionada"
+						ng-change="carregarNotificacoesPorPagina(filtroNotificacaoPage)">
+					</ul>
+					<input type="button" ui-sref="home" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+				</div>
+			</div>
+		</div>
+	</form>
+</section>

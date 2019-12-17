@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="trustionPortal">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="img/trustion-login-avatar.png">
+		<title>Portal - Trustion</title>
+
+		<link rel="stylesheet" href="./css/login.css" />
+		<link rel="stylesheet" href="./css/lib/bootstrap.min.css" />
+		<link rel="stylesheet" href="./css/home.css" />
+		<link rel="stylesheet" href="./css/angular-moment-picker.min.css">
+		<link rel="stylesheet" href="./css/general.css" />
+		<link rel="stylesheet" href="./css/nova-conciliacao-manual.css" />
+		<link rel="stylesheet" href="./css/taxas-administrativas.css" />
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.11/css/all.css" crossorigin="anonymous">
+		
+		<!-- libs -->
+		<!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.9/angular-material.min.css"> -->
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>  -->
+
+		<script src="js/lib/jquery-3.2.1.min.js"></script>
+		<script src="js/lib/bootstrap.min.js"></script>
+		<script src="js/lib/angular.min.js"></script>
+		<script src="js/lib/angular-animate.min.js"></script>
+
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script> 
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script> 
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>  -->
+
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.9/angular-material.min.js"></script> -->
+	
+		<script src="js/lib/jquery.multi-selection.v1.js"></script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>-->
+		<script src="js/lib/angular-ui-router.js"></script>
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.4.6/mask.min.js"></script>-->
+		<script src="js/lib/mask.min.js"></script>
+		<script src="js/lib/ng-filters-br.js"></script>
+		<script src="js/lib/moment-with-locales.js"></script>
+		<script src="js/lib/angular-moment-picker.min.js"></script>
+		<script src="js/lib/angular-sanitize.min.js"></script>
+		<script src="js/lib/ng-csv.js"></script>
+		<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script src="js/lib/encoding-indexes.js"></script>
+		<script src="js/lib/encoding.js"></script>
+		<script src="js/lib/fileSaver.js"></script>
+		<script src="js/lib/angular-bootstrap-multiselect.min.js"></script>
+		<script src="js/lib/currency.js"></script>
+		<script src="js/lib/angular-locale_pt-br.js"></script>
+		<script src="js/lib/jquery.mask.min.js"></script>
+		<script src="js/lib/checklist-model.js"></script>
+
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>-->
+		<script type="text/javascript" src="js/lib/jquery.maskMoney.min.js"></script>
+
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>-->
+		<script type="text/javascript" src="js/lib/jspdf.min.js"></script>
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>-->
+		<script type="text/javascript" src="js/lib/jspdf.plugin.autotable.js"></script>
+		<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+		<script type="text/javascript" src="js/lib/charts-loader.js"></script>
+
+		<script type="text/javascript">
+            window.paceOptions = {
+                document: true, // disabled
+                eventLag: true,
+                restartOnPushState: true,
+                restartOnRequestAfter: true,
+                ajax: {
+                    trackMethods: [ 'POST','GET', 'PUT', 'DELETE', 'OPTIONS']
+                }
+            };
+		</script>
+
+		<script type="text/javascript" src="js/lib/pace.min.js"></script>
+		<link rel="stylesheet" href="css/pace-theme-loading-bar.css" />
+
+		<!-- app -->
+		<script src="js/main.js?__BUILD_NUMBER__"></script>
+		<script src="js/route.js?__BUILD_NUMBER__"></script>
+
+		<!-- controllers -->
+		<script src="js/controllers/mesclar-ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conclusao-ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/acao-ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conclusao-ocorrencia-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/acao-ocorrencia-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/login-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/menu-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/home-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/usuario-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/transportadora-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/redefinicao-senha-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/redefinicao-senha-primeiro-acesso-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/esqueceu-senha-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/grupo-economico-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/empresa-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/auditoria-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/tipo-servico-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/modelo-negocio-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/relatorio-analitico-creditos-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/notificacao-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/cofre-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/deposito-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/questionar-valor-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/detalhe-relatorio-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/alteracao-status-ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/enviar-mensagem-ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/detalhe-gtv-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/detalhe-conferencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/observacao-ocorrencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/upload-evidencia-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/log-api-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/nav-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/relatorio-analitico-creditos-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/relatorio-analitico-extrato-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/questionar-valor-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/observacao-ocorrencia-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/enviar-mensagem-ocorrencia-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/alteracao-status-ocorrencia-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/string-historico-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/detalhe-conciliacao-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conciliacao-manual-d1-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/detalhe-conciliacao-d0-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conciliacao-manual-d0-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/home-cartao-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/vendas-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/vendas-detalhe-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/recebimentos-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/recebimentos-detalhe-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/transacao-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/periodo-resumo-cartoes-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/periodo-resumo-numerarios-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/recebimentos-futuros-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/ajuste-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conciliacao-vendas-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conciliacao-cartao-resumo-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/conciliacao-cartao-detalhe-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/domicilio-bancario-ctrl.js"></script>
+		<script src="js/controllers/taxas-antecipacao-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/nova-conciliacao-manual-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/regra-cliente-adquirente-ctrl.js"></script>
+		<script src="js/controllers/aluguel-equipamentos-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/gestao-vendas-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/taxas-administrativas-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/taxas-administrativas-cadastro-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/registros-nao-processados-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/categoria-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/tipo-questionamento-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/motivo-conclusao-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/relatorio-conciliacao-vendas-numerario.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/detalhes-gtv-bananinhas-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/cadastrar-video-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/link-video-controller.js?__BUILD_NUMBER__"></script>
+		<script src="js/controllers/relatorio-descritivo-cartoes.js?__BUILD_NUMBER__"></script>
+				
+		<!-- services -->
+		<script src="js/services/mesclar-ocorrencia-d1-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/mesclar-ocorrencia-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/environment-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/cache-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/login-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/usuario-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/transportadora-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/grupo-economico-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/perfil-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/empresa-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/auditoria-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tipo-servico-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/modelo-negocio-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tipo-credito-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/notificacao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tipo-notificacao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/cofre-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/deposito-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/relatorio-analitico-creditos-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tipo-questionamento-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/ocorrencia-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/detalhe-relatorio-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/detalhe-gtv-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/detalhe-conferencia-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/detalhe-composicao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tipo-status-ocorrencia-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tipo-motivo-conclusao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/atividade-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/log-api-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/menu-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/relatorio-analitico-creditos-d1-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/relatorio-analitico-extrato-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/ocorrencia-d1-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/atividade-d1-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/upload-evidencia-d1-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/lista-banco-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/string-historico-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/extrato-elegivel-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/relatorio-analitico-total-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/categorizacao-cartoes-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/vendas-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/recebimentos-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/cache-cartoes-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/transacao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/periodo-resumo-cartoes-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/periodo-resumo-numerarios-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/tableau-token-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/valores-combo-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/conciliacao-cartao-resumo-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/conciliacao-cartao-detalhe-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/domicilio-bancario-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/nova-conciliacao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/regra-cliente-adquirente-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/taxa-antecipacao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/aluguel-equipamento-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/gestao-vendas-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/taxas-administrativas-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/registros-nao-processados-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/categoria-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/motivo-conclusao-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/relatorio-conciliacao-vendas-numerario.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/detalhes-gtv-bananinhas-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/video-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/link-video-service.js?__BUILD_NUMBER__"></script>
+		<script src="js/services/relatorio-descritivo-cartoes-service.js?__BUILD_NUMBER__"></script>
+
+		<!-- utils -->
+		<script src="js/utils/tratamento-encoding-utf8.js?__BUILD_NUMBER__"></script>
+		<script src="js/utils/trustion-helpers.js?__BUILD_NUMBER__"></script>
+
+		<!-- directives -->
+		<script src="js/directives/uiMessageDirective.js"></script>
+
+		<style>
+		
+			.page-box {
+				display:flex;
+				flex-direction: column;
+				width: 100%;                        
+			}
+
+			.header-box {
+				width: 100%;				
+				position: fixed;
+				top: 0px;
+				background-color: #FFF;
+			}
+			
+			.main-box {
+				display:flex;
+				flex-direction: row;
+				width: 100%;  
+				height: calc(100vh - 120px);
+				margin: 60px 0px 60px 0px;            
+			}
+
+			.menu-box {
+				width: 20%;        
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+
+			.partial-box {
+				position: relative;
+				width: 80%;
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+
+			.footer-box {
+				width: 100%;				
+				position: fixed;
+				bottom: 0px;
+				background-color: #FFF;
+			}
+		</style>
+	</head>  
+
+	<body class="{{imageback}}" ng-cloak>
+		<div class="overlay"></div>
+
+		<!-- <div class="page-wrap">
+			<div ui-view="partialLogin" class="container-fluid"></div>
+			<div ui-view="partialNav" class="nav-box"></div>
+			<div ui-view="partialRedefinicaoSenha" class="container-fluid"></div>
+			<div ui-view="partialEsqueceuSenha" class="container-fluid"></div>
+			<div class="container-fluid container-partial">
+				<div class="row">					
+					<div class="col-md-2">
+						<div ui-view="partialMenu" class="partial-box col-md-2"></div>
+					</div>
+					<div class="col-md-10">
+						<div ui-message class="message-box"></div>
+						<div ui-view="partialConteudo" class="view-box"></div>						
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="site-footer" ui-view="partialRodape" class="footer-box"></footer> -->
+
+
+		<div class="page-box">
+			<div ui-view="partialLogin" class="container-fluid" style="z-index: 5"></div>
+			<div ui-view="partialRedefinicaoSenha" class="container-fluid"></div>
+			<div ui-view="partialEsqueceuSenha" class="container-fluid"></div>
+			<div ui-view="partialNav" class="header-box"></div>
+			<div class="main-box">
+				<div ui-view="partialMenu" class="menu-box"></div>
+				<div ui-view="partialConteudo" class="partial-box"></div>
+			</div>
+			<div ui-message class="message-box"></div>
+			<div ui-view="partialRodape" class="footer-box"></div>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,171 @@
+<section class="text-center">
+	<h3>Pesquisa de Usu&aacute;rios</h3>
+
+	<form class="form-horizontal" id="formListaUsuario" ng-submit="pesquisarPorCriterios()">
+		<!-- nome -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNome">Nome:</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNome"
+					maxlength="100"
+					ng-model="filtroUsuario.nome"/>
+			</div>
+		</div>
+		<!-- email -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idEmail">E-mail:</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idEmail"
+					maxlength="150"
+					ng-model="filtroUsuario.email"/>
+			</div>
+		</div>
+		<!-- telefone -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="telefone">Telefone:</label>
+			<div class="col-xs-6">
+				<input type="text" id="telefone" class="form-control" ui-mask="(99) 99999-9999" ng-model="filtroUsuario.nroTelefone"/>
+			</div>
+		</div>
+		<!-- login -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idLogin">Login:</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idLogin"
+					maxlength="50"
+					ng-model="filtroUsuario.login"/>
+			</div>
+		</div>
+		<!-- grupo empresa -->
+		<div class="form-group" ng-if="idPerfil != 2">
+			<label class="control-label col-xs-3" for="grupoEmpresa">Grupo Empresa:</label>
+			<div class="col-xs-6">
+				<select id="grupoEmpresa" class="form-control"
+					ng-model="filtroUsuario.idGrupoEconomico"
+					ng-change="carregarEmpresasFiltro(filtroUsuario.idGrupoEconomico)"
+					ng-options="grupo.idGrupoEconomico as grupo.nome for grupo in listaGrupoEmpresas[0]">
+					<option value="">Selecione um grupo...</option>
+				</select>
+			</div>
+		</div>
+		<!-- empresa -->
+		<div class="form-group" ng-if="idPerfil != 2">
+			<label class="control-label col-xs-3" for="idEmpresa">Empresa:</label>
+			<div class="col-xs-6">
+				<select id="idEmpresa" class="form-control"
+					ng-model="filtroUsuario.idEmpresa"
+					ng-options="empresa.idEmpresa as empresa.razaoSocial for empresa in listaEmpresa" >
+					<option value="">Selecione uma empresa (selecione um grupo empresa)...</option>
+				</select>
+			</div>
+		</div>
+		<!-- transportadora -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idTransportadora">Transportadora:</label>
+			<div class="col-xs-6">
+				<select id="idTransportadora" class="form-control"
+					ng-model="filtroUsuario.idTransportadora"
+					ng-options="transportadora.idTransportadora as transportadora.razaoSocial for transportadora in listaTransportadoras">
+					<option value="">Selecione uma transportadora...</option>
+				</select>
+			</div>
+		</div>
+		<!-- perfil -->
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idPerfil">Perfil:</label>
+			<div class="col-xs-6">
+				<select id="idPerfil" class="form-control"
+					ng-model="filtroUsuario.idPerfil"
+					ng-options="perfil.idPerfil as perfil.descricao for perfil in listaPerfilPesquisa" >
+					<option value="">Selecione um perfil...</option>
+				</select>
+			</div>
+		</div>
+		<!-- botoes novo e pesquisar -->
+		<div class="form-group">
+			<!-- novo -->
+			<div class="col-xs-3 col-xs-offset-3">
+				<input type="button" ui-sref="cadastroUsuario" class="btn btn-verde btn-lg btn-block" value="Novo"/>
+			</div>
+			<!-- pesquisar -->
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+
+
+		<!-- resultado pesquisa -->
+		<div class="form-group">
+			<div class="col-xs-12 col-lg-11">
+				<table id="tblUsuario" class="table table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>Login</h4></th>
+							<th class="text-center texto-branco"><h4>Nome</h4></th>
+							<th class="text-center texto-branco"><h4>E-mail</h4></th>
+							<th class="text-center texto-branco"><h4>Grupo</h4></th>
+							<th class="text-center texto-branco"><h4>Empresa/Transportadora</h4></th>
+							<th class="text-center texto-branco phone-col"><h4>Telefone</h4></th>
+							<th class="text-center texto-branco"><h4>Perfil</h4></th>
+							<th class="text-center texto-branco"><h4>Status</h4></th>
+							<th class="text-center texto-branco"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="usuario in listaUsuario">
+							<td class="text-center">{{usuario.login}}</td>
+							<td class="text-center">{{usuario.nome}}</td>
+							<td class="text-center">{{usuario.email}}</td>
+							<td class="text-center grupo-column">
+								<ul>
+									<li ng-repeat="grupo in usuario.grupoEconomicoList">{{grupo.nome}}</li>
+								</ul>
+							</td>
+							<td class="text-center empresa-transportadora-column">
+								<ul>
+									<li ng-repeat="empresa in usuario.empresaList">{{empresa.razaoSocial}}</li>
+								</ul>
+								<ul>
+									<li ng-repeat="transportadora in usuario.transportadoraList">{{transportadora.razaoSocial}}</li>
+								</ul>
+							</td>
+							<td class="text-center phone-col">{{usuario.nroTelefone | tel}}</td>
+							<td class="text-center">{{usuario.descricaoPerfil}}</td>
+							<td class="text-center">{{usuario.statusDescricao}}</td>
+							<td class="text-center">
+								<button class="btn btn-verde btn-sm"
+									ui-sref="cadastroUsuario({idUsuario : usuario.idUsuario})">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-xs-12 col-lg-10">
+				<ul ng-show="paginacao" uib-pagination
+					class="pagination"
+					rotate="false"
+					boundary-link-numbers="true"
+
+					previous-text="&lsaquo;"
+					next-text="&rsaquo;"
+					first-text="&laquo;"
+					last-text="&raquo;"
+
+					ng-disabled="pag_desabilitado"
+					max-size="pag_tamanho"
+					items-per-page="pag_registrosPorPagina"
+					total-items="pag_totalRegistros"
+					ng-model="pag_paginaSelecionada"
+					ng-change="carregarUsuariosPorPagina(filtroUsuarioPage)">
+				</ul>
+			</div>
+			<div class="col-xs-12 col-lg-2 col-lg-offset-9">
+				<input type="button" ui-sref="home" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+			</div>
+		</div>
+	</form>
+</section>

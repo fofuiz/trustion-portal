@@ -1,0 +1,99 @@
+<section class="text-center">
+	<h3>Pesquisa de Modelos de Neg&oacute;cios</h3>
+
+	<form class="form-horizontal" id="formListaUsuario" ng-submit="pesquisarPorCriterios()">
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNome">Nome do Modelo:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="idNome" ng-model="filtroModelo.nome" maxlength="100"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idTransportadora">Transportadora:</label>
+	
+			<div class="col-xs-6">
+				<select id="idTransportadora" class="form-control" ng-model="filtroModelo.idTransportadora"
+						ng-options="transportadora.idTransportadora as transportadora.razaoSocial for transportadora in listaTransportadora" >
+		
+					<option value="">Selecione uma transportadora...</option>
+				</select>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3" ng-show="!isPerfilBPO">
+				<input ui-sref="novoModeloNegocio" class="btn btn-verde btn-lg btn-block" value="Novo"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-1">
+			</div>
+
+			<div class="col-xs-9">
+				<table class="table table-stripped table-hover">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>Nome do Modelo</h4></th>
+							<th class="text-center texto-branco"><h4>Tipo de cr&eacute;dito</h4></th>
+							<th class="text-center texto-branco"><h4>Transportadora</h4></th>
+							<th class="text-center texto-branco"><h4>Detalhes</h4></th>
+						</tr>
+					</thead>
+	
+					<tbody>
+						<tr ng-repeat="modelo in listaModelo">
+							<td class="text-center">{{modelo.nome}}</td>
+							<td class="text-center">{{modelo.tipoCredito}}</td>
+							<td class="text-center">{{modelo.transportadora}}</td>
+							<td class="text-center">
+								<button ui-sref="alteraModeloNegocio({modeloId : modelo.idModeloNegocio})" 
+										class="btn btn-verde" >
+		
+									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-xs-1">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-2 col-xs-8">
+				<div>
+					<ul ng-show="paginacao" uib-pagination
+						class="pagination"
+						rotate="false"
+						boundary-link-numbers="true"
+						
+						previous-text="&lsaquo;" 
+						next-text="&rsaquo;" 
+						first-text="&laquo;" 
+						last-text="&raquo;"						
+						
+						ng-disabled="pag_desabilitado"
+						max-size="pag_tamanho"
+						items-per-page="pag_registrosPorPagina"
+						total-items="pag_totalRegistros"
+						ng-model="pag_paginaSelecionada"
+						ng-change="carregarModelosPorPagina()">
+					</ul>
+					<input type="button" ui-sref="home" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+				</div>
+			</div>
+		</div>
+	</form>
+</section>

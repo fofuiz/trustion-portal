@@ -1,0 +1,140 @@
+<section class="text-center">
+    <h3>Conciliador de Pagamentos - Consultar Concilia&ccedil;&atilde;o Resumo</h3>
+    
+    <!-- Simula um toaster -->
+    <div class="alert {{ tipoMensagem }}" ng-class="{'appToastr': appToastr}" role="alert" ng-show="isExibirMensagemErro" >
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      <span>{{mensagemErro}}</span>
+    </div>
+    
+    <form class="form-horizontal">
+      
+      <!-- Empresa -->
+      <div class="form-group">
+        <label class="control-label col-xs-3" for="empresa">Empresa</label>
+        <div class="col-xs-6">
+          <select id="empresa" class="form-control" ng-model="empresa">
+            <option value="">Selecione uma empresa</option>
+            <option ng-repeat="empresa in empresaCaList" value="{{empresa.cnpj}}">{{empresa.razaoSocial}}</option>
+          </select>  
+        </div>
+      </div>
+
+        <!-- banco -->
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="banco">Banco:</label>
+            <div class="col-xs-6">
+                <select class="form-control" id="cboBancos" ng-model="numeroBanco">
+                    <option value="">Todos</option>
+                    <option ng-repeat="banco in comboBancos" value="{{banco.nroBanco}}">{{banco.nroBanco}}</option>
+                </select>
+            </div>
+        </div>
+        <!-- agencia -->
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="agencia">Ag&ecirc;ncia:</label>
+            <div class="col-xs-6">
+                <input class="form-control" type="text" id="agencia" ng-model="numeroAgencia" somente-numero size="4">
+            </div>
+        </div>
+        <!-- conta -->
+        <div class="form-group">
+            <label class="control-label col-xs-3" for="conta">Conta:</label>
+            <div class="col-xs-6">
+                <input class="form-control" type="text" id="conta" ng-model="numeroConta" size="10">
+            </div>
+        </div>
+        <!-- referencia -->
+        <div class="form-group">
+            <label class="control-label col-xs-3">Refer&ecirc;ncia:</label>
+            <div class="col-xs-6">
+                <div class="col-xs-5 noPaddingLeft">
+                    <select id="anoMesRef" class="form-control col-xs-5" ng-model="anoMesRefStr">
+                        <option ng-repeat="ref in comboRefs" value="{{ref.codigoMes}}">{{ref.labelMes}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-5 noPaddingLeft">
+                    <select id="anoReferencia" class="form-control col-xs-5" ng-model="anoRef">
+                        <option ng-repeat="ano in comboAnoRefs" value="{{ano}}">{{ano}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- adquirente -->
+        <div class="form-group">
+            <label for="adquirente" class="control-label col-xs-3">Adquirente:</label>
+            <div class="col-xs-6">
+                <select id="codigoAdquirente" class="form-control" ng-model="codigoOperadora">
+                    <option value="">Todos</option>
+                    <option ng-repeat="operadora in comboOperadoras" value="{{operadora.codOperadora}}">{{operadora.nomeOperadora}}</option>
+                </select>
+            </div>
+        </div>
+        <!-- botao pesquisar -->
+        <div class="form-group">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-3">
+                <input type="submit" value="Pesquisar" class="btn btn-verde btn-lg btn-block" ng-click="pesquisarRegistros()">
+            </div>
+        </div>
+    </form>
+
+    <!-- resultado pesquisa -->
+    <div class="form-group">
+        <!-- exportar excel -->
+        <div ng-if="resumoBancos.length != 0" class="pull-right">
+            <img src="img/excel.png" class="img-responsive center-block cursor-pointer"
+                alt="Salvar dados da tabela no formato Excel"
+                title="Salvar dados da tabela no formato Excel"
+                ng-click="exportConciliacaoResumo()"/>
+        </div>
+        <div class="col-xs-12 overflowScrollx">
+            <table class="table table-hover table-condensed table-striped tableConciliacaoResumo cursor-pointer">
+                <thead>
+                    <tr>
+                        <th>Refer&ecirc;ncia</th>
+                        <th>Banco</th>
+                        <th>Ag&ecirc;ncia</th>
+                        <th>Conta</th>
+                        <th>Adquirente</th>
+                        <th>R$ Cart&otilde;es</th>
+                        <th>R$ Extrato</th>
+                        <th>R$ Conc. Cart&otilde;es</th>
+                        <th>R$ Conc. Extrato</th>
+                        <th>R$ N&atilde;o Conc. Cart&otilde;es</th>
+                        <th>R$ N&atilde;o Conc. Extrato</th>
+                        <th>% Conc. Cart&otilde;es</th>
+                        <th>% Conc. Extrato</th>
+                        <th>% N&atilde;o Conc. Cart&otilde;es</th>
+                        <th>% N&atilde;o Conc. Extrato</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-show="!registros.length">
+                        <td colspan="15" class="text-center">Nenhum registro encontrado.</td>
+                    </tr>
+
+                    <tr ng-repeat="row in registros"   ui-sref="conciliacaoDetalhe({numBanco : row.numeroBanco,
+                    numAg : row.numeroAgencia, numConta : row.numeroConta, codOperadora : row.codOperadora, dataExtratoPagamentoReferencia : row.dataExtrPagamentoReferencia, origemRequisicao : 'cartaoResumo'})">
+                        <td align="center">{{ row.dataExtrPagamentoReferencia }}</td>
+                        <td align="center">{{ row.numeroBanco }}</td>
+                        <td align="center">{{ row.numeroAgencia }}</td>
+                        <td align="center">{{ row.numeroConta }}</td>
+                        <td align="center">{{ row.nomeOperadora }}</td>
+                        <td align="right">{{ row.valorPagamentoTotal | currency}}</td>
+                        <td align="right">{{ row.valorExtratoTotal | currency}}</td>
+                        <td align="right">{{ row.valorPagamentoConciliado | currency}}</td>
+                        <td align="right">{{ row.valorExtratoConciliado | currency}}</td>
+                        <td align="right">{{ row.valorPagamentoNaoConciliado | currency }}</td>
+                        <td align="right">{{ row.valorExtratoNaoConciliado | currency }}</td>
+                        <td align="right">{{ row.porcentagemPagamentoConciliada | number:2 }}</td>
+                        <td align="right">{{ row.porcentagemExtratoConciliada | number:2 }}</td>
+                        <td align="right">{{ row.porcentagemPagamentoNaoConciliada | number:2 }}</td>
+                        <td align="right">{{ row.porcentagemExtratoNaoConciliada | number:2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

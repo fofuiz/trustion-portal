@@ -1,0 +1,109 @@
+<section class="text-center">
+	<h3>Pesquisa de String de Hist&oacute;rico</h3>
+
+	<form id="formStringHistorico" class="form-horizontal" ng-submit="pesquisarPorCriterios()">
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idListaBanco">Banco:</label>
+			
+			<div class="col-xs-6">
+				<select id="idListaBanco" class="form-control" ng-model="filtroStringHistorico.idListaBanco"
+					ng-options="banco.idListaBanco as banco.descricao for banco in listaBanco" >
+					<option value="">Selecione um banco...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="stringHistorico">String de Hist&oacute;rico:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="stringHistorico" maxlength="25" ng-model="filtroStringHistorico.texto" valida-string/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="status">Status:</label>
+			
+			<div class="col-xs-6">
+				<select id="status" class="form-control" ng-model="filtroStringHistorico.status"
+					ng-options="status as status for status in listaStatus" >
+					<option value="">Selecione um status...</option>
+				</select>
+			</div>
+		</div>	
+	
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input ui-sref="novoStringHistorico" class="btn btn-verde btn-lg btn-block" value="Novo"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Pesquisar"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-1">
+			</div>
+
+			<div class="col-xs-10">
+				<table id="tblTipoServico" class="table table-striped table-condensed" cellspacing="0" width="100%">
+					<thead>
+						<tr class="cabecalho">
+							<th class="text-center texto-branco"><h4>Banco</h4></th>
+							<th class="text-center texto-branco"><h4>String</h4></th>
+							<th class="text-center texto-branco"><h4>Status</h4></th>
+							<th class="text-center texto-branco"><h4>Data de Inclus&atilde;o</h4></th>
+							<th class="text-center texto-branco"><h4>A&ccedil;&atilde;o</h4></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr ng-repeat="stringHistorico in listaStringHistorico">
+							<td class="text-center">{{stringHistorico.banco}}</td>
+							<td class="text-center"><pre class="no-background">{{stringHistorico.texto}}</pre></td>
+							<td class="text-center">{{stringHistorico.status}}</td>
+							<td class="text-center">{{stringHistorico.dataCriacao | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+							<td class="text-center">
+								<button ui-sref="alteraStringHistorico({idStringHistorico : stringHistorico.idStringHistorico})" 
+									class="btn btn-verde btn-sm" >
+
+								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-xs-1">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-1 col-xs-10">
+				<ul ng-show="paginacao" uib-pagination
+					class="pagination"
+					rotate="false"
+					boundary-link-numbers="true"
+
+					previous-text="&lsaquo;"
+					next-text="&rsaquo;"
+					first-text="&laquo;"
+					last-text="&raquo;"
+
+					ng-disabled="pag_desabilitado"
+					max-size="pag_tamanho"
+					items-per-page="pag_registrosPorPagina"
+					total-items="pag_totalRegistros"
+					ng-model="pag_paginaSelecionada"
+					ng-change="pesquisarPorCriteriosPorPagina(filtroStringHistoricoPage)">
+				</ul>
+				<input type="button" ui-sref="home" class="btn btn-verde btn-lg pull-right margin-top-10" value="Voltar" />
+			</div>
+		</div>
+	</form>
+</section>

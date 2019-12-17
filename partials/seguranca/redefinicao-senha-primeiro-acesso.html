@@ -1,0 +1,53 @@
+<section class="text-center">
+	<h3>Redefini&ccedil;&atilde;o de Senha</h3>
+
+	<form id="formRedefinicaoSenha" name="formRedefinicaoSenha" class="form-horizontal" ng-submit="redefinirSenha()" novalidate>
+
+		<div class="form-group">
+			<div class="alert alert-danger" role="alert" ng-show="isExibirMensagemErro" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemErro}}</span>
+			</div>
+
+			<div class="alert alert-success" role="alert" ng-show="isExibirMensagemSucesso" >
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span>{{mensagemSucesso}}</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idSenhaAtual">Senha atual:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="password" id="idSenhaAtual" ng-model="redefinicaoSenha.senhaAtual" ng-required="true" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNovaSenha">Nova senha:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="password" id="idNovaSenha" ng-model="redefinicaoSenha.novaSenha" ng-required="true" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idConfirmaNovaSenha">Confirma nova senha:</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="password" id="idConfirmaNovaSenha" ng-model="redefinicaoSenha.confirmaNovaSenha" ng-required="true" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-6">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+		</div>
+	</form>
+</section>

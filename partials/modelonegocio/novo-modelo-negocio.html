@@ -1,0 +1,126 @@
+<section class="text-center">
+	<h3>Cadastro de Modelo de Neg&oacute;cio</h3>
+
+	<form class="form-horizontal" id="formNovoModelo" name="formNovoModelo" ng-submit="criar()" novalidate>
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idNome">Nome:*</label>
+
+			<div class="col-xs-6">
+				<input class="form-control" type="text" maxlength="100" id="idNome" ng-model="novoModelo.nome" ng-required="true" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idDescricao">Descri&ccedil;&atilde;o:*</label>
+
+			<div class="col-xs-6">
+				<textarea type="text" rows="6" maxlength="300" id="idDescricao" class="form-control" ng-model="novoModelo.descricao" ng-required="true"></textarea>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idTransportadora">Transportadora:*</label>
+
+			<div class="col-xs-6">
+				<select id="idTransportadora" class="form-control" ng-model="novoModelo.idTransportadora"
+				 ng-required="true" ng-options="transportadora.idTransportadora as transportadora.razaoSocial for transportadora in listaTransportadora">
+
+					<option value="">Selecione uma transportadora...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="idTipoCredito">Tipo de Cr&eacute;dito:*</label>
+
+			<div class="col-xs-6">
+				<select id="idTipoCredito" class="form-control" ng-change="changeTipoCredito()" ng-model="novoModelo.idTipoCredito" ng-required="true" ng-options="tipoCredito.idTipoCredito as tipoCredito.descricao for tipoCredito in listaTipoCredito">
+					<option value="">Selecione um tipo de cr&eacute;dito...</option>
+				</select>
+			</div>
+		</div>
+
+		<div ng-if="novoModelo.idTipoCredito == 1">
+			<div class="form-group">
+				<label class="control-label col-xs-7" for="horarioCorteCredito">Hor&aacute;rio de corte para cr&eacute;dito:</label>
+
+				<div class="col-xs-2">
+					<input class="form-control text-center" type="text" id="horarioCorteCredito" ng-model="novoModelo.horarioCorteCredito" ui-mask="99:99"
+					/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-xs-7" for="horarioCorteEnvioBanco">Hor&aacute;rio para envio ao banco:</label>
+				<div class="col-xs-2">
+					<input class="form-control text-center" type="text" id="horarioCorteEnvioBanco" ng-model="novoModelo.horarioCorteEnvioBanco" ui-mask="99:99"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="novoModelo.idTipoCredito == 2">
+			<div class="form-group">
+				<label class="control-label col-xs-7" for="diasCreditoAposConferencia">Quantidade de dias para Cr&eacute;dito ap&oacute;s
+					Confer&ecirc;ncia:*
+				</label>
+				<div class="col-xs-2">
+					<input class="form-control text-center" type="number" ng-required="true" min="0"
+					 id="diasCreditoAposConferencia" ng-model="novoModelo.quantidadeDiasConfCredito" />
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="novoModelo">SLA de Atendimento:*</label>
+			<div class="col-xs-6">
+				<div class="row">
+					<label class="control-label col-xs-3" for="novoModelo">1 - Análise Solicitada</label>
+					<div class="col-xs-4">
+						<input class="form-control" type="number" ng-model="novoModelo.qtdDiasAnaliseSolicitada" ng-required="true" min="0" />
+					</div>
+
+					<label for="novoModelo" class="control-label col-xs-3">Dias úteis?</label>
+					<div class="col-xs-2" >
+						<input type="checkbox" ng-model="novoModelo.analiseSolDiaUtil" />
+					</div>
+				</div>
+				<div class="row">
+					<label class="control-label col-xs-3" for="novoModelo">2 - Análise em Andamento</label>
+					<div class="col-xs-4">
+						<input class="form-control" type="number" ng-model="novoModelo.qtdDiasAnaliseAndamento" ng-required="true" min="0" />
+					</div>
+
+					<label for="novoModelo" class="control-label col-xs-3">Dias úteis?</label>
+					<div class="col-xs-2">
+						<input type="checkbox" ng-model="novoModelo.analiseAndDiaUtil" />
+					</div>
+				</div>
+				<div class="row">
+					<label class="control-label col-xs-3" for="novoModelo">3 - Aguardando Aprovação</label>
+					<div class="col-xs-4">
+						<input class="form-control" type="number" ng-model="novoModelo.qtdDiasAnaliseAguarde" ng-required="true" min="0" />
+					</div>
+
+					<label for="novoModelo" class="control-label col-xs-3">Dias úteis?</label>
+					<div class="col-xs-2">
+						<input type="checkbox" ng-model="novoModelo.analiseAguarDiaUtil">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar" ng-show="!isPerfilBPO" />
+			</div>
+
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaModeloNegocio" class="btn btn-verde btn-lg btn-block" value="Voltar" />
+			</div>
+		</div>
+	</form>
+</section>

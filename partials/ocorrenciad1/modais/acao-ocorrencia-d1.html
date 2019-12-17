@@ -1,0 +1,53 @@
+<div class="modal-header background-verde">
+    <h3 class="modal-title" id="modal-titulo">A&ccedil;&atilde;o</h3>
+</div>
+
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="alert alert-danger text-center" role="alert" ng-show="isExibirMensagemErro">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            <span>{{mensagemErro}}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <label class="control-label">Status:*</label>
+
+            <select style="width: 564px" class="form-control" id="tipoStatus" ng-model="atividade.statusOcorrencia" ng-options="tipoStatusOcorrencia.idTipoStatusOcorrencia as tipoStatusOcorrencia.descricao for tipoStatusOcorrencia in listaTipoStatusOcorrencia" ng-change="atividade.responsavel = ''"> 
+
+                <option value="">Selecione um tipo de status...</option>
+            </select>
+
+            </br>
+            <div ng-if="atividade.statusOcorrencia == '4'">
+                <label class="control-label">Motivo da Conclus&atilde;o:</label>
+                <select style="width: 564px" class="form-control" id="tipoStatus" ng-model="atividade.idMotivo" ng-options="tipoMotivoConclusao.idTipoMotivoConclusao as tipoMotivoConclusao.descricao for tipoMotivoConclusao in listatipoMotivoConclusao">
+
+                    <option  value="">Selecione um Motivo...</option>
+                </select>
+            </div>
+            </br>
+            <div>
+                <label class="control-label">Respons&aacute;vel:*</label>
+                <select ng-disabled="atividade.statusOcorrencia == 4" style="width: 564px" class="form-control" id="tipoStatus" ng-model="atividade.responsavel" >
+
+                    <option selected value="">Selecione o Respons&aacute;vel</option>
+                    <option value="{{ocorrencia.transportadora}}">{{ocorrencia.transportadora}}</option>
+                    <option value="{{ocorrencia.grupoEconomico}}">{{ocorrencia.grupoEconomico}}</option>
+                </select>
+            </div>
+            </br>
+            <label class="control-label">Mensagem:*</label>
+            <div class="input-group">                
+                <textarea style="width: 564px" type="text" rows="5" maxlength="300" id="mensagem" class="form-control" ng-model="atividade.atividade"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-verde" type="button" ng-click="salvar()">Salvar</button>
+    <button class="btn btn-vermelho" type="button" ng-click="cancelar()">Cancelar</button>
+</div>

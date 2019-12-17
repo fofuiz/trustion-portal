@@ -1,0 +1,8 @@
+<nav class="navbar navbar-default">
+	<img alt="logotipo" src="./img/trustion-logo.png" width="150px;" />
+	<a class="btn btn-md pull-right btn-sair" ng-click="logout()">
+		<span class="glyphicon glyphicon-log-out"></span>Sair
+	</a>
+	<span ng-if="nome" class="pull-right usuario-login"><b>Bem-vindo, {{nome}}</b></span>
+	<span ng-if="!nome" class="pull-right usuario-login"><b>Bem-vindo</b></span>
+</nav>

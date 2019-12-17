@@ -1,0 +1,98 @@
+<div class="container-fluid">
+    <!-- <div class="row" style='display:none;'>
+        <div id="divcartao" class="col-md-4">
+            <div class="card">
+                <h2>Vendas</h2>
+                <hr>
+                <div id="vendas_chart"></div>
+            </div>
+                <ul class="tira-ponto padding-left-0" ng-repeat="venda in vendas track by $index">
+                    <div class="row">
+                        <li class="font-size-16"><a ng-click="carregarProdutoVendasId($index)">
+                                <div class="col-md-6 col-sm-6 col-xs-6"><span class="glyphicon glyphicon-play"></span> {{venda.operadora}}</div>
+                                <div class="col-md-6 col-sm-6 col-xs-6">{{venda.total | realbrasileiro}}</div>
+                            </a>
+                        </li>
+                        <ul class="tira-ponto" ng-repeat="produto in venda.produtos">
+                            <li>
+                                <div class="col-md-6 col-sm-6 col-xs-6">{{produto.produto}}</div>
+                                <div class="col-md-6 col-sm-6 col-xs-6">{{produto.total | realbrasileiro}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </ul>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <h2>Recebimentos</h2>
+                <hr>
+                <div id="recebimentos_chart"></div>
+            </div>
+            <ul class="tira-ponto padding-left-0" ng-repeat="recebimento in recebimentos track by $index">
+                <div class="row">
+                    <li class="font-size-16">
+                        <a ng-click="carregarProdutoRecebimentosId($index)">
+                            <div class="col-md-6 col-sm-6 col-xs-6"><span class="glyphicon glyphicon-play"></span> {{recebimento.operadora}}</div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{recebimento.total | realbrasileiro}}</div>
+                        </a>
+                    </li>
+                    <ul class="tira-ponto" ng-repeat="produto in recebimento.produtos">
+                        <li>
+                            <div class="col-md-6 col-xs-6">{{produto.produto}}</div>
+                            <div class="col-md-6 col-xs-6">{{produto.total | realbrasileiro}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <h2>Recebimentos Futuros</h2>
+                <hr>
+                <div id="recebimentos_futuros_chart"></div>
+            </div>
+            <ul class="tira-ponto padding-left-0" ng-repeat="recebimentoFuturo in recebimentosFuturos track by $index">
+                <div class="row">
+                    <li class="font-size-16">
+                        <a ng-click="carregarProdutosRecebimentosFuturosId($index)">
+                            <div class="col-md-6 col-sm-6 col-xs-6"><span class="glyphicon glyphicon-play"></span> {{recebimentoFuturo.operadora}}</div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{recebimentoFuturo.total | realbrasileiro}}</div>
+                        </a>
+                    </li>
+                    <ul class="tira-ponto" ng-repeat="produto in recebimentoFuturo.produtos">
+                        <li>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{produto.produto}}</div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">{{produto.total | realbrasileiro}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+    </div> -->
+    <div class="row">
+        <script ng-if="tableauTokenCartoes && empFilter" type='text/javascript' src='https://tableau.accesstage.com.br/javascripts/api/viz_v1.js'></script>
+        <div ng-if="tableauTokenCartoes && empFilter" class='tableauPlaceholder'>
+            <object class='tableauViz' width='100%' height='{{ tableauHeight }}' style='display:none;'>
+                <param name='host_url' value='https%3A%2F%2Ftableau.accesstage.com.br%2F' />
+                <param name='embed_code_version' value='3' />
+                <param name='site_root' value='&#47;t&#47;brinks' />
+                <param name="ticket" value="{{tableauTokenCartoes}}" />
+
+                <param ng-if="maquina == 'dev.accesstage.com.br' || maquina == 'localhost'" name='name' value='Brinks_dev_home&#47;HomeInicialCartes'/>
+                <param ng-if="maquina == 'homolog.accesstage.com.br'" name='name' value='HMLBrinksHome&#47;HomeInicialCartes' />
+                <param ng-if="maquina == 'app.trustion.com.br'" name='name' value='BrinksHome&#47;HomeInicialCartes' />
+                <param name='tabs' value='yes' />
+                <param name='toolbar' value='yes' />
+                <param name='showAppBanner' value='false' />
+                <param name='filter' value='iframeSizedToWindow=true' />
+                <param name='filter' value='{{empFilter}}' />
+            </object>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-offset-11 col-xs-1">
+            <input type="button" ui-sref="home" class="btn btn-verde btn-lg" value="Voltar" />
+        </div>
+    </div>
+</div>

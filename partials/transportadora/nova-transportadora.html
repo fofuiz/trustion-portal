@@ -1,0 +1,141 @@
+<section class="text-center">
+	<h3>Cadastro de Transportadora</h3>
+
+	<form class="form-horizontal" id="formnovaTransportadora" name="formnovaTransportadora" ng-submit="criar()" novalidate>
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="razaoSocial">Raz&atilde;o Social:*</label>
+			<div class="col-xs-6">
+				<input class="form-control" type="text" id="razaoSocial"
+					maxlength="150"
+					ng-model="novaTransportadora.razaoSocial"
+					ng-required="true"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="cnpj">CNPJ:*</label>
+			<div class="col-xs-6">
+				<input type="text" id="cnpj" ui-mask="99.999.999/9999-99" class="form-control" ng-model="novaTransportadora.cnpj" ng-required="true" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="endereco">Endere&ccedil;o:</label>
+			<div class="col-xs-6">
+				<input type="text" id="endereco" class="form-control"
+					maxlength="150"
+					ng-model="novaTransportadora.endereco"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="cidade">Cidade:</label>
+			<div class="col-xs-6">
+				<input type="text" id="cidade" class="form-control"
+					maxlength="50"
+					ng-model="novaTransportadora.cidade"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="estado">Estado:</label>
+			<div class="col-xs-6">
+				<select id="estado" class="form-control" ng-model="novaTransportadora.estado">
+					<option value="">Selecione um Estado...</option>
+					<option value="AC">Acre</option>
+					<option value="AL">Alagoas</option>
+					<option value="AP">Amap&aacute;</option>
+					<option value="AM">Amazonas</option>
+					<option value="BA">Bahia</option>
+					<option value="CE">Cear&aacute;</option>
+					<option value="DF">Distrito Federal</option>
+					<option value="ES">Esp&iacute;rito Santo</option>
+					<option value="GO">Goi&aacute;s</option>
+					<option value="MA">Maranh&atilde;o</option>
+					<option value="MT">Mato Grosso</option>
+					<option value="MS">Mato Grosso do Sul</option>
+					<option value="MG">Minas Gerais</option>
+					<option value="PA">Par&aacute;</option>
+					<option value="PB">Para&iacute;ba</option>
+					<option value="PR">Paran&aacute;</option>
+					<option value="PE">Pernambuco</option>
+					<option value="PI">Piau&iacute;</option>
+					<option value="RJ">Rio de Janeiro</option>
+					<option value="RN">Rio Grande do Norte</option>
+					<option value="RS">Rio Grande do Sul</option>
+					<option value="RO">Rond&ocirc;nia</option>
+					<option value="RR">Roraima</option>
+					<option value="SC">Santa Catarina</option>
+					<option value="SP">S&atilde;o Paulo</option>
+					<option value="SE">Sergipe</option>
+					<option value="TO">Tocantins</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="cep">CEP:</label>
+			<div class="col-xs-6">
+				<input type="text" id="cep" ui-mask="99999-999" class="form-control" ng-model="novaTransportadora.cep"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="responsavel">Respons&aacute;vel:</label>
+			<div class="col-xs-6">
+				<input type="text" id="responsavel" class="form-control"
+					maxlength="150"
+					ng-model="novaTransportadora.responsavel"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="nroTelefone">Telefone:</label>
+			<div class="col-xs-6">
+				<input type="text" id="nroTelefone" ui-mask="(99) 99999-9999" class="form-control" ng-model="novaTransportadora.nroTelefone"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="email">E-mail:</label>
+			<div class="col-xs-6">
+				<input type="text" id="email" class="form-control"
+					maxlength="150"
+					ng-model="novaTransportadora.email"/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="envioInformacao">Envio de informa&ccedil;&atilde;o:*</label>
+			<div class="col-xs-6">
+				<select id="envioInformacao" class="form-control" ng-model="novaTransportadora.envioInformacao"
+						ng-options="envioInfo.codigo as envioInfo.descricao for envioInfo in listaEnvioInformacao" ng-required="true">
+					<option value="">Selecione um Envio de Informa&ccedil;&atilde;o...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-xs-3" for="status">Status:*</label>
+			<div class="col-xs-6">
+				<select id="status" class="form-control" ng-model="novaTransportadora.status"
+						ng-options="status.codigo as status.descricao for status in listaStatus" ng-required="true">
+					<option value="">Selecione um Status...</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-3">
+			</div>
+
+			<div class="col-xs-3">
+				<input type="submit" class="btn btn-verde btn-lg btn-block" value="Salvar"/>
+			</div>
+			
+			<div class="col-xs-3">
+				<input type="button" ui-sref="listaTransportadora" class="btn btn-verde btn-lg btn-block" value="Voltar"/>
+			</div>
+		</div>
+	</form>
+</section>
