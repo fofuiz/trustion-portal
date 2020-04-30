@@ -75,7 +75,7 @@
   "dependencies": {
     "angular": "1.6.4",
     "bootstrap": "3.3.7",
-    "jquery": "3.3.1",
+    "jquery": "3.5.0",
     "ng-excel": "^1.0.5",
     "npm": "^6.11.2"
   }
