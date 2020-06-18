@@ -73,7 +73,7 @@
     "default": "develop"
   },
   "dependencies": {
-    "angular": "1.6.4",
+    "angular": "1.8.0",
     "bootstrap": "3.3.7",
     "jquery": "3.3.1",
     "ng-excel": "^1.0.5",
